@@ -10,19 +10,19 @@ import Foundation
 import UIKit
 
 extension VVeboCell {
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let c: VVeboCollectionViewCell!  = collectionView.dequeueReusableCellWithReuseIdentifier("VVeboCollectionViewCell", forIndexPath: indexPath) as? VVeboCollectionViewCell
-        if let images = data.objectForKey("images") as? NSArray {
-            c.image = images[indexPath.row] as? NSDictionary
-            c.index = indexPath.row
+    @objc(collectionView:cellForItemAtIndexPath:) func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let c: VVeboCollectionViewCell!  = collectionView.dequeueReusableCell(withReuseIdentifier: "VVeboCollectionViewCell", for: indexPath) as? VVeboCollectionViewCell
+        if let images = data.object(forKey: "images") as? NSArray {
+            c.image = images[(indexPath as NSIndexPath).row] as? NSDictionary
+            c.index = (indexPath as NSIndexPath).row
             c.images = images
             c.setup()
         }
         return c
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let images = data.objectForKey("images") as? NSArray {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if let images = data.object(forKey: "images") as? NSArray {
             return images.count
         }
         return 0

@@ -10,9 +10,9 @@ extension FLAnimatedImageView {
     
     public typealias QSProgressBlock = (Int, Int) -> Void
     
-    public typealias QSCompletedBlock = (UIImage!, NSData!, NSError!, Bool) -> Void
+    public typealias QSCompletedBlock = (UIImage?, Data?, NSError?, Bool) -> Void
     
-    func qs_setGifImageWithURL(url: NSURL!, progress progressBlock: QSProgressBlock?, completed completedBlock: QSCompletedBlock?) {
+    func qs_setGifImageWithURL(_ url: URL!, progress progressBlock: QSProgressBlock?, completed completedBlock: QSCompletedBlock?) {
         
         let imageData = imageDataFromDiskCacheForKey(url.absoluteString)
         
@@ -24,14 +24,14 @@ extension FLAnimatedImageView {
         }
         
         /* 本地无 gif 图片 */
-        SDWebImageDownloader.sharedDownloader().downloadImageWithURL(url,
+        SDWebImageDownloader.shared().downloadImage(with: url,
             options: SDWebImageDownloaderOptions(rawValue: 0),
             progress: { (recvSize, totalSize) -> Void in
                 progressBlock?(recvSize, totalSize)
             }) { (image, gifData, error, finished) -> Void in
                 //on image loaded
                 if finished {
-                    SDWebImageManager.sharedManager().imageCache.storeImage(image, recalculateFromImage: false,
+                    SDWebImageManager.shared().imageCache.store(image, recalculateFromImage: false,
                         imageData: gifData, forKey: url.absoluteString, toDisk: true)
                     /* 将图片添加到本地缓存 */
                     let gifImage = FLAnimatedImage(animatedGIFData: gifData)
@@ -39,13 +39,13 @@ extension FLAnimatedImageView {
                         self.animatedImage = gifImage
                     }
                 }
-                completedBlock?(image, gifData, error, finished)
+                completedBlock?(image, gifData, error as NSError!, finished)
         }
     }
     
-    private func imageDataFromDiskCacheForKey(key: String) -> NSData? {
-        let defaultPath = SDWebImageManager.sharedManager().imageCache.defaultCachePathForKey(key)
-        let data = NSData(contentsOfFile: defaultPath)
+    fileprivate func imageDataFromDiskCacheForKey(_ key: String) -> Data? {
+        let defaultPath = SDWebImageManager.shared().imageCache.defaultCachePath(forKey: key)
+        let data = try? Data(contentsOf: URL(fileURLWithPath: defaultPath!))
         
         return data
     }

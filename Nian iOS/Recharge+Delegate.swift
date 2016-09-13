@@ -10,28 +10,28 @@ import Foundation
 import UIKit
 
 extension Recharge {
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    @objc(tableView:heightForRowAtIndexPath:) func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 72
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataArray.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let c: RechargeCell! = tableView.dequeueReusableCellWithIdentifier("RechargeCell", forIndexPath: indexPath) as? RechargeCell
-        c.data = dataArray[indexPath.row] as! NSDictionary
-        c.num = indexPath.row
+    @objc(tableView:cellForRowAtIndexPath:) func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let c: RechargeCell! = tableView.dequeueReusableCell(withIdentifier: "RechargeCell", for: indexPath) as? RechargeCell
+        c.data = dataArray[(indexPath as NSIndexPath).row] as! NSDictionary
+        c.num = (indexPath as NSIndexPath).row
         c.numMax = dataArray.count
         c.setup()
-        c.btnMain.tag = indexPath.row
-        c.btnMain.addTarget(self, action: #selector(self.onClick(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        c.btnMain.tag = (indexPath as NSIndexPath).row
+        c.btnMain.addTarget(self, action: #selector(self.onClick(_:)), for: UIControlEvents.touchUpInside)
         return c
     }
     
     //==
     
-    func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
+    func niAlert(_ niAlert: NIAlert, didselectAtIndex: Int) {
         /* 如果是支付方式选择界面 */
         if niAlert == self.alert {
             
@@ -47,18 +47,18 @@ extension Recharge {
                     Api.postWechatPay(price, coins: title) { json in
                         if json != nil {
                             if let j = json as? NSDictionary {
-                                let data = NSData(base64EncodedString: j.stringAttributeForKey("data"), options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
-                                let base64Decoded = NSString(data: data!, encoding: NSUTF8StringEncoding)
-                                let jsonString = base64Decoded?.dataUsingEncoding(NSASCIIStringEncoding)
-                                if let dataResult = try? NSJSONSerialization.JSONObjectWithData(jsonString!, options: NSJSONReadingOptions.AllowFragments) {
+                                let data = Data(base64Encoded: j.stringAttributeForKey("data"), options: NSData.Base64DecodingOptions.ignoreUnknownCharacters)
+                                let base64Decoded = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+                                let jsonString = base64Decoded?.data(using: String.Encoding.ascii.rawValue)
+                                if let dataResult = try? JSONSerialization.jsonObject(with: jsonString!, options: JSONSerialization.ReadingOptions.allowFragments) {
                                     let request = PayReq()
-                                    request.partnerId = dataResult.stringAttributeForKey("partnerid")
-                                    request.prepayId = dataResult.stringAttributeForKey("prepayid")
-                                    request.package = dataResult.stringAttributeForKey("package")
-                                    request.nonceStr = dataResult.stringAttributeForKey("noncestr")
-                                    request.timeStamp = UInt32(dataResult.stringAttributeForKey("timestamp"))!
-                                    request.sign = dataResult.stringAttributeForKey("sign")
-                                    WXApi.sendReq(request)
+                                    request.partnerId = (dataResult as AnyObject).stringAttributeForKey("partnerid")
+                                    request.prepayId = (dataResult as AnyObject).stringAttributeForKey("prepayid")
+                                    request.package = (dataResult as AnyObject).stringAttributeForKey("package")
+                                    request.nonceStr = (dataResult as AnyObject).stringAttributeForKey("noncestr")
+                                    request.timeStamp = UInt32((dataResult as AnyObject).stringAttributeForKey("timestamp"))!
+                                    request.sign = (dataResult as AnyObject).stringAttributeForKey("sign")
+                                    WXApi.send(request)
                                 }
                             }
                         }
@@ -77,15 +77,16 @@ extension Recharge {
                             if let j = json as? NSDictionary {
                                 let data = j.stringAttributeForKey("data")
                                 AlipaySDK.defaultService().payOrder(data, fromScheme: "nianalipay") { (resultDic) -> Void in
-                                    let data = resultDic as NSDictionary
-                                    let resultStatus = data.stringAttributeForKey("resultStatus")
-                                    if resultStatus == "9000" {
-                                        /* 支付宝：支付成功 */
-                                        self.payMemberSuccess()
-                                    } else {
-                                        /* 支付宝：支付失败 */
-                                        self.payMemberCancel()
-                                    }
+//                                    let data = resultDic as NSDictionary
+//                                    let resultStatus = data.stringAttributeForKey("resultStatus")
+//                                    if resultStatus == "9000" {
+//                                        /* 支付宝：支付成功 */
+//                                        self.payMemberSuccess()
+//                                    } else {
+//                                        /* 支付宝：支付失败 */
+//                                        self.payMemberCancel()
+//                                    }
+                                    // todo
                                 }
                             }
                         }
@@ -100,7 +101,7 @@ extension Recharge {
     }
     
     /* 移除整个支付界面 */
-    func niAlert(niAlert: NIAlert, tapBackground: Bool) {
+    func niAlert(_ niAlert: NIAlert, tapBackground: Bool) {
         alert.dismissWithAnimation(.normal)
         if alertResult != nil {
             alertResult.dismissWithAnimation(.normal)
@@ -111,14 +112,14 @@ extension Recharge {
     func payMemberSuccess() {
         alertResult = NIAlert()
         alertResult.delegate = self
-        alertResult.dict = NSMutableDictionary(objects: [UIImage(named: "pay_result")!, "支付好了", "念币买好了！", [" 嗯！"]], forKeys: ["img", "title", "content", "buttonArray"])
+        alertResult.dict = NSMutableDictionary(objects: [UIImage(named: "pay_result")!, "支付好了", "念币买好了！", [" 嗯！"]], forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
         alert.dismissWithAnimationSwtich(alertResult)
         if let coin = Cookies.get("coin") as? String {
             if let _coin = Int(coin) {
                 if let data = dataArray[index] as? NSDictionary {
                     let insertCoin = data.stringAttributeForKey("title")
                     let coinNew = _coin + Int(insertCoin)!
-                    Cookies.set("\(coinNew)", forKey: "coin")
+                    Cookies.set("\(coinNew)" as AnyObject?, forKey: "coin")
                 }
             }
         }
@@ -138,12 +139,12 @@ extension Recharge {
     func payMemberFailed() {
         alertResult = NIAlert()
         alertResult.delegate = self
-        alertResult.dict = NSMutableDictionary(objects: [UIImage(named: "pay_result")!, "支付不成功", "服务器坏了！", ["哦"]], forKeys: ["img", "title", "content", "buttonArray"])
+        alertResult.dict = NSMutableDictionary(objects: [UIImage(named: "pay_result")!, "支付不成功", "服务器坏了！", ["哦"]], forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
         alert.dismissWithAnimationSwtich(alertResult)
     }
     
     /* 微信购买念币回调 */
-    func onWechatResult(sender: NSNotification) {
+    func onWechatResult(_ sender: Notification) {
         if let object = sender.object as? String {
             if object == "0" {
                 payMemberSuccess()

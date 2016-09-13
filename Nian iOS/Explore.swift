@@ -33,34 +33,34 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         setupViews()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.navigationBarHidden = false
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ExploreViewController.exploreTop(_:)), name: "exploreTop", object: nil)
+        self.navigationController?.isNavigationBarHidden = false
+        NotificationCenter.default.addObserver(self, selector: #selector(ExploreViewController.exploreTop(_:)), name: NSNotification.Name(rawValue: "exploreTop"), object: nil)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navHide()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "exploreTop", object:nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "exploreTop"), object:nil)
         navShow()
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var t = self.tableView
         var d = dataArray
         if tableView == self.tableViewDynamic {
             t = self.tableViewDynamic
             d = dataArrayDynamic
-            let data = dataArrayDynamic[indexPath.row] as! NSDictionary
+            let data = dataArrayDynamic[(indexPath as NSIndexPath).row] as! NSDictionary
             let type = data.stringAttributeForKey("type_of")
             if type == "1" {
-                let c = t.dequeueReusableCellWithIdentifier("ExploreDynamicDreamCell", forIndexPath: indexPath) as! ExploreDynamicDreamCell
+                let c = t?.dequeueReusableCell(withIdentifier: "ExploreDynamicDreamCell", for: indexPath) as! ExploreDynamicDreamCell
                 c.data = data
                 c.setup()
                 return c
@@ -72,33 +72,33 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         return getCell(indexPath, dataArray: d, type: 0)
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         var d = dataArray
         let vc = DreamViewController()
         if tableView == self.tableViewDynamic {
             d = dataArrayDynamic
         }
-        let data = d[indexPath.row] as! NSDictionary
+        let data = d[(indexPath as NSIndexPath).row] as! NSDictionary
         vc.Id = data.stringAttributeForKey("dream")
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         var t = self.tableView
         var d = dataArray
         if tableView == self.tableViewDynamic {
             t = self.tableViewDynamic
             d = dataArrayDynamic
-            let data = dataArrayDynamic[indexPath.row] as! NSDictionary
+            let data = dataArrayDynamic[(indexPath as NSIndexPath).row] as! NSDictionary
             let type = data.stringAttributeForKey("type_of")
             if type == "1" {
                 return 77
             }
         }
-        return t.getHeight(indexPath, dataArray: d)
+        return t!.getHeight(indexPath, dataArray: d)
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var d = dataArray
         if tableView == self.tableViewDynamic {
             d = dataArrayDynamic
@@ -106,7 +106,7 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         return d.count
     }
     
-    func exploreTop(noti: NSNotification){
+    func exploreTop(_ noti: Notification){
         if current == -1 {
             switchTab(0)
         }else{
@@ -121,7 +121,7 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
     func setupViews() {
         globalNumExploreBar = 0
         
-        self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
+        self.view.frame = CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight - 49)
         self.navTopView.backgroundColor = UIColor.NavColor()
         self.navTopView.setWidth(globalWidth)
         self.navHolder.setX((globalWidth - self.navHolder.frame.size.width)/2)
@@ -131,7 +131,7 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         view.backgroundColor = UIColor.BackgroundColor()
         
         scrollView.setWidth(globalWidth)
-        scrollView.contentSize = CGSizeMake(globalWidth * 2, scrollView.frame.size.height)
+        scrollView.contentSize = CGSize(width: globalWidth * 2, height: scrollView.frame.size.height)
         
         btnFollow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ExploreViewController.onTabClick(_:))))
         btnDynamic.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ExploreViewController.onTabClick(_:))))
@@ -139,7 +139,7 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         setupTables()
     }
     
-    func switchTab(tab: Int) {
+    func switchTab(_ tab: Int) {
         let _current = current
         current = tab
         if tab == 0 {
@@ -180,22 +180,22 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         _setupScrolltoTop(current)
     }
     
-    func onTabClick(sender: UIGestureRecognizer) {
+    func onTabClick(_ sender: UIGestureRecognizer) {
         globalNumExploreBar = sender.view!.tag - 1100
         let x1 = scrollView.contentOffset.x
         let x2 = globalWidth * CGFloat(globalNumExploreBar)
         if x1 == x2 {
             self.switchTab(sender.view!.tag - 1100)
         } else {
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
-                self.scrollView.setContentOffset(CGPointMake(globalWidth * CGFloat(globalNumExploreBar), 0), animated: false)
-                }) { (Bool) -> Void in
+            UIView.animate(withDuration: 0.2, animations: { () -> Void in
+                self.scrollView.setContentOffset(CGPoint(x: globalWidth * CGFloat(globalNumExploreBar), y: 0), animated: false)
+                }, completion: { (Bool) -> Void in
                     self.switchTab(sender.view!.tag - 1100)
-            }
+            }) 
         }
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if scrollView == self.scrollView {
             let xOffset = scrollView.contentOffset.x
             let page: Int = Int(xOffset / globalWidth)
@@ -209,7 +209,7 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         }
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView == self.scrollView {
             let x = scrollView.contentOffset.x
             self.btnFollow.setTabAlpha(x, index: 0)
@@ -222,10 +222,10 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
     }
     
     func onSearchClick() {
-        self.performSegueWithIdentifier("toSearch", sender: nil)
+        self.performSegue(withIdentifier: "toSearch", sender: nil)
     }
     
-    private func _setupScrolltoTop(tab: Int) {
+    fileprivate func _setupScrolltoTop(_ tab: Int) {
         if tab == 0 {
             tableView.scrollsToTop = true
             tableViewDynamic.scrollsToTop = false
@@ -238,7 +238,7 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
 }
 
 extension UILabel {
-    func setTabAlpha(x: CGFloat, index: CGFloat) {
+    func setTabAlpha(_ x: CGFloat, index: CGFloat) {
         var a:CGFloat = 0
         let big = globalWidth * (index + 1)
         let middle = globalWidth * index

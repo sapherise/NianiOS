@@ -13,13 +13,13 @@ import AssetsLibrary
 class LSYAlbumCatalogCell: UITableViewCell {
     var group:ALAssetsGroup!{
         didSet{
-            self.imageView?.image = UIImage(CGImage: group.posterImage().takeUnretainedValue())
+            self.imageView?.image = UIImage(cgImage: group.posterImage().takeUnretainedValue())
             self.setupGroupTitle()
         }
     }
-    private func setupGroupTitle(){
-        let numberOfAssetsAttribute:Dictionary! = [NSForegroundColorAttributeName:UIColor.grayColor(),NSFontAttributeName:UIFont.systemFontOfSize(17)]
-        let groupTitle:String! = self.group.valueForProperty(ALAssetsGroupPropertyName) as? String
+    fileprivate func setupGroupTitle(){
+        let numberOfAssetsAttribute:Dictionary! = [NSForegroundColorAttributeName:UIColor.gray,NSFontAttributeName:UIFont.systemFont(ofSize: 17)]
+        let groupTitle:String! = self.group.value(forProperty: ALAssetsGroupPropertyName) as? String
         let numberOfAssets:Int = self.group.numberOfAssets()
         let attributedString :NSMutableAttributedString! = NSMutableAttributedString(string: "\(groupTitle)（\(numberOfAssets)）", attributes: numberOfAssetsAttribute)
         self.textLabel?.attributedText = attributedString

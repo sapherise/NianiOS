@@ -19,7 +19,7 @@ class FindCellTop: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.selectionStyle = .None
+        self.selectionStyle = .none
         self.viewLeft.tag = 1
         self.viewMiddle.tag = 2
         self.viewRight.tag = 3

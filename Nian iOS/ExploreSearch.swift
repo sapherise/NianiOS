@@ -20,17 +20,17 @@ class NITextfield: UITextField {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        self.leftViewMode = .Always
+        self.leftViewMode = .always
         self.leftView  = UIView()
-        self.leftView?.contentMode = .Center
+        self.leftView?.contentMode = .center
     }
     
-    override func leftViewRectForBounds(bounds: CGRect) -> CGRect {
-        return CGRectMake(bounds.origin.x, bounds.origin.y, radius , radius)
+    override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
+        return CGRect(x: bounds.origin.x, y: bounds.origin.y, width: radius , height: radius)
     }
     
-    override func rightViewRectForBounds(bounds: CGRect) -> CGRect {
-        return CGRectMake(bounds.size.width - 25, bounds.origin.y, radius, radius)
+    override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
+        return CGRect(x: bounds.size.width - 25, y: bounds.origin.y, width: radius, height: radius)
     }
 }
 
@@ -47,7 +47,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         didSet {
             if dataArrayUser.count > 0 {
                 if index == 0 {
-                    userTableView.hidden = false
+                    userTableView.isHidden = false
                 }
             }
         }
@@ -56,7 +56,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         didSet {
             if dataArrayDream.count > 0 {
                 if index == 1 {
-                    dreamTableView.hidden = false
+                    dreamTableView.isHidden = false
                 }
             }
         }
@@ -65,7 +65,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         didSet {
             if dataArrayStep.count > 0 {
                 if index == 2 {
-                    stepTableView.hidden = false
+                    stepTableView.isHidden = false
                 }
             }
         }
@@ -104,7 +104,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
     var tableDict = Dictionary<Int, UITableView>()
     
     /* 代码生成的搜索框 */
-    var searchText = NITextfield(frame: CGRectMake(48, 8, globalWidth - 72, 26))
+    var searchText = NITextfield(frame: CGRect(x: 48, y: 8, width: globalWidth - 72, height: 26))
     
     // 用在计算 table view 滚动时应不应该加载图片
     //    var targetRect: NSValue?
@@ -112,44 +112,44 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
     // MARK: - all table view 都是延迟加载的
     
     lazy var userTableView: UITableView = {
-        let userTableView = UITableView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 104))
-        userTableView.registerNib(UINib(nibName: "SAUserCell", bundle: nil), forCellReuseIdentifier: "SAUserCell")
-        userTableView.separatorStyle = .None
+        let userTableView = UITableView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight - 104))
+        userTableView.register(UINib(nibName: "SAUserCell", bundle: nil), forCellReuseIdentifier: "SAUserCell")
+        userTableView.separatorStyle = .none
         
         userTableView.dataSource = self
         userTableView.delegate = self
         
         if self.dataArrayUser.count == 0 {
-            userTableView.hidden = true
+            userTableView.isHidden = true
         }
         
         return userTableView
     }()
     
     lazy var dreamTableView: UITableView = {
-        let dreamTableView = UITableView(frame: CGRectMake(globalWidth, 0, globalWidth, globalHeight - 104))
-        dreamTableView.registerNib(UINib(nibName: "ExploreNewHotCell", bundle: nil), forCellReuseIdentifier: "ExploreNewHotCell")
-        dreamTableView.separatorStyle = .None
+        let dreamTableView = UITableView(frame: CGRect(x: globalWidth, y: 0, width: globalWidth, height: globalHeight - 104))
+        dreamTableView.register(UINib(nibName: "ExploreNewHotCell", bundle: nil), forCellReuseIdentifier: "ExploreNewHotCell")
+        dreamTableView.separatorStyle = .none
         
         dreamTableView.dataSource = self
         dreamTableView.delegate = self
         
         if self.dataArrayDream.count == 0 {
-            dreamTableView.hidden = true
+            dreamTableView.isHidden = true
         }
         
         return dreamTableView
     }()
     
     lazy var stepTableView: VVeboTableView = {
-        let stepTableView = VVeboTableView(frame: CGRectMake(globalWidth * 2, 0, globalWidth, globalHeight - 104))
-        stepTableView.separatorStyle = .None
+        let stepTableView = VVeboTableView(frame: CGRect(x: globalWidth * 2, y: 0, width: globalWidth, height: globalHeight - 104))
+        stepTableView.separatorStyle = .none
         
         stepTableView.dataSource = self
         stepTableView.delegate = self
         
         if self.dataArrayStep.count == 0 {
-            stepTableView.hidden = true
+            stepTableView.isHidden = true
         }
         
         return stepTableView
@@ -162,13 +162,13 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         setupView()
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UITextFieldTextDidChangeNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextFieldTextDidChange, object: nil)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
         self.showTableViewWithIndex(index)
@@ -181,20 +181,20 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         self.navigationController?.navigationBar.addSubview(searchText)
         searchText.alpha = 0.0
         
-        UIView.animateWithDuration(0.3, animations: {
+        UIView.animate(withDuration: 0.3, animations: {
             self.searchText.alpha = 1.0
         })
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         //        self.navigationController?.navigationBar.addSubview(searchText)
-        NSNotificationCenter.defaultCenter().addObserverForName(UITextFieldTextDidChangeNotification, object: nil, queue: NSOperationQueue.mainQueue()) { _ in
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UITextFieldTextDidChange, object: nil, queue: OperationQueue.main) { _ in
             if self.searchText.text != "" {
-                self.searchText.rightViewMode = .Always
+                self.searchText.rightViewMode = .always
             } else {
-                self.searchText.rightViewMode = .Never
+                self.searchText.rightViewMode = .never
             }
         }
         
@@ -203,7 +203,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         
         if (preSetSearch.characters.count > 0 && shouldPerformSearch) {
             if let _ = self.tableDict[index] {
-                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                UIView.animate(withDuration: 0.2, animations: { () -> Void in
                     self.floatView.setX(flowViewOffset)
                 })
                 setupButtonColor(index)
@@ -217,7 +217,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         
         searchText.removeFromSuperview()
@@ -248,35 +248,35 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         searchText.layer.cornerRadius = 13
         searchText.layer.masksToBounds = true
         searchText.backgroundColor = UIColor(red: 0x3b/255, green: 0x40/255, blue: 0x44/255, alpha: 1.0)
-        searchText.leftViewMode = .Always
+        searchText.leftViewMode = .always
         searchText.leftView  = UIImageView(image: UIImage(named: "search"))
-        searchText.leftView?.contentMode = .Center
+        searchText.leftView?.contentMode = .center
         searchText.rightView = UIImageView(image: UIImage(named: "close-1"))
-        searchText.rightView!.contentMode = .Center
-        searchText.rightView!.userInteractionEnabled = true
+        searchText.rightView!.contentMode = .center
+        searchText.rightView!.isUserInteractionEnabled = true
         searchText.rightView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ExploreSearch.clearText(_:))))
-        searchText.attributedPlaceholder = NSAttributedString(string: "搜索", attributes: [NSForegroundColorAttributeName: color, NSFontAttributeName: UIFont.systemFontOfSize(12.0)])
-        searchText.contentVerticalAlignment = .Center
-        searchText.font = UIFont.systemFontOfSize(12.0)
+        searchText.attributedPlaceholder = NSAttributedString(string: "搜索", attributes: [NSForegroundColorAttributeName: color, NSFontAttributeName: UIFont.systemFont(ofSize: 12.0)])
+        searchText.contentVerticalAlignment = .center
+        searchText.font = UIFont.systemFont(ofSize: 12.0)
         searchText.textColor = UIColor(red: 0xff/255, green: 0xff/255, blue: 0xff/255, alpha: 1)
-        searchText.returnKeyType = .Search
+        searchText.returnKeyType = .search
         searchText.clearsOnBeginEditing = false
         searchText.delegate = self
         //        self.navigationController?.navigationBar.addSubview(searchText)
         
         scrollView.scrollsToTop = false
-        scrollView.contentSize = CGSizeMake(globalWidth * 3, scrollView.frame.size.height)
+        scrollView.contentSize = CGSize(width: globalWidth * 3, height: scrollView.frame.size.height)
         scrollView.delegate = self
     }
     
-    func setupButtonColor(index: Int) {
+    func setupButtonColor(_ index: Int) {
         
         /* 改变 Button 的颜色 */
-        for (_index, _btn) in self.btnArray.enumerate() {
+        for (_index, _btn) in self.btnArray.enumerated() {
             if _index == index {
-                _btn.setTitleColor(UIColor.HighlightColor(), forState: .Normal)
+                _btn.setTitleColor(UIColor.HighlightColor(), for: UIControlState())
             } else {
-                _btn.setTitleColor(UIColor.blackColor(), forState: .Normal)
+                _btn.setTitleColor(UIColor.black, for: UIControlState())
             }
         }
         
@@ -295,7 +295,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
     
     :param: index <#index description#>
     */
-    func showTableViewWithIndex(index: Int) {
+    func showTableViewWithIndex(_ index: Int) {
         currenTableView = nil
         switch index {
         case 0:
@@ -331,11 +331,11 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         }
     }
     
-    func load(index: Int, clear: Bool) {
+    func load(_ index: Int, clear: Bool) {
         currenTableView = nil
         for (_index, _table) in self.tableDict {
             if _index == index {
-                _table.hidden = false
+                _table.isHidden = false
                 self.beginSearch(clear: clear, index: _index)
             }
         }
@@ -348,17 +348,17 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
      :param: clear <#clear description#>
      :param: table <#table description#>
      */
-    func beginSearch(clear clear: Bool, index: Int) {
+    func beginSearch(clear: Bool, index: Int) {
         if index == 0 {
-            self.scrollView.setContentOffset(CGPointMake(0, 0), animated: true)
+            self.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
             
             userSearch(clear)
         } else if index == 1 {
-            self.scrollView.setContentOffset(CGPointMake(globalWidth, 0), animated: true)
+            self.scrollView.setContentOffset(CGPoint(x: globalWidth, y: 0), animated: true)
             
             dreamSearch(clear)
         } else if index == 2 {
-            self.scrollView.setContentOffset(CGPointMake(globalWidth * 2, 0), animated: true)
+            self.scrollView.setContentOffset(CGPoint(x: globalWidth * 2, y: 0), animated: true)
             
             stepSearch(clear)
         }
@@ -387,81 +387,79 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
      
      :param: scrollView <#scrollView description#>
      */
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView is UITableView {
             searchText.resignFirstResponder()
-        } else if scrollView.isMemberOfClass(UIScrollView) {
-            
         }
     }
     
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField.text != "" {
-            searchText.rightViewMode = .Always
+            searchText.rightViewMode = .always
         }
     }
     
-    func clearText(sender: UITapGestureRecognizer) {
+    func clearText(_ sender: UITapGestureRecognizer) {
         searchText.text = ""
-        searchText.rightViewMode = .Never
+        searchText.rightViewMode = .never
         searchText.becomeFirstResponder()
     }
     
     /* */
     //MARK: -
     
-    @IBAction func user(sender: AnyObject) {
+    @IBAction func user(_ sender: AnyObject) {
         let tmp = index
         index = 0
         setupButtonColor(index)
         showTableViewWithIndex(index)
         
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
+        UIView.animate(withDuration: 0.2, animations: { () -> Void in
             self.floatView.setX(globalWidth/2 - 120 + 15)
         })
         
-        self.scrollView.setContentOffset(CGPointMake(0, 0), animated: true)
+        self.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
         
         if searchText.text != "" && (tmp == index || self.dataArrayUser.count == 0) {
             self.userTableView.headerBeginRefreshing()
         }
     }
     
-    @IBAction func dream(sender: AnyObject) {
+    @IBAction func dream(_ sender: AnyObject) {
         let tmp = index
         index = 1
         setupButtonColor(index)
         showTableViewWithIndex(index)
         
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
+        UIView.animate(withDuration: 0.2, animations: { () -> Void in
             self.floatView.setX(globalWidth/2 - 40 + 15)
         })
         
-        self.scrollView.setContentOffset(CGPointMake(globalWidth, 0), animated: true)
+        self.scrollView.setContentOffset(CGPoint(x: globalWidth, y: 0), animated: true)
         
         if searchText.text != "" && (tmp == index || self.dataArrayDream.count == 0) {
             self.dreamTableView.headerBeginRefreshing()
         }
     }
     
-    @IBAction func step(sender: AnyObject) {
+    @IBAction func step(_ sender: AnyObject) {
         let tmp = index
         index = 2
         setupButtonColor(index)
         showTableViewWithIndex(index)
         
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
+        UIView.animate(withDuration: 0.2, animations: { () -> Void in
             self.floatView.setX(globalWidth/2 + 40 + 15)
         })
         
-        self.scrollView.setContentOffset(CGPointMake(globalWidth * 2, 0), animated: true)
+        self.scrollView.setContentOffset(CGPoint(x: globalWidth * 2, y: 0), animated: true)
         
         if searchText.text != ""  && (tmp == index || self.dataArrayStep.count == 0) {
             self.stepTableView.headerBeginRefreshing()
         }
     }
     
-    func userSearch(clear: Bool) {
+    func userSearch(_ clear: Bool) {
         if clear {
             userPage = 1
         }
@@ -472,10 +470,10 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
                 if clear {
                     self.dataArrayUser.removeAllObjects()
                 }
-                let items = json!.objectForKey("users") as? NSArray
+                let items = json!.object(forKey: "users") as? NSArray
                 if items != nil {
                     for item in items! {
-                        self.dataArrayUser.addObject(item)
+                        self.dataArrayUser.add(item)
                     }
                     if items!.count < 30 {
                         self.userTableView.setFooterHidden(true)
@@ -483,7 +481,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
                 }
                 
                 if self.dataArrayUser.count == 0 {
-                    let v = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 64 - 40))
+                    let v = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight - 64 - 40))
                     v.addGhost("没有人叫这个名字...\n所以你只搜到了这只鬼")
                     self.userTableView.tableHeaderView = v
                 } else {
@@ -497,7 +495,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         })
     }
     
-    func dreamSearch(clear: Bool) {
+    func dreamSearch(_ clear: Bool) {
         if clear {
             dreamPage = 1
         }
@@ -507,15 +505,15 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
                 if clear {
                     self.dataArrayDream.removeAllObjects()
                 }
-                let data: AnyObject? = json!.objectForKey("data")
-                let itemsDream = data?.objectForKey("dreams") as? NSArray
+                let data = json!.object(forKey: "data")
+                let itemsDream = (data as AnyObject).object(forKey: "dreams") as? NSArray
                 if itemsDream != nil {
                     for item in itemsDream! {
-                        self.dataArrayDream.addObject(item)
+                        self.dataArrayDream.add(item)
                     }
                 }
                 if self.dataArrayDream.count == 0 {
-                    let v = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 64 - 40))
+                    let v = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight - 64 - 40))
                     v.addGhost("没有记本有这个标签！\n如果你想搜索带有关键字的进展，\n可以试试旁边的进展！")
                     self.dreamTableView.tableHeaderView = v
                 } else {
@@ -529,7 +527,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         })
     }
     
-    func stepSearch(clear: Bool) {
+    func stepSearch(_ clear: Bool) {
         currenTableView = stepTableView
         if clear {
             stepPage = 1
@@ -543,17 +541,17 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
                 } else {
                     globalVVeboReload = false
                 }
-                let data: AnyObject? = json!.objectForKey("data")
-                let itemsStep = data?.objectForKey("steps") as? NSArray
+                let data = json!.object(forKey: "data")
+                let itemsStep = (data as AnyObject).object(forKey: "steps") as? NSArray
                 if itemsStep != nil {
                     for item in itemsStep! {
                         let d = VVeboCell.SACellDataRecode(item as! NSDictionary)
-                        self.dataArrayStep.addObject(d)
+                        self.dataArrayStep.add(d)
                     }
                 }
                 self.currentDataArray = self.dataArrayStep
                 if self.dataArrayStep.count == 0 {
-                    let v = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 64 - 40))
+                    let v = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight - 64 - 40))
                     v.addGhost("没有一个进展里有这个关键字！\n我还以为世界上没有人能看到这条错误提示呢...")
                     self.stepTableView.tableHeaderView = v
                 } else {
@@ -568,7 +566,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     // MARK: - table view delegate
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch index {
         case 0:
             return self.dataArrayUser.count
@@ -581,25 +579,25 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch index {
         case 0:
-            let cell = self.userTableView.dequeueReusableCellWithIdentifier("SAUserCell", forIndexPath: indexPath) as? SAUserCell
-            let data = self.dataArrayUser[indexPath.row] as! NSDictionary
+            let cell = self.userTableView.dequeueReusableCell(withIdentifier: "SAUserCell", for: indexPath) as? SAUserCell
+            let data = self.dataArrayUser[(indexPath as NSIndexPath).row] as! NSDictionary
             cell?.data = data
             cell?.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ExploreSearch.toUser(_:))))
-            cell?.btnMain.tag = indexPath.row
-            cell?.btnMain.addTarget(self, action: #selector(ExploreSearch.onFollow(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell?.btnMain.tag = (indexPath as NSIndexPath).row
+            cell?.btnMain.addTarget(self, action: #selector(ExploreSearch.onFollow(_:)), for: UIControlEvents.touchUpInside)
             
             return cell!
         case 1:
-            let cell = self.dreamTableView.dequeueReusableCellWithIdentifier("ExploreNewHotCell", forIndexPath: indexPath) as? ExploreNewHotCell
-            cell!.data = self.dataArrayDream[indexPath.row] as! NSDictionary
+            let cell = self.dreamTableView.dequeueReusableCell(withIdentifier: "ExploreNewHotCell", for: indexPath) as? ExploreNewHotCell
+            cell!.data = self.dataArrayDream[(indexPath as NSIndexPath).row] as! NSDictionary
             
-            if indexPath.row == self.dataArrayDream.count - 1 {
-                cell!.viewLine.hidden = true
+            if (indexPath as NSIndexPath).row == self.dataArrayDream.count - 1 {
+                cell!.viewLine.isHidden = true
             } else {
-                cell!.viewLine.hidden = false
+                cell!.viewLine.isHidden = false
             }
             cell!._layoutSubviews()
             
@@ -614,7 +612,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if index == 0 {
             //            let index = indexPath.row
             //            let data = self.dataArrayStep[index] as! NSDictionary
@@ -622,23 +620,23 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
             //            SADream(dream)
         } else if index == 1 {
             let DreamVC = DreamViewController()
-            DreamVC.Id = (self.dataArrayDream[indexPath.row] as! NSDictionary)["id"] as! String
+            DreamVC.Id = (self.dataArrayDream[(indexPath as NSIndexPath).row] as! NSDictionary)["id"] as! String
             
             self.navigationController?.pushViewController(DreamVC, animated: true)
         } else if index == 2 {
             let viewController = DreamViewController()
-            let data = dataArrayStep[indexPath.row] as! NSDictionary
+            let data = dataArrayStep[(indexPath as NSIndexPath).row] as! NSDictionary
             viewController.Id = data.stringAttributeForKey("dream")
             
             self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if index == 0 {
             return 71
         } else if index == 1 {
-            let data = dataArrayDream[indexPath.row] as! NSDictionary
+            let data = dataArrayDream[(indexPath as NSIndexPath).row] as! NSDictionary
             let heightCell = data.stringAttributeForKey("heightCell")
             if heightCell == "" {
                 let arr = ExploreNewHotCell.cellHeight(data)
@@ -653,7 +651,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
                 d.setValue(heightTitle, forKey: "heightTitle")
                 d.setValue(content, forKey: "content")
                 d.setValue(title, forKey: "title")
-                dataArrayDream.replaceObjectAtIndex(indexPath.row, withObject: d)
+                dataArrayDream.replaceObject(at: (indexPath as NSIndexPath).row, with: d)
                 return heightCell
             } else {
                 return heightCell.toCGFloat()
@@ -667,19 +665,19 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
     
     // MARK: -
     
-    func toUser(sender: UIGestureRecognizer) {
+    func toUser(_ sender: UIGestureRecognizer) {
         if let tag = sender.view?.tag {
             SAUser("\(tag)")
         }
     }
     
-    func toDream(sender: UIGestureRecognizer) {
+    func toDream(_ sender: UIGestureRecognizer) {
         if let tag = sender.view?.tag {
             SADream("\(tag)")
         }
     }
     
-    func onFollowDream(sender: UIButton) {
+    func onFollowDream(_ sender: UIButton) {
         let tag = sender.tag
         let data = self.dataArrayDream[tag] as! NSDictionary
         let id = data.stringAttributeForKey("id")
@@ -693,7 +691,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         }
     }
     
-    func onFollow(sender: UIButton) {
+    func onFollow(_ sender: UIButton) {
         let tag = sender.tag
         let data = self.dataArrayUser[tag] as! NSDictionary
         let uid = data.stringAttributeForKey("uid")
@@ -710,10 +708,10 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         }
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.searchText.resignFirstResponder()
         if searchText.text != "" {
-            searchText.rightViewMode = .Always
+            searchText.rightViewMode = .always
             
             for (_index, _table) in self.tableDict {
                 if _index == index {
@@ -729,7 +727,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
 
 // MARK: - UIActionSheet Delegate
 extension ExploreSearch: UIActionSheetDelegate {
-    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
         if buttonIndex == 0 {
             let type = self.hasFollowTag ? "unfollow" : "follow"
             
@@ -737,7 +735,7 @@ extension ExploreSearch: UIActionSheetDelegate {
                 json in
                 
                 if json != nil {
-                    if let _data = json!.objectForKey("data") as? String {
+                    if let _data = json!.object(forKey: "data") as? String {
                         if _data == "success" {
                             if self.hasFollowTag {
                                 self.showTipText("已取消关注标签 #\(self.searchText.text!)")
@@ -758,9 +756,9 @@ extension ExploreSearch: UIActionSheetDelegate {
 // MARK: - 实现 UIScrollView Delegate
 extension ExploreSearch {
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if scrollView is UITableView {
-        } else if scrollView .isMemberOfClass(UIScrollView) {
+        } else if scrollView.isMember(of: UIScrollView.self) {
             let xOffset = scrollView.contentOffset.x
             let page: Int = Int(xOffset / globalWidth)
             
@@ -770,7 +768,7 @@ extension ExploreSearch {
             
             setupButtonColor(page)
             
-            UIView.animateWithDuration(0.2, animations: {
+            UIView.animate(withDuration: 0.2, animations: {
                 self.floatView.setX((globalWidth - 320)/2 + 40 + CGFloat(page * 80) + 15.0)
             })
             
@@ -784,16 +782,16 @@ extension ExploreSearch {
 // MARK: - UIGestureRecognizerDelegate
 extension ExploreSearch {
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer.isKind(of: UIScreenEdgePanGestureRecognizer.self) {
             return true
         }
         return false
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         // 当判断到右滑返回时，取消其他所有手势
-        if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
+        if gestureRecognizer.isKind(of: UIScreenEdgePanGestureRecognizer.self) {
             return true
         }
         return false

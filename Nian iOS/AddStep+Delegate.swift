@@ -12,24 +12,24 @@ import AssetsLibrary
 extension AddStep {
     
     /* tableView */
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let c = tableView.dequeueReusableCellWithIdentifier("AddStepCell", forIndexPath: indexPath) as! AddStepCell
-        let data = self.dataArray[indexPath.row] as? NSDictionary
+    @objc(tableView:cellForRowAtIndexPath:) func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let c = tableView.dequeueReusableCell(withIdentifier: "AddStepCell", for: indexPath) as! AddStepCell
+        let data = self.dataArray[(indexPath as NSIndexPath).row] as? NSDictionary
         c.data = data
         c.setup()
         return c
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    @objc(tableView:heightForRowAtIndexPath:) func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 54
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataArray.count
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let data = dataArray[indexPath.row] as! NSDictionary
+    @objc(tableView:didSelectRowAtIndexPath:) func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let data = dataArray[(indexPath as NSIndexPath).row] as! NSDictionary
         let id = data.stringAttributeForKey("id")
         let title = data.stringAttributeForKey("title").decode()
         let image = data.stringAttributeForKey("image")
@@ -38,48 +38,48 @@ extension AddStep {
         self.idDream = id
         self.labelDream.text = title
         
-        tableView.hidden = true
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.imageArrow.transform = CGAffineTransformMakeRotation(0)
+        tableView.isHidden = true
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
+            self.imageArrow.transform = CGAffineTransform(rotationAngle: 0)
         })
     }
     
     /* collectionView */
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let c: AddStepImageCell! = collectionView.dequeueReusableCellWithReuseIdentifier("AddStepImageCell", forIndexPath: indexPath) as? AddStepImageCell
-        c.image = imageArray[indexPath.row]
+    @objc(collectionView:cellForItemAtIndexPath:) func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let c: AddStepImageCell! = collectionView.dequeueReusableCell(withReuseIdentifier: "AddStepImageCell", for: indexPath) as? AddStepImageCell
+        c.image = imageArray[(indexPath as NSIndexPath).row]
         c.setup()
         return c
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return imageArray.count
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    @objc(collectionView:didSelectItemAtIndexPath:) func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         field2.resignFirstResponder()
         actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        actionSheet.addButtonWithTitle("移除")
-        actionSheet.addButtonWithTitle("取消")
+        actionSheet.addButton(withTitle: "移除")
+        actionSheet.addButton(withTitle: "取消")
         actionSheet.cancelButtonIndex = 1
-        actionSheet.showInView(self.view)
-        rowDelete = indexPath.row
+        actionSheet.show(in: self.view)
+        rowDelete = (indexPath as NSIndexPath).row
     }
     
     /* ActionSheet */
-    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+    @objc(actionSheet:clickedButtonAtIndex:) func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
         if buttonIndex == 0 {
             if rowDelete >= 0 {
-                imageArray.removeAtIndex(rowDelete)
-                hasUploadedArray.removeAtIndex(rowDelete)
+                imageArray.remove(at: rowDelete)
+                hasUploadedArray.remove(at: rowDelete)
                 reLayout()
             }
         }
     }
     
     /* shareDelegate */
-    func onShare(avc: UIActivityViewController) {
-        self.presentViewController(avc, animated: true, completion: nil)
+    func onShare(_ avc: UIActivityViewController) {
+        self.present(avc, animated: true, completion: nil)
     }
     
     

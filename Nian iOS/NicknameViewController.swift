@@ -7,6 +7,26 @@
 //
 
 import UIKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class NicknameViewController: UIViewController {
     
@@ -38,29 +58,29 @@ class NicknameViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func confirmRegister(sender: UIButton) {
+    @IBAction func confirmRegister(_ sender: UIButton) {
         self.handleConfirmRegister()
     }
     
-    @IBAction func backWelcomeViewController(sender: UIButton) {
-        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
+    @IBAction func backWelcomeViewController(_ sender: UIButton) {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func dismissKeyboard(sender: UIControl) {
-        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
+    @IBAction func dismissKeyboard(_ sender: UIControl) {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
     
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
         if segue.identifier == "toPrivacy" {
-            let privacyWebView = segue.destinationViewController as! PrivacyViewController
+            let privacyWebView = segue.destination as! PrivacyViewController
             privacyWebView.urlString = "http://nian.so/privacy.php"
         }
     }
@@ -69,13 +89,13 @@ class NicknameViewController: UIViewController {
 
 
 extension NicknameViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.nameTextfield.resignFirstResponder()
         
         return true
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         self.handleConfirmRegister()
     }
     
@@ -101,53 +121,49 @@ extension NicknameViewController {
                 if let _ = error {
                     self.showTipText("网络有点问题，等一会儿再试")
                 } else {
-                    let json = JSON(responseObject!)
-                    
-                    if json["error"] != 0 {
-                        self.button.stopAnimating()
-                        self.button.setTitle("确定", forState: .Normal)
-                        
-                        self.showTipText("昵称被占用...")
-                        
-                    } else {
-                        /*=========================================================================================================================================*/
-                        
-                        LogOrRegModel.registerVia3rd(self.id, type: self.originalType, name: self.nameTextfield.text!, nameFrom3rd: self.nameFrom3rd) {
-                            (task, responseObject, error) in
-                            
-                            self.button.stopAnimating()
-                            self.button.setTitle("确定", forState: UIControlState.Normal)
-                            
-                            if let _ = error {
-                                self.showTipText("网络有点问题，等一会儿再试")
-                            } else {
-                                
-                                let json = JSON(responseObject!)
-                                
-                                if json["error"] != 0 {
-                                    self.showTipText("注册不成功...")
-                                } else {
-                                    let shell = json["data"]["shell"].stringValue
-                                    let uid = json["data"]["uid"].stringValue
-
-                                    /// uid 和 shell 保存到 keychain
-                                    let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                                    uidKey.setObject(uid, forKey: kSecAttrAccount)
-                                    uidKey.setObject(shell, forKey: kSecValueData)
-                                    
-                                    NSUserDefaults.standardUserDefaults().setObject(self.nameTextfield.text!, forKey: "user")
-                                    
-                                    Api.requestLoad()
-                                    
-                                    /* 使用第三方来注册 */
-                                    self.launch(0)
-                                    self.pushTomorrow()
-                                    self.nameTextfield.text = ""
-                                }
-                            }
-                        }
-                        
-                    }
+                    // todo
+//                    let json = JSON(responseObject!)
+//                    if json["error"] != 0 {
+//                        self.button.stopAnimating()
+//                        self.button.setTitle("确定", for: UIControlState())
+//                        self.showTipText("昵称被占用...")
+//                    } else {
+//                        LogOrRegModel.registerVia3rd(self.id, type: self.originalType, name: self.nameTextfield.text!, nameFrom3rd: self.nameFrom3rd) {
+//                            (task, responseObject, error) in
+//                            
+//                            self.button.stopAnimating()
+//                            self.button.setTitle("确定", for: UIControlState())
+//                            
+//                            if let _ = error {
+//                                self.showTipText("网络有点问题，等一会儿再试")
+//                            } else {
+//                                
+//                                let json = JSON(responseObject!)
+//                                
+//                                if json["error"] != 0 {
+//                                    self.showTipText("注册不成功...")
+//                                } else {
+//                                    let shell = json["data"]["shell"].stringValue
+//                                    let uid = json["data"]["uid"].stringValue
+//
+//                                    /// uid 和 shell 保存到 keychain
+//                                    let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+//                                    uidKey.setObject(uid, forKey: kSecAttrAccount)
+//                                    uidKey.setObject(shell, forKey: kSecValueData)
+//                                    
+//                                    UserDefaults.standard.set(self.nameTextfield.text!, forKey: "user")
+//                                    
+//                                    Api.requestLoad()
+//                                    
+//                                    /* 使用第三方来注册 */
+//                                    self.launch(0)
+//                                    self.pushTomorrow()
+//                                    self.nameTextfield.text = ""
+//                                }
+//                            }
+//                        }
+//                        
+//                    }
                 }
             }
         } else {
@@ -159,7 +175,7 @@ extension NicknameViewController {
     /**
      验证昵称是否符合要求
      */
-    func validateNickname(name: String) -> Bool {
+    func validateNickname(_ name: String) -> Bool {
         if name == "" {
             self.showTipText("名字不能是空的...")
             

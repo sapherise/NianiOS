@@ -9,15 +9,15 @@
 import Foundation
 import AssetsLibrary
 
-public class LSYAlbumModel{
+open class LSYAlbumModel{
     var asset:ALAsset!
-    var indexPath:NSIndexPath!
+    var indexPath:IndexPath!
     var assetType:String!
     var isSelect:Bool
     init(data:ALAsset)
     {
         self.asset = data;
         self.isSelect = false
-        self.assetType = data.valueForProperty(ALAssetPropertyType) as? String
+        self.assetType = data.value(forProperty: ALAssetPropertyType) as? String
     }
 }

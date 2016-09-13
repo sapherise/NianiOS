@@ -16,8 +16,8 @@ class AddStepCell: UITableViewCell {
     var data: NSDictionary?
     func setup() {
         if data != nil {
-            let title:String = self.data!.objectForKey("title") as! String
-            let image:String = self.data!.objectForKey("image") as! String
+            let title:String = self.data!.object(forKey: "title") as! String
+            let image:String = self.data!.object(forKey: "image") as! String
             let userImageURL = "http://img.nian.so/dream/\(image)!dream"
             self.labelTitle.text = title.decode()
             self.imageDream.setImage(userImageURL)
@@ -25,6 +25,6 @@ class AddStepCell: UITableViewCell {
     }
     
     override func awakeFromNib() {
-        self.selectionStyle = .None
+        self.selectionStyle = .none
     }
 }

@@ -9,7 +9,7 @@
 import UIKit
 
 @objc protocol EditProfileDelegate {
-    optional func editProfile(profileDict profileDict: Dictionary<String, String>)
+    @objc optional func editProfile(profileDict: Dictionary<String, String>)
 }
 
 
@@ -52,9 +52,9 @@ class EditProfileViewController: SAViewController, UIActionSheetDelegate {
         self._setTitle("编辑个人资料")
         self.settingSeperateHeight()
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        NotificationCenter.default.addObserver(self,
                                                         selector: #selector(EditProfileViewController.handleChooseGender(_:)),
-                                                        name: "tapOnGenderTextField",
+                                                        name: NSNotification.Name(rawValue: "tapOnGenderTextField"),
                                                         object: nil)
         if self.profileDict != nil {
             self.nameTextField.text = self.profileDict!["name"]
@@ -70,22 +70,22 @@ class EditProfileViewController: SAViewController, UIActionSheetDelegate {
 
     }
 
-    @IBAction func dismissKeyboard(sender: UIControl) {
-        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
+    @IBAction func dismissKeyboard(_ sender: UIControl) {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         
     }
 
     /**
      
      */
-    func handleChooseGender(noti: NSNotification) {
+    func handleChooseGender(_ noti: Notification) {
         actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        actionSheet.addButtonWithTitle("男")
-        actionSheet.addButtonWithTitle("女")
-        actionSheet.addButtonWithTitle("保密")
-        actionSheet.addButtonWithTitle("取消")
+        actionSheet.addButton(withTitle: "男")
+        actionSheet.addButton(withTitle: "女")
+        actionSheet.addButton(withTitle: "保密")
+        actionSheet.addButton(withTitle: "取消")
         actionSheet.cancelButtonIndex = 3
-        actionSheet.showInView(self.view)
+        actionSheet.show(in: self.view)
         
 //        let alertController = PSTAlertController.actionSheetWithTitle(nil)
 //        
@@ -106,7 +106,7 @@ class EditProfileViewController: SAViewController, UIActionSheetDelegate {
 //        alertController.showWithSender(nil, arrowDirection: .Any, controller: self, animated: true, completion: nil)
     }
     
-    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
         if actionSheet == self.actionSheet {
             if buttonIndex == 0 {
                 self.genderTextField.text = "男"
@@ -123,10 +123,10 @@ class EditProfileViewController: SAViewController, UIActionSheetDelegate {
 
 extension EditProfileViewController: UITextFieldDelegate {
     
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if textField == self.genderTextField {
             
-            NSNotificationCenter.defaultCenter().postNotificationName("tapOnGenderTextField", object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "tapOnGenderTextField"), object: nil)
             
             return false
         }
@@ -137,7 +137,7 @@ extension EditProfileViewController: UITextFieldDelegate {
     /**
      
      */
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 
         switch textField {
         case self.nameTextField:
@@ -160,7 +160,7 @@ extension EditProfileViewController {
     /**
      验证昵称是否符合要求
      */
-    func validateNickname(name: String?) -> Bool {
+    func validateNickname(_ name: String?) -> Bool {
         if let _text = name {
             if _text.characters.count >= 2 {
                 if _text.isValidName() {
@@ -175,7 +175,7 @@ extension EditProfileViewController {
     /**
      验证手机号是否正确
      */
-    func validatePhone(phoneNumber: String?) -> Bool {
+    func validatePhone(_ phoneNumber: String?) -> Bool {
         
         if let _text = phoneNumber {
             if _text != "" {
@@ -192,8 +192,8 @@ extension EditProfileViewController {
 
 extension EditProfileViewController {
     
-    func saveProfileSetting(sender: UITapGestureRecognizer) {
-        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
+    func saveProfileSetting(_ sender: UITapGestureRecognizer) {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         
         var shouldReturn = true
         
@@ -244,7 +244,7 @@ extension EditProfileViewController {
             var _tmpDict: Dictionary<String, String> = Dictionary()
             
             if previousName == _name && previousPhone == _phone && previousGender == _gender  {
-                self.navigationController?.popViewControllerAnimated(true)
+                self.navigationController?.popViewController(animated: true)
             } else {
                 
                 if previousName != _name {
@@ -265,15 +265,15 @@ extension EditProfileViewController {
                     if let _ = error {
                         self.showTipText("网络有点问题，等一会儿再试")
                     } else {
-                        let json = JSON(responseObject!)
-                        
-                        if json["error"] != 0 {
-                            self.showTipText("昵称或手机号不可用...")
-                        } else {
-                            self.delegate?.editProfile?(profileDict: self.profileDict!)
-                        
-                            self.navigationController?.popViewControllerAnimated(true)
-                        }
+                        // todo
+//                        let json = JSON(responseObject!)
+//                        
+//                        if json["error"] != 0 {
+//                            self.showTipText("昵称或手机号不可用...")
+//                        } else {
+//                            self.delegate?.editProfile?(profileDict: self.profileDict!)
+//                            self.navigationController?.popViewController(animated: true)
+//                        }
                     }
                 })
             }

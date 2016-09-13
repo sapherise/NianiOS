@@ -9,7 +9,7 @@
 import Foundation
 
 protocol DreamSelectedDelegate {
-    func dreamSelected(id: String, title: String, content: String, image: String)
+    func dreamSelected(_ id: String, title: String, content: String, image: String)
 }
 
 class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate {
@@ -36,13 +36,13 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
         flowLayout.itemSize = CGSize(width: 80, height: 120)
         flowLayout.sectionInset = UIEdgeInsets(top: y, left: y, bottom: y, right: y)
         
-        collectionView = UICollectionView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64), collectionViewLayout: flowLayout)
-        collectionView.backgroundColor = UIColor.whiteColor()
+        collectionView = UICollectionView(frame: CGRect(x: 0, y: 64, width: globalWidth, height: globalHeight - 64), collectionViewLayout: flowLayout)
+        collectionView.backgroundColor = UIColor.white
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.alwaysBounceVertical = true
         self.view.addSubview(collectionView)
-        self.collectionView.registerNib(UINib(nibName: "ExploreMoreCell", bundle: nil), forCellWithReuseIdentifier: "ExploreMoreCell")
+        self.collectionView.register(UINib(nibName: "ExploreMoreCell", bundle: nil), forCellWithReuseIdentifier: "ExploreMoreCell")
         collectionView.addHeaderWithCallback { () -> Void in
             self.load()
         }
@@ -52,7 +52,7 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
         collectionView.headerBeginRefreshing()
     }
     
-    func load(clear: Bool = true) {
+    func load(_ clear: Bool = true) {
         if !isLoading {
             isLoading = true
             if clear {
@@ -62,15 +62,15 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
             if type == 0 {
                 Api.getDiscoverEditorRecom("\(page)") { json in
                     if json != nil {
-                        let error = json!.objectForKey("error") as! NSNumber
+                        let error = json!.object(forKey: "error") as! NSNumber
                         if error == 0 {
                             if clear {
                                 self.dataArray.removeAllObjects()
                             }
-                            let arr = json!.objectForKey("data") as! NSArray
+                            let arr = json!.object(forKey: "data") as! NSArray
                             for d in arr {
                                 let data = self.getDataEncode(d)
-                                self.dataArray.addObject(data!)
+                                self.dataArray.add(data!)
                             }
                             self.collectionView.reloadData()
                             self.collectionView.headerEndRefreshing()
@@ -83,15 +83,15 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
             } else if type == 1 {
                 Api.getDiscoverLatest("\(page)") { json in
                     if json != nil {
-                        let error = json!.objectForKey("error") as! NSNumber
+                        let error = json!.object(forKey: "error") as! NSNumber
                         if error == 0 {
                             if clear {
                                 self.dataArray.removeAllObjects()
                             }
-                            let arr = json!.objectForKey("data") as! NSArray
+                            let arr = json!.object(forKey: "data") as! NSArray
                             for d in arr {
                                 let data = self.getDataEncode(d)
-                                self.dataArray.addObject(data!)
+                                self.dataArray.add(data!)
                             }
                             self.collectionView.reloadData()
                             self.collectionView.headerEndRefreshing()
@@ -111,7 +111,7 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
                             let mutableData = NSMutableDictionary(dictionary: d)
                             mutableData.setValue(image, forKey: "image")
                             let _mutableData = self.getDataEncode(mutableData)
-                            dataArray.addObject(_mutableData!)
+                            dataArray.add(_mutableData!)
                         }
                     }
                 }
@@ -122,15 +122,15 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
             } else if type == 3 {
                 Api.getMyLikeDreams("\(page)") { json in
                     if json != nil {
-                        let error = json!.objectForKey("error") as! NSNumber
+                        let error = json!.object(forKey: "error") as! NSNumber
                         if error == 0 {
                             if clear {
                                 self.dataArray.removeAllObjects()
                             }
-                            let arr = json!.objectForKey("data") as! NSArray
+                            let arr = json!.object(forKey: "data") as! NSArray
                             for d in arr {
                                 let data = self.getDataEncode(d)
-                                self.dataArray.addObject(data!)
+                                self.dataArray.add(data!)
                             }
                             self.collectionView.reloadData()
                             self.collectionView.headerEndRefreshing()
@@ -143,15 +143,15 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
             } else if type == 4 {
                 Api.getMyFollowDreams("\(page)") { json in
                     if json != nil {
-                        let error = json!.objectForKey("error") as! NSNumber
+                        let error = json!.object(forKey: "error") as! NSNumber
                         if error == 0 {
                             if clear {
                                 self.dataArray.removeAllObjects()
                             }
-                            let arr = json!.objectForKey("data") as! NSArray
+                            let arr = json!.object(forKey: "data") as! NSArray
                             for d in arr {
                                 let data = self.getDataEncode(d)
-                                self.dataArray.addObject(data!)
+                                self.dataArray.add(data!)
                             }
                             self.collectionView.reloadData()
                             self.collectionView.headerEndRefreshing()
@@ -165,19 +165,19 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
         }
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dataArray.count
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let c = collectionView.dequeueReusableCellWithReuseIdentifier("ExploreMoreCell", forIndexPath: indexPath) as! ExploreMoreCell
-        c.data = dataArray[indexPath.row] as! NSDictionary
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let c = collectionView.dequeueReusableCell(withReuseIdentifier: "ExploreMoreCell", for: indexPath) as! ExploreMoreCell
+        c.data = dataArray[(indexPath as NSIndexPath).row] as! NSDictionary
         return c
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let DreamVC = DreamViewController()
-        let data = dataArray[indexPath.row] as! NSDictionary
+        let data = dataArray[(indexPath as NSIndexPath).row] as! NSDictionary
         let id = data.stringAttributeForKey("id")
         let title = data.stringAttributeForKey("title")
         var lastdate = data.stringAttributeForKey("lastdate")
@@ -187,14 +187,14 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
             DreamVC.Id = id
             if type == 2 {
                 delegate?.dreamSelected(id, title: title, content: lastdate, image: image)
-                self.navigationController?.popViewControllerAnimated(true)
+                self.navigationController?.popViewController(animated: true)
             } else {
                 self.navigationController?.pushViewController(DreamVC, animated: true)
             }
         }
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView == collectionView && type == 1 {
             let a = scrollView.contentOffset.y + globalHeight - 64
             let b = scrollView.contentSize.height
@@ -204,7 +204,7 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
         }
     }
     
-    func getDataEncode(d: AnyObject) -> NSMutableDictionary? {
+    func getDataEncode(_ d: AnyObject) -> NSMutableDictionary? {
         if let _d = d as? NSDictionary {
             let data = NSMutableDictionary(dictionary: _d)
             let title = _d.stringAttributeForKey("title").decode()

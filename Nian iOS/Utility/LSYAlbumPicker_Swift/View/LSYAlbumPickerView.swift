@@ -17,7 +17,7 @@ class LSYAlbumPickerCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        imageView.layer.borderColor = UIColor.HighlightColor().CGColor
+        imageView.layer.borderColor = UIColor.HighlightColor().cgColor
     }
     
     func setup() {
@@ -25,9 +25,9 @@ class LSYAlbumPickerCell: UICollectionViewCell {
         /* 先以模糊的图片显示
         ** 之后在子线程裁剪高清图片
         */
-        imageView.image = UIImage(CGImage: model.asset.thumbnail().takeUnretainedValue())
+        imageView.image = UIImage(cgImage: model.asset.thumbnail().takeUnretainedValue())
         go {
-            let img = UIImage(CGImage: self.model.asset.aspectRatioThumbnail().takeUnretainedValue())
+            let img = UIImage(cgImage: self.model.asset.aspectRatioThumbnail().takeUnretainedValue())
             let imgLarge = resizedImage(img, newWidth: width)
             back {
                 self.imageView.image = imgLarge
@@ -36,6 +36,6 @@ class LSYAlbumPickerCell: UICollectionViewCell {
     }
     
     func setupIsSelect(){
-        imageView.layer.borderWidth = self.selected ? 8 : 0
+        imageView.layer.borderWidth = self.isSelected ? 8 : 0
     }
 }

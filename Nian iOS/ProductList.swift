@@ -28,12 +28,12 @@ class ProductList: SAViewController, UICollectionViewDelegate, UICollectionViewD
                 if json != nil {
                     self.dataArray.removeAllObjects()
                     /* 为了判断是否购买过表情 */
-                    let items = json!.objectForKey("data") as! NSArray
+                    let items = json!.object(forKey: "data") as! NSArray
                     for _item in items {
                         if let item = _item as? NSDictionary {
                             let type = item.stringAttributeForKey("type")
                             if type == "expression" {
-                                self.dataArray.addObject(item)
+                                self.dataArray.add(item)
                             }
                         }
                     }
@@ -63,33 +63,33 @@ class ProductList: SAViewController, UICollectionViewDelegate, UICollectionViewD
         flowLayout.minimumLineSpacing = padding
         flowLayout.itemSize = CGSize(width: w, height: h)
         flowLayout.sectionInset = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
-        collectionView = UICollectionView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64), collectionViewLayout: flowLayout)
+        collectionView = UICollectionView(frame: CGRect(x: 0, y: 64, width: globalWidth, height: globalHeight - 64), collectionViewLayout: flowLayout)
         collectionView.alwaysBounceVertical = true
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = UIColor.whiteColor()
-        collectionView.registerNib(UINib(nibName: "ProductListCell", bundle: nil), forCellWithReuseIdentifier: "ProductListCell")
+        collectionView.backgroundColor = UIColor.white
+        collectionView.register(UINib(nibName: "ProductListCell", bundle: nil), forCellWithReuseIdentifier: "ProductListCell")
         self.view.addSubview(collectionView)
         collectionView.addHeaderWithCallback { () -> Void in
             self.load()
         }
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let c: ProductListCell! = collectionView.dequeueReusableCellWithReuseIdentifier("ProductListCell", forIndexPath: indexPath) as? ProductListCell
-        c.data = dataArray[indexPath.row] as! NSDictionary
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let c: ProductListCell! = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductListCell", for: indexPath) as? ProductListCell
+        c.data = dataArray[(indexPath as NSIndexPath).row] as! NSDictionary
         c.setup()
         return c
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dataArray.count
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = Product()
-        let data = dataArray[indexPath.row] as! NSDictionary
-        vc.type = name == "表情" ? Product.ProductType.Emoji : Product.ProductType.Plugin
+        let data = dataArray[(indexPath as NSIndexPath).row] as! NSDictionary
+        vc.type = name == "表情" ? Product.ProductType.emoji : Product.ProductType.plugin
         vc.data = data
         self.navigationController?.pushViewController(vc, animated: true)
     }

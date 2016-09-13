@@ -14,34 +14,34 @@ class WebViewController: UIViewController, UIWebViewDelegate{
     var webTitle = ""
     var actionSheet: UIActionSheet?
     
-    func setupViews(string: String, title: String){
+    func setupViews(_ string: String, title: String){
         self.view.backgroundColor = BGColor
         
-        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        let navView = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: 64))
         navView.backgroundColor = UIColor.NavColor()
         self.view.addSubview(navView)
         
-        let btnMore = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: #selector(WebViewController.setupNavBtn))
+        let btnMore = UIBarButtonItem(title: "  ", style: .plain, target: self, action: #selector(WebViewController.setupNavBtn))
         btnMore.image = UIImage(named: "more")
         self.navigationItem.rightBarButtonItems = [btnMore]
         
-        let web = UIWebView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64))
+        let web = UIWebView(frame: CGRect(x: 0, y: 64, width: globalWidth, height: globalHeight - 64))
         web.delegate = self
-        web.userInteractionEnabled = true
+        web.isUserInteractionEnabled = true
         self.view.addSubview(web)
         
-        let url = NSURL(string: string)
+        let url = URL(string: string)
         if url != nil {
-            let request = NSURLRequest(URL: url!)
+            let request = URLRequest(url: url!)
             web.loadRequest(request)
         } else {
             self.showTipText("网址错误")
         }
         
-        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = UIColor.whiteColor()
+        let titleLabel:UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 40))
+        titleLabel.textColor = UIColor.white
         titleLabel.text = webTitle
-        titleLabel.textAlignment = NSTextAlignment.Center
+        titleLabel.textAlignment = NSTextAlignment.center
         self.navigationItem.titleView = titleLabel
         
         self.viewBack()
@@ -51,25 +51,25 @@ class WebViewController: UIViewController, UIWebViewDelegate{
         setupViews(urlString, title: webTitle)
     }
     
-    func webViewDidFinishLoad(webView: UIWebView) {
+    func webViewDidFinishLoad(_ webView: UIWebView) {
     }
     
-    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         return true
     }
     
     func setupNavBtn() {
         self.actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitles: "在 Safari 中打开")
         
-        self.actionSheet!.showInView(self.view)
+        self.actionSheet!.show(in: self.view)
     }
     
 }
 
 extension WebViewController: UIActionSheetDelegate {
-    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
         if buttonIndex == 1 {
-            UIApplication.sharedApplication().openURL(NSURL(string: urlString)!)
+            UIApplication.shared.openURL(URL(string: urlString)!)
         }
     }
 }

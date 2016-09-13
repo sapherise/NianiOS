@@ -27,15 +27,15 @@ extension AddStep {
     }
     
     /* 上传队列完成后，准备提交到服务器 */
-    func upYunMulti(data: NSDictionary?, count: Int) {
+    func upYunMulti(_ data: NSDictionary?, count: Int) {
         go {
             if data != nil {
-                self.uploadArray.addObject(data!)
+                self.uploadArray.add(data!)
             } else {
                 let n = self.hasUploadedArray[count]
-                let images = self.dataEdit!.objectForKey("images") as! NSArray
+                let images = self.dataEdit!.object(forKey: "images") as! NSArray
                 let image = images[n] as! NSDictionary
-                self.uploadArray.addObject(image)
+                self.uploadArray.add(image)
             }
             let num = count + 1
             /* 按照队列进行上传 */
@@ -81,7 +81,7 @@ extension AddStep {
         }
         
         /* 不管编辑或新增，都把当前的记本 id 加入缓存 */
-        Cookies.set(idDream, forKey: "DreamNewest")
+        Cookies.set(idDream as AnyObject?, forKey: "DreamNewest")
         
         if willEdit {
             let sid = dataEdit!.stringAttributeForKey("sid")
@@ -105,7 +105,7 @@ extension AddStep {
                             mutableData.setValue("0", forKey: "height")
                         }
                         
-                        let heightContent = (self.field2.text as NSString).sizeWithConstrainedToWidth(globalWidth - 40, fromFont: UIFont.systemFontOfSize(16), lineSpace: 5).height
+                        let heightContent = (self.field2.text as NSString).sizeWithConstrained(toWidth: globalWidth - 40, from: UIFont.systemFont(ofSize: 16), lineSpace: 5).height
                         var heightCell: CGFloat = 0
                         var heightImage: CGFloat = 0
                         
@@ -151,7 +151,7 @@ extension AddStep {
                         self.delegate?.editStepRow = self.rowEdit
                         self.delegate?.editStepData = mutableData
                         self.delegate?.Editstep()
-                        self.navigationController?.popViewControllerAnimated(true)
+                        self.navigationController?.popViewController(animated: true)
                     }
                 }
             })
@@ -160,7 +160,7 @@ extension AddStep {
                 if let d = data as? NSDictionary {
                     let error = d.stringAttributeForKey("error")
                     if error == "0" {
-                        let result = d.objectForKey("data") as! NSDictionary
+                        let result = d.object(forKey: "data") as! NSDictionary
                         let coin = result.stringAttributeForKey("coin")
                         let totalCoin = result.stringAttributeForKey("totalCoin")
                         let isfirst = result.stringAttributeForKey("isfirst")
@@ -172,7 +172,7 @@ extension AddStep {
                             let modeCard = SACookie("modeCard")
                             if modeCard == "off" {
                             } else {
-                                let card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
+                                let card = (Bundle.main.loadNibNamed("Card", owner: self, options: nil))?.first as! Card
                                 if self.uploadArray.count > 0 {
                                     let image = self.uploadArray[0] as! NSDictionary
                                     card.url = "http://img.nian.so/step/\(image.stringAttributeForKey("path"))!large"
@@ -192,7 +192,7 @@ extension AddStep {
                             if let coinBefore = Cookies.get("coin") as? String {
                                 if let _coin = Int(coin) {
                                     let coinAfter = _coin + Int(coinBefore)!
-                                    Cookies.set("\(coinAfter)", forKey: "coin")
+                                    Cookies.set("\(coinAfter)" as AnyObject?, forKey: "coin")
                                 }
                             }
                             Nian.saegg(coin, totalCoin: totalCoin)
@@ -235,32 +235,32 @@ extension AddStep {
     }
     
     /* 筛选多图完成后调用 */
-    func AlbumPickerDidFinishPick(assets:NSArray) {
+    func AlbumPickerDidFinishPick(_ assets:NSArray) {
         for asset in assets {
             if let a = asset as? ALAsset {
-                if  a.valueForProperty("ALAssetPropertyType").isEqual("ALAssetTypePhoto") {
+                if  (a.value(forProperty: "ALAssetPropertyType") as AnyObject).isEqual("ALAssetTypePhoto") {
                     imageArray.append(a)
                     hasUploadedArray.append(-1)
                 }
             }
         }
         reLayout()
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     func onViewDream() {
-        if tableView.hidden {
+        if tableView.isHidden {
             var hTableView = globalHeight - 64 - self.viewDream.height() - viewHolder.height() - keyboardHeight
             hTableView = max(hTableView, 0)
             tableView.setHeight(hTableView)
-            tableView.hidden = false
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
-                self.imageArrow.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
+            tableView.isHidden = false
+            UIView.animate(withDuration: 0.3, animations: { () -> Void in
+                self.imageArrow.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
             })
         } else {
-            tableView.hidden = true
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
-                self.imageArrow.transform = CGAffineTransformMakeRotation(0)
+            tableView.isHidden = true
+            UIView.animate(withDuration: 0.3, animations: { () -> Void in
+                self.imageArrow.transform = CGAffineTransform(rotationAngle: 0)
             })
         }
     }
@@ -272,61 +272,61 @@ extension AddStep {
         h = num * h
         collectionView.setHeight(h)
         field2.setY(collectionView.bottom())
-        labelPlaceholder.frame.origin = CGPointMake(field2.x() + 6, field2.y() + 6)
+        labelPlaceholder.frame.origin = CGPoint(x: field2.x() + 6, y: field2.y() + 6)
         setScrollContentHeight()
     }
 }
 
 
 extension NIAlert {
-    func evolution(url: String) {
+    func evolution(_ url: String) {
         //        var _tmpImg = self.imgView?.image!
         
-        UIView.animateWithDuration(0.7, animations: {
+        UIView.animate(withDuration: 0.7, animations: {
             self.imgView!.setScale(0.8)
             }, completion: { (Bool) -> Void in
-                UIView.animateWithDuration(0.15, animations: {
+                UIView.animate(withDuration: 0.15, animations: {
                     self.imgView!.setScale(0.75)
                     }, completion: { (Bool) -> Void in
-                        UIView.animateWithDuration(0.15, animations: {
+                        UIView.animate(withDuration: 0.15, animations: {
                             self.imgView!.setScale(0.8)
                             }, completion: { (Bool) -> Void in
-                                UIView.animateWithDuration(0.15, animations: {
+                                UIView.animate(withDuration: 0.15, animations: {
                                     self.imgView!.setScale(0.75)
                                     }, completion: { (Bool) -> Void in
-                                        UIView.animateWithDuration(0.15, animations: {
+                                        UIView.animate(withDuration: 0.15, animations: {
                                             self.imgView!.setScale(0.8)
                                             }, completion: { (Bool) -> Void in
-                                                UIView.animateWithDuration(0.15, animations: {
+                                                UIView.animate(withDuration: 0.15, animations: {
                                                     self.imgView!.setScale(0.75)
                                                     }, completion: { (Bool) -> Void in
-                                                        UIView.animateWithDuration(0.2, animations: {
+                                                        UIView.animate(withDuration: 0.2, animations: {
                                                             self.imgView!.setScale(1.15)
                                                             }, completion: { (Bool) -> Void in
                                                                 self.imgView?.image = nil
                                                                 if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
-                                                                    let skView = SKView(frame: CGRectMake(0, 0, 272, 108))
+                                                                    let skView = SKView(frame: CGRect(x: 0, y: 0, width: 272, height: 108))
                                                                     if #available(iOS 8.0, *) {
                                                                         skView.allowsTransparency = true
                                                                     }
                                                                     self._containerView!.addSubview(skView)
-                                                                    scene.scaleMode = SKSceneScaleMode.AspectFit
+                                                                    scene.scaleMode = SKSceneScaleMode.aspectFit
                                                                     skView.presentScene(scene)
                                                                     scene.setupViews()
-                                                                    self._containerView?.sendSubviewToBack(skView)
+                                                                    self._containerView?.sendSubview(toBack: skView)
                                                                 }
                                                                 delay(0.1, closure: {
                                                                     self.imgView!.setScale(1.35)
                                                                     self.imgView?.alpha = 0
                                                                     self.imgView?.setPet("http://img.nian.so/pets/\(url)!d")
-                                                                    UIView.animateWithDuration(0.1, animations: {
+                                                                    UIView.animate(withDuration: 0.1, animations: {
                                                                         self.imgView?.alpha = 1
                                                                         self.imgView!.setScale(1.55)
                                                                         }, completion: { (Bool) -> Void in
-                                                                            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                                                                            UIView.animate(withDuration: 0.2, animations: { () -> Void in
                                                                                 self.imgView!.setScale(1.2)
                                                                             })
-                                                                            UIView.animateWithDuration(1, delay: 1, options: UIViewAnimationOptions(), animations: {
+                                                                            UIView.animate(withDuration: 1, delay: 1, options: UIViewAnimationOptions(), animations: {
                                                                                 self.imgView!.setScale(1)
                                                                                 }, completion: { (Bool) -> Void in
                                                                             })
@@ -343,7 +343,7 @@ extension NIAlert {
 }
 
 extension UIView {
-    func setScale(x: CGFloat) {
-        self.transform = CGAffineTransformMakeScale(x, x)
+    func setScale(_ x: CGFloat) {
+        self.transform = CGAffineTransform(scaleX: x, y: x)
     }
 }

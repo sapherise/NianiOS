@@ -11,9 +11,9 @@ import AssetsLibrary
 
 @objc protocol AddstepDelegate {
     func Editstep()
-    optional func countUp(coin: String, isfirst: String)
-    optional func countUp(coin: String, total: String, isfirst: String)
-    optional func update(data: NSDictionary)
+    @objc optional func countUp(_ coin: String, isfirst: String)
+    @objc optional func countUp(_ coin: String, total: String, isfirst: String)
+    @objc optional func update(_ data: NSDictionary)
     var editStepRow:Int { get set }
     var editStepData:NSDictionary? { get set }
 }
@@ -50,7 +50,7 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
     var swipeGesuture: UISwipeGestureRecognizer?
     
     /* 多图上传 */
-    let queue = NSOperationQueue()
+    let queue = OperationQueue()
     
     /* 多图上传传递给服务器的数组 */
     var uploadArray = NSMutableArray()
@@ -74,35 +74,35 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
         setupViews()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         
         /* 如果是新增进展，返回的时候保存到草稿中 */
         if !willEdit {
             let content = field2.text
             if content != nil {
-                Cookies.set(content, forKey: "draft")
+                Cookies.set(content as AnyObject?, forKey: "draft")
             }
         }
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
         
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
-        notificationCenter.removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        notificationCenter.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: #selector(self.handleKeyboardWillShowNotification(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(self.handleKeyboardWillHideNotification(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(self.handleKeyboardWillShowNotification(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(self.handleKeyboardWillHideNotification(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if !willEdit && isFirstTimeToAppear {
             isFirstTimeToAppear = false
@@ -116,14 +116,14 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
         setBarButtonImage("newOK", actionGesture: #selector(self.add))
         
         swipeGesuture = UISwipeGestureRecognizer(target: self, action: #selector(AddStep.dismissKeyboard))
-        swipeGesuture!.direction = UISwipeGestureRecognizerDirection.Down
+        swipeGesuture!.direction = UISwipeGestureRecognizerDirection.down
         swipeGesuture!.cancelsTouchesInView = true
         self.view.addGestureRecognizer(swipeGesuture!)
         
         /* 设置 scrollView */
-        let rect = CGRectMake(0, self.seperatorView.bottom(), globalWidth, globalHeight - self.viewDream.height() - 64 - viewHolder.height() - seperatorView2.height() * 2)
+        let rect = CGRect(x: 0, y: self.seperatorView.bottom(), width: globalWidth, height: globalHeight - self.viewDream.height() - 64 - viewHolder.height() - seperatorView2.height() * 2)
         scrollView.frame = rect
-        scrollView.contentSize = CGSizeMake(scrollView.width(), size_height_contentsize + size_field_padding * 2)
+        scrollView.contentSize = CGSize(width: scrollView.width(), height: size_height_contentsize + size_field_padding * 2)
         
         /* 设置 UICollectionView */
         let w = (globalWidth - size_field_padding * 2 - size_collectionview_padding * 2) / 3
@@ -132,16 +132,16 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
         flowLayout.minimumLineSpacing = size_collectionview_padding
         flowLayout.itemSize = CGSize(width: w, height: w)
         flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        collectionView = UICollectionView(frame: CGRectMake(size_field_padding, size_field_padding, rect.width - size_field_padding * 2, 0), collectionViewLayout: flowLayout)
+        collectionView = UICollectionView(frame: CGRect(x: size_field_padding, y: size_field_padding, width: rect.width - size_field_padding * 2, height: 0), collectionViewLayout: flowLayout)
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = UIColor.whiteColor()
-        collectionView.registerNib(UINib(nibName: "AddStepImageCell", bundle: nil), forCellWithReuseIdentifier: "AddStepImageCell")
+        collectionView.backgroundColor = UIColor.white
+        collectionView.register(UINib(nibName: "AddStepImageCell", bundle: nil), forCellWithReuseIdentifier: "AddStepImageCell")
         scrollView.addSubview(collectionView)
         
         /* 设置 field2 */
-        field2.frame = CGRectMake(size_field_padding, collectionView.bottom(), rect.width - size_field_padding * 2, scrollView.height() - size_field_padding * 2 - collectionView.height())
-        labelPlaceholder.frame.origin = CGPointMake(field2.x() + 6, field2.y() + 6)
+        field2.frame = CGRect(x: size_field_padding, y: collectionView.bottom(), width: rect.width - size_field_padding * 2, height: scrollView.height() - size_field_padding * 2 - collectionView.height())
+        labelPlaceholder.frame.origin = CGPoint(x: field2.x() + 6, y: field2.y() + 6)
         
         seperatorView.setWidth(globalWidth)
         seperatorView.backgroundColor = UIColor(red:0.9, green:0.9, blue:0.9, alpha:1)
@@ -150,15 +150,15 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
         
         seperatorView2.setY(self.scrollView.bottom())
         viewHolder.setY(seperatorView2.bottom())
-        imageUpload.addGestureRecognizer(UITapGestureRecognizer(target: self, action: Selector("onImage")))
+        imageUpload.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(AddStep.onImage)))
         
         /* 初始化 UITableView*/
-        tableView = UITableView(frame: CGRectMake(0, seperatorView.bottom(), globalWidth, 0))
+        tableView = UITableView(frame: CGRect(x: 0, y: seperatorView.bottom(), width: globalWidth, height: 0))
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.registerNib(UINib(nibName: "AddStepCell", bundle: nil), forCellReuseIdentifier: "AddStepCell")
-        tableView.hidden = true
-        tableView.separatorStyle = .None
+        tableView.register(UINib(nibName: "AddStepCell", bundle: nil), forCellReuseIdentifier: "AddStepCell")
+        tableView.isHidden = true
+        tableView.separatorStyle = .none
         self.view.addSubview(tableView)
         
         
@@ -182,8 +182,8 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
                 let id = (d as! NSDictionary).stringAttributeForKey("id")
                 if idDream != "-1" && idDream == id {
                     let data = d
-                    let title = data.objectForKey("title") as! String
-                    let image = data.objectForKey("image") as! String
+                    let title = (data as AnyObject).object(forKey: "title") as! String
+                    let image = (data as AnyObject).object(forKey: "image") as! String
                     let userImageURL = "http://img.nian.so/dream/\(image)!dream"
                     self.imageDream.setImage(userImageURL)
                     self.idDream = id
@@ -199,8 +199,8 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
                     let id = (d as! NSDictionary).stringAttributeForKey("id")
                     if id == Cookies.get("DreamNewest") as? String {
                         let data = d
-                        let title = data.objectForKey("title") as! String
-                        let image = data.objectForKey("image") as! String
+                        let title = (data as AnyObject).object(forKey: "title") as! String
+                        let image = (data as AnyObject).object(forKey: "image") as! String
                         let userImageURL = "http://img.nian.so/dream/\(image)!dream"
                         self.imageDream.setImage(userImageURL)
                         self.idDream = id
@@ -228,26 +228,26 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
         /* 设置箭头位置*/
         imageArrow.setX(globalWidth - 10 - imageArrow.width())
         if willEdit {
-            imageArrow.hidden = true
+            imageArrow.isHidden = true
         }
         
-        self.view.backgroundColor = UIColor.whiteColor()
+        self.view.backgroundColor = UIColor.white
         self.field2.delegate = self
         
         /* 如果传入的 dataEdit 不为空，先提取出相关的内容 */
         if dataEdit != nil {
             let content = dataEdit!.stringAttributeForKey("content")
-            if let images = dataEdit!.objectForKey("images") as? NSArray {
+            if let images = dataEdit!.object(forKey: "images") as? NSArray {
                 if images.count > 0 {
                     for i in 0...(images.count - 1) {
                         let image = images[i] as! NSDictionary
                         let path = image.stringAttributeForKey("path")
-                        var imageCache = SDImageCache.sharedImageCache().imageFromDiskCacheForKey("http://img.nian.so/step/\(path)!large")
+                        var imageCache = SDImageCache.shared().imageFromDiskCache(forKey: "http://img.nian.so/step/\(path)!large")
                         if imageCache == nil {
-                            imageCache = SDImageCache.sharedImageCache().imageFromDiskCacheForKey("http://img.nian.so/step/\(path)!200x")
+                            imageCache = SDImageCache.shared().imageFromDiskCache(forKey: "http://img.nian.so/step/\(path)!200x")
                         }
                         if imageCache != nil {
-                            imageArray.append(imageCache)
+                            imageArray.append(imageCache!)
                             hasUploadedArray.append(i)
                         }
                     }
@@ -255,7 +255,7 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
             }
             field2.text = content
             if content != "" {
-                labelPlaceholder.hidden = true
+                labelPlaceholder.isHidden = true
             }
             reLayout()
         } else {
@@ -263,7 +263,7 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
             if let draft = Cookies.get("draft") as? String {
                 if draft != "" {
                     field2.text = draft
-                    labelPlaceholder.hidden = true
+                    labelPlaceholder.isHidden = true
                 }
             }
         }

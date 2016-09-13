@@ -10,19 +10,20 @@ import UIKit
 
 class WeChatMomentsActivity: WeChatActivityGeneral {
     
-    override class func activityCategory() -> UIActivityCategory{
-        return UIActivityCategory.Share
+    override class var activityCategory : UIActivityCategory{
+        return UIActivityCategory.share
     }
-    override func activityType() -> String? {
-        return NSBundle.mainBundle().bundleIdentifier! + ".WeChatMomentsActivity"
-    }
+//    override var activityType : String? {
+//        return Bundle.main.bundleIdentifier! + ".WeChatMomentsActivity"
+//    }
+    // todo
     
-    override func activityTitle() -> String? {
+    override var activityTitle : String? {
         isSessionScene = false
         return "朋友圈"
     }
     
-    override func activityImage() -> UIImage? {
+    override var activityImage : UIImage? {
         return UIImage(named: "wechat_moments")
     }
     

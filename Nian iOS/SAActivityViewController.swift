@@ -7,7 +7,7 @@
 //
 
 class SAActivityViewController {
-    class func shareSheetInView(activityItems: [AnyObject], applicationActivities: [UIActivity], isStep: Bool = false) -> UIActivityViewController {
+    class func shareSheetInView(_ activityItems: [AnyObject], applicationActivities: [UIActivity], isStep: Bool = false) -> UIActivityViewController {
         var newArray: [UIActivity] = applicationActivities
         let WeChatSession = WeChatSessionActivity()
         WeChatSession.isStep = isStep
@@ -16,7 +16,7 @@ class SAActivityViewController {
         newArray.append(WeChatSession)
         newArray.append(WeChatMoments)
         let avc = UIActivityViewController(activityItems: activityItems, applicationActivities: newArray)
-        avc.excludedActivityTypes = [UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypeAssignToContact, UIActivityTypePostToFacebook, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePrint]
+        avc.excludedActivityTypes = [UIActivityType.addToReadingList, UIActivityType.airDrop, UIActivityType.assignToContact, UIActivityType.postToFacebook, UIActivityType.postToFlickr, UIActivityType.postToVimeo, UIActivityType.print]
         return avc
     }
 }

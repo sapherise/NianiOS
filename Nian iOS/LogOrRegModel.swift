@@ -30,36 +30,30 @@ class LogOrRegModel: NSObject {
         self.init()
     }
     
-    
-    class func checkEmailValidation(email email: String, callback: NetworkClosure) {
-        NianNetworkClient.sharedNianNetworkClient.get("check/email" + "?email=\(email)",
-                                                  callback: callback)
-    }
-    
-    class func logIn(email email: String, password: String, callback: NetworkClosure) {
-        NianNetworkClient.sharedNianNetworkClient.post("user/login",
-                                                content: ["email": "\(email)", "password": "\(password)"],
-                                                callback: callback)
-    }
-    
-    class func register(email email: String, password: String, username: String, daily: Int, callback: NetworkClosure) {
-        NianNetworkClient.sharedNianNetworkClient.post("user/signup",
-                                                content: ["username": "\(username)", "email": "\(email)",
-                                                          "password": "\(password)", "daily": "\(daily)"],
-                                                callback: callback)
-    }
-    
-    class func check3rdOauth(id: String, type: String, callback: NetworkClosure) {
-        NianNetworkClient.sharedNianNetworkClient.post("oauth/check",
-                                                content: ["auth_id": "\(id)", "type": "\(type)"],
-                                                callback: callback)
-    }
-    
-    class func registerVia3rd(id: String, type: String, name: String, nameFrom3rd: String, callback: NetworkClosure) {
-        NianNetworkClient.sharedNianNetworkClient.post("oauth/attempt",
-                                                content: ["username": "\(name)", "nickname": "\(nameFrom3rd)" , "auth_id": "\(id)", "type": "\(type)"],
-                                                callback: callback)
-    }
+    // todo
+//    class func checkEmailValidation(email: String, callback: @escaping NetworkClosure) {
+//        NianNetworkClient.sharedNianNetworkClient.get("check/email" + "?email=\(email)", callback: callback)
+//    }
+//    
+//    class func logIn(email: String, password: String, callback: NetworkClosure) {
+//        NianNetworkClient.sharedNianNetworkClient.post("user/login", content: ["email": "\(email)", "password": "\(password)"], callback: callback)
+//    }
+//    
+//    class func register(email: String, password: String, username: String, daily: Int, callback: NetworkClosure) {
+//        NianNetworkClient.sharedNianNetworkClient.post("user/signup", content: ["username": "\(username)", "email": "\(email)", "password": "\(password)", "daily": "\(daily)"], callback: callback)
+//    }
+//    
+//    class func check3rdOauth(_ id: String, type: String, callback: NetworkClosure) {
+//        NianNetworkClient.sharedNianNetworkClient.post("oauth/check",
+//                                                content: ["auth_id": "\(id)", "type": "\(type)"],
+//                                                callback: callback)
+//    }
+//    
+//    class func registerVia3rd(_ id: String, type: String, name: String, nameFrom3rd: String, callback: NetworkClosure) {
+//        NianNetworkClient.sharedNianNetworkClient.post("oauth/attempt",
+//                                                content: ["username": "\(name)", "nickname": "\(nameFrom3rd)" , "auth_id": "\(id)", "type": "\(type)"],
+//                                                callback: callback)
+//    }
     
     /**
      <#Description#>
@@ -67,11 +61,12 @@ class LogOrRegModel: NSObject {
      :param: email    <#email description#>
      :param: callback <#callback description#>
      */
-    class func resetPaeeword(email email: String, callback: NetworkClosure) {
-        NianNetworkClient.sharedNianNetworkClient.post("password/reset/mail",
-                                                content: ["email": "\(email)"],
-                                                callback: callback)
-    }
+    // todo
+//    class func resetPaeeword(email: String, callback: NetworkClosure) {
+//        NianNetworkClient.sharedNianNetworkClient.post("password/reset/mail",
+//                                                content: ["email": "\(email)"],
+//                                                callback: callback)
+//    }
     
     
     /**
@@ -81,7 +76,7 @@ class LogOrRegModel: NSObject {
      :param: type     <#type description#>
      :param: callback <#callback description#>
      */
-    class func logInVia3rd(id: String, type: String, callback: NetworkClosure) {
+    class func logInVia3rd(_ id: String, type: String, callback: NetworkClosure) {
         NianNetworkClient.sharedNianNetworkClient.post("oauth/login",
                                                 content: ["auth_id": "\(id)", "type": "\(type)"],
                                                 callback: callback)
@@ -94,7 +89,7 @@ class LogOrRegModel: NSObject {
      :param: name     <#name description#>
      :param: callback <#callback description#>
      */
-    class func checkNameAvailability(name name: String, callback: NetworkClosure) {
+    class func checkNameAvailability(name: String, callback: @escaping NetworkClosure) {
         NianNetworkClient.sharedNianNetworkClient.get("user/check" + "?username=\(SAEncode(SAHtml(name)))",
                                                   callback: callback)
     }
@@ -106,14 +101,14 @@ class LogOrRegModel: NSObject {
     :param: openid      <#openid description#>
     :param: callback    <#callback description#>
     */
-    class func getWechatName(accessToken: String, openid: String, callback: NetworkClosure) {
+    class func getWechatName(_ accessToken: String, openid: String, callback: @escaping NetworkClosure) {
         let manager = AFHTTPSessionManager()
         manager.responseSerializer = AFJSONResponseSerializer()
         
-        manager.GET("https://api.weixin.qq.com/sns/userinfo?access_token=\(accessToken)&openid=\(openid)&lang=zh_CN",
-            parameters: nil,
+        manager.get("https://api.weixin.qq.com/sns/userinfo?access_token=\(accessToken)&openid=\(openid)&lang=zh_CN",
+            parameters: nil,			
             success: { (task, id) in
-                callback(task: task, responseObject: id, error: nil)
+                callback(task, id, nil)
             },
             failure: { (task, error) in
                 callback(task: task, responseObject: nil, error: error)
@@ -127,14 +122,14 @@ class LogOrRegModel: NSObject {
      :param: openid      <#openid description#>
      :param: callback    <#callback description#>
      */
-    class func getWeiboName(accessToken: String, openid: String, callback: NetworkClosure) {
+    class func getWeiboName(_ accessToken: String, openid: String, callback: @escaping NetworkClosure) {
         let manager = AFHTTPSessionManager()
         manager.responseSerializer = AFJSONResponseSerializer()
         
-        manager.GET("https://api.weibo.com/2/users/show.json?access_token=\(accessToken)&uid=\(openid)",
+        manager.get("https://api.weibo.com/2/users/show.json?access_token=\(accessToken)&uid=\(openid)",
             parameters: nil,
             success: { (task, id) in
-                callback(task: task, responseObject: id, error: nil)
+                callback(task, id, nil)
             },
             failure: { (task, error) in
                 callback(task: task, responseObject: nil, error: error)
@@ -149,14 +144,14 @@ class LogOrRegModel: NSObject {
      :param: appid       <#appid description#>
      :param: callback    <#callback description#>
      */
-    class func getQQName(accessToken: String, openid: String, appid: String, callback: NetworkClosure) {
+    class func getQQName(_ accessToken: String, openid: String, appid: String, callback: @escaping NetworkClosure) {
         let manager = AFHTTPSessionManager()
         manager.responseSerializer = AFJSONResponseSerializer()
         
-        manager.GET("https://graph.qq.com/user/get_user_info?oauth_consumer_key=\(appid)&access_token=\(accessToken)&openid=\(openid)",
+        manager.get("https://graph.qq.com/user/get_user_info?oauth_consumer_key=\(appid)&access_token=\(accessToken)&openid=\(openid)",
             parameters: nil,
-            success: { (task, id) in
-                callback(task: task, responseObject: id, error: nil)
+            success: { (task: URLSessionDataTask?, id: Any?) in
+                callback(task!, id, nil)
             },
             failure: { (task, error) in
                 callback(task: task, responseObject: nil, error: error)

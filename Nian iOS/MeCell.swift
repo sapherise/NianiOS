@@ -24,7 +24,7 @@ class MeCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.selectionStyle = .None
+        self.selectionStyle = .none
         self.View!.backgroundColor = BGColor
         self.lastdate!.setX(globalWidth-107)
         self.contentLabel?.setWidth(globalWidth-40)
@@ -104,7 +104,7 @@ class MeCell: UITableViewCell {
         self.contentLabel!.text = content
         if type == "9" || type == "18" {
             self.labelConfirm.setY(self.contentLabel!.bottom()+20)
-            self.labelConfirm.hidden = false
+            self.labelConfirm.isHidden = false
             self.viewLine.setY(self.labelConfirm!.bottom()+25)
             let tap = UITapGestureRecognizer(target: self, action: #selector(MeCell.onConfirmClick(_:)))
             if isConfirm == "0" {
@@ -117,19 +117,19 @@ class MeCell: UITableViewCell {
                 self.labelConfirm.removeGestureRecognizer(tap)
             }
         }else{
-            self.labelConfirm.hidden = true
+            self.labelConfirm.isHidden = true
             self.viewLine.setY(self.contentLabel!.bottom()+25)
         }
     }
     
-    func onConfirmClick(sender:UIGestureRecognizer) {
+    func onConfirmClick(_ sender:UIGestureRecognizer) {
         let cuid = data.stringAttributeForKey("cuid")
         let dream = data.stringAttributeForKey("dream")
         self.findRootViewController()?.navigationItem.rightBarButtonItems = buttonArray()
         Api.postJoin(dream, cuid: cuid) { json in
             if json != nil {
                 self.findRootViewController()?.navigationItem.rightBarButtonItems = []
-                if let d = json!.objectForKey("data") as? NSDictionary {
+                if let d = json!.object(forKey: "data") as? NSDictionary {
                     let id = d.stringAttributeForKey("id")
                     let img = d.stringAttributeForKey("image")
                     let title = d.stringAttributeForKey("title").decode()
@@ -141,7 +141,7 @@ class MeCell: UITableViewCell {
     }
     
     
-    class func cellHeightByData(data:NSDictionary)->CGFloat {
+    class func cellHeightByData(_ data:NSDictionary)->CGFloat {
         let dreamtitle = data.stringAttributeForKey("dreamtitle").decode()
         var content = data.stringAttributeForKey("content").decode()
         let type = data.stringAttributeForKey("type")

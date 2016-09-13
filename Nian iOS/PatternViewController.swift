@@ -57,7 +57,7 @@ class PatternViewController: UIViewController {
     /**
     设置玩念的模式
     */
-    func setPlayMode(mode: PlayMode) {
+    func setPlayMode(_ mode: PlayMode) {
         if mode == PlayMode.easy {
             //        self.toughImageView.image = UIImage(named: "xxx")
             self.simpleLabel.textColor = c5Color
@@ -84,21 +84,21 @@ class PatternViewController: UIViewController {
     /**
     tap 手势 on tough mode view
     */
-    @IBAction func touchOnLeftView(sender: UITapGestureRecognizer) {
+    @IBAction func touchOnLeftView(_ sender: UITapGestureRecognizer) {
         setPlayMode(PlayMode.hard)
     }
     
     /**
     tap 手势 on simple mode view
     */
-    @IBAction func touchOnRightView(sender: UITapGestureRecognizer) {
+    @IBAction func touchOnRightView(_ sender: UITapGestureRecognizer) {
         setPlayMode(PlayMode.easy)
     }
     
     /**
     点击“完成” Button, 完成注册
     */
-    @IBAction func accompolishRegister(sender: UIButton) {
+    @IBAction func accompolishRegister(_ sender: UIButton) {
         self.accompolishButton.startAnimating()
         
         let _password = "n*A\(self.regInfo!.password!)"
@@ -110,7 +110,7 @@ class PatternViewController: UIViewController {
                (task, responseObject, error) in
                 
                 self.accompolishButton.stopAnimating()
-                self.accompolishButton.setTitle("完成", forState: .Normal)
+                self.accompolishButton.setTitle("完成", for: UIControlState())
                 
                 if let _ = error { // 服务器返回错误
                     self.showTipText("网络有点问题，等一会儿再试")
@@ -119,7 +119,7 @@ class PatternViewController: UIViewController {
                     
                     if json["error"] == 2 { // 服务器返回的数据包含“错误信息”
                         self.showTipText("用户名被占用...")
-                        self.dismissViewControllerAnimated(true, completion: nil)
+                        self.dismiss(animated: true, completion: nil)
                         
                     } else if json["error"] == 0 { // 服务器返回正常，注册成功
                         let shell = json["data"]["shell"].stringValue

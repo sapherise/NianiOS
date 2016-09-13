@@ -22,7 +22,7 @@ class NianCell: UICollectionViewCell{
     func setup() {
         self.imageCover.layer.cornerRadius = 6
         self.imageCover.layer.masksToBounds = true
-        self.imageCover.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).CGColor
+        self.imageCover.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
         self.imageCover.layer.borderWidth = 0.5
         if SAUid() == "171264" {
             self.imageCover.layer.cornerRadius = 0
@@ -35,7 +35,7 @@ class NianCell: UICollectionViewCell{
     }
 }
 
-func CATransform3DMakePerspective(center: CGPoint, disZ: CGFloat) -> CATransform3D {
+func CATransform3DMakePerspective(_ center: CGPoint, disZ: CGFloat) -> CATransform3D {
     let transToCenter = CATransform3DMakeTranslation(-center.x, -center.y, 0)
     let transBack = CATransform3DMakeTranslation(center.x, center.y, 0)
     var scale = CATransform3DIdentity
@@ -43,6 +43,6 @@ func CATransform3DMakePerspective(center: CGPoint, disZ: CGFloat) -> CATransform
     return CATransform3DConcat(CATransform3DConcat(transToCenter, scale), transBack)
 }
 
-func CATransform3DPerspect(t: CATransform3D, center: CGPoint, disZ: CGFloat) -> CATransform3D {
+func CATransform3DPerspect(_ t: CATransform3D, center: CGPoint, disZ: CGFloat) -> CATransform3D {
     return CATransform3DConcat(t, CATransform3DMakePerspective(center, disZ: disZ))
 }

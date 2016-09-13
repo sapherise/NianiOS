@@ -10,8 +10,8 @@ import UIKit
 
 class CustomButton: UIButton {
 
-    private var _spinner: UIActivityIndicatorView?
-    private var _titleString: String?
+    fileprivate var _spinner: UIActivityIndicatorView?
+    fileprivate var _titleString: String?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -19,22 +19,22 @@ class CustomButton: UIButton {
         self.layer.cornerRadius = 22.0
         self.layer.masksToBounds = true
         
-        self._spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.White)
-        self._spinner!.hidden = true
+        self._spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
+        self._spinner!.isHidden = true
         self.addSubview(self._spinner!)
     }
     
     
     func startAnimating() {
-        self._spinner!.frame.origin = CGPointMake((self.frame.width - 20)/2, (self.frame.height - 20)/2)
-        self.setTitle("", forState: UIControlState.Normal)
-        self._spinner!.hidden = false
+        self._spinner!.frame.origin = CGPoint(x: (self.frame.width - 20)/2, y: (self.frame.height - 20)/2)
+        self.setTitle("", for: UIControlState())
+        self._spinner!.isHidden = false
         self._spinner!.startAnimating()
     }
     
     func stopAnimating() {
         self._spinner!.stopAnimating()
-        self._spinner!.hidden = true
+        self._spinner!.isHidden = true
     }
     
     

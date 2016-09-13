@@ -20,7 +20,7 @@ class CoinProductTop: UITableViewCell {
     var heightCell: CGFloat = 261
     
     func setup() {
-        self.selectionStyle = .None
+        self.selectionStyle = .none
         self.setWidth(globalWidth)
         viewHolder.setX(globalWidth/2 - 160)
         viewLine.setHeight(globalHalf)
@@ -31,11 +31,11 @@ class CoinProductTop: UITableViewCell {
         let coin = Cookies.get("coin") as? String
         labelContent.text = coin
         
-        btn.addTarget(self, action: #selector(CoinProductTop.onRecharge), forControlEvents: UIControlEvents.TouchUpInside)
+        btn.addTarget(self, action: #selector(CoinProductTop.onRecharge), for: UIControlEvents.touchUpInside)
         
         /* 如果是苹果测试账号 */
         if SAUid() == "171264" {
-            btn.hidden = true
+            btn.isHidden = true
         }
     }
     

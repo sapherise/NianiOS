@@ -18,7 +18,7 @@ class Comment: UITableViewCell {
     var data: NSDictionary!
     
     func setup() {
-        selectionStyle = .None
+        selectionStyle = .none
         labelName.textColor = UIColor.HighlightColor()
         imageHead.layer.masksToBounds = true
         imageHead.layer.cornerRadius = 16
@@ -26,16 +26,16 @@ class Comment: UITableViewCell {
         let name = data.stringAttributeForKey("user")
         let time = data.stringAttributeForKey("lastdate")
         let content = data.stringAttributeForKey("content")
-        let heightContent = data.objectForKey("heightContent") as! CGFloat
-        let widthContent = data.objectForKey("widthContent") as! CGFloat
-        let wImage = data.objectForKey("widthImage") as! CGFloat
-        let hImage = data.objectForKey("heightImage") as! CGFloat
-        let heightCell = data.objectForKey("heightCell") as! CGFloat
+        let heightContent = data.object(forKey: "heightContent") as! CGFloat
+        let widthContent = data.object(forKey: "widthContent") as! CGFloat
+        let wImage = data.object(forKey: "widthImage") as! CGFloat
+        let hImage = data.object(forKey: "heightImage") as! CGFloat
+        let heightCell = data.object(forKey: "heightCell") as! CGFloat
         
         imageHead.setHead(uid)
-        labelContent.frame.size = CGSizeMake(widthContent, heightContent)
+        labelContent.frame.size = CGSize(width: widthContent, height: heightContent)
         labelContent.text = content
-        labelHolder.frame.size = CGSizeMake(wImage, hImage)
+        labelHolder.frame.size = CGSize(width: wImage, height: hImage)
         imageHead.setY(heightCell - 32 - 4)
         labelName.setY(heightCell - 22)
         let x: CGFloat = 2
@@ -49,7 +49,7 @@ class Comment: UITableViewCell {
             labelName.setX(globalWidth - 64 - 231)
             labelName.text = time
             labelName.textColor = UIColor.secAuxiliaryColor()
-            labelName.textAlignment = NSTextAlignment.Right
+            labelName.textAlignment = NSTextAlignment.right
             labelHolder.setX(globalWidth - labelHolder.width() - 60)
             labelContent.setX(globalWidth - labelContent.width() - 73)
             labelContent.textColor = UIColor.MainColor()
@@ -61,7 +61,7 @@ class Comment: UITableViewCell {
             attrStr.addAttribute(NSForegroundColorAttributeName, value: UIColor.HighlightColor(), range: NSMakeRange(0, (name as NSString).length))
             attrStr.addAttribute(NSForegroundColorAttributeName, value: UIColor.secAuxiliaryColor(), range: NSMakeRange((name as NSString).length + 2, (time as NSString).length))
             labelName.attributedText = attrStr
-            labelName.textAlignment = NSTextAlignment.Left
+            labelName.textAlignment = NSTextAlignment.left
             labelContent.textColor = UIColor.BackgroundColor()
             labelHolder.setX(60)
             labelContent.setX(73)

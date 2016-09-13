@@ -12,63 +12,63 @@ import Foundation
 
 extension String {
     
-    func stringHeightWith(fontSize:CGFloat,width:CGFloat)->CGFloat {
-        let font = UIFont.systemFontOfSize(fontSize)
-        let size = CGSizeMake(width,CGFloat.max)
+    func stringHeightWith(_ fontSize:CGFloat,width:CGFloat)->CGFloat {
+        let font = UIFont.systemFont(ofSize: fontSize)
+        let size = CGSize(width: width,height: CGFloat.greatestFiniteMagnitude)
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineBreakMode = .ByWordWrapping;
+        paragraphStyle.lineBreakMode = .byWordWrapping;
         let  attributes = [NSFontAttributeName:font,
             NSParagraphStyleAttributeName:paragraphStyle]
         let text = self as NSString
-        let rect = text.boundingRectWithSize(size, options:.UsesLineFragmentOrigin, attributes: attributes, context:nil)
+        let rect = text.boundingRect(with: size, options:.usesLineFragmentOrigin, attributes: attributes, context:nil)
         return SACeil(rect.size.height, dot: 0, isCeil: true)
     }
     
     // 拥有行距的 TextView 的函数
-    func stringHeightWithSZTextView(fontSize: CGFloat, width: CGFloat) -> CGFloat {
-        let font = UIFont.systemFontOfSize(fontSize)
+    func stringHeightWithSZTextView(_ fontSize: CGFloat, width: CGFloat) -> CGFloat {
+        let font = UIFont.systemFont(ofSize: fontSize)
         let paragraphStyle = NSMutableParagraphStyle()
-        let size = CGSizeMake(width, CGFloat.max)
+        let size = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
         paragraphStyle.lineSpacing = 8
         let attrDictionary = [NSFontAttributeName: font, NSParagraphStyleAttributeName: paragraphStyle]
         let text = self as NSString
-        let rect = text.boundingRectWithSize(size, options: .UsesLineFragmentOrigin, attributes: attrDictionary, context: nil)
+        let rect = text.boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attrDictionary, context: nil)
         return SACeil(rect.size.height, dot: 0, isCeil: true)
     }
     
-    func stringHeightBoldWith(fontSize:CGFloat,width:CGFloat)->CGFloat {
-        let font = UIFont.boldSystemFontOfSize(fontSize)
-        let size = CGSizeMake(width,CGFloat.max)
+    func stringHeightBoldWith(_ fontSize:CGFloat,width:CGFloat)->CGFloat {
+        let font = UIFont.boldSystemFont(ofSize: fontSize)
+        let size = CGSize(width: width,height: CGFloat.greatestFiniteMagnitude)
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineBreakMode = .ByWordWrapping;
+        paragraphStyle.lineBreakMode = .byWordWrapping;
         let  attributes = [NSFontAttributeName:font,
             NSParagraphStyleAttributeName:paragraphStyle.copy()]
         let text = self as NSString
-        let rect = text.boundingRectWithSize(size, options:.UsesLineFragmentOrigin, attributes: attributes, context:nil)
+        let rect = text.boundingRect(with: size, options:.usesLineFragmentOrigin, attributes: attributes, context:nil)
         return SACeil(rect.size.height, dot: 0, isCeil: true)
     }
     
-    func stringWidthWith(fontSize:CGFloat,height:CGFloat)->CGFloat {
-        let font = UIFont.systemFontOfSize(fontSize)
-        let size = CGSizeMake(CGFloat.max, height)
+    func stringWidthWith(_ fontSize:CGFloat,height:CGFloat)->CGFloat {
+        let font = UIFont.systemFont(ofSize: fontSize)
+        let size = CGSize(width: CGFloat.greatestFiniteMagnitude, height: height)
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineBreakMode = .ByWordWrapping;
+        paragraphStyle.lineBreakMode = .byWordWrapping;
         let  attributes = [NSFontAttributeName:font,
             NSParagraphStyleAttributeName:paragraphStyle.copy()]
         let text = self as NSString
-        let rect = text.boundingRectWithSize(size, options:.UsesLineFragmentOrigin, attributes: attributes, context:nil)
+        let rect = text.boundingRect(with: size, options:.usesLineFragmentOrigin, attributes: attributes, context:nil)
         return SACeil(rect.size.width, dot: 0, isCeil: true)
     }
     
-    func stringWidthBoldWith(fontSize:CGFloat,height:CGFloat)->CGFloat {
-        let font = UIFont.boldSystemFontOfSize(fontSize)
-        let size = CGSizeMake(CGFloat.max, height)
+    func stringWidthBoldWith(_ fontSize:CGFloat,height:CGFloat)->CGFloat {
+        let font = UIFont.boldSystemFont(ofSize: fontSize)
+        let size = CGSize(width: CGFloat.greatestFiniteMagnitude, height: height)
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineBreakMode = .ByWordWrapping;
+        paragraphStyle.lineBreakMode = .byWordWrapping;
         let  attributes = [NSFontAttributeName:font,
             NSParagraphStyleAttributeName:paragraphStyle.copy()]
         let text = self as NSString
-        let rect = text.boundingRectWithSize(size, options:.UsesLineFragmentOrigin, attributes: attributes, context:nil)
+        let rect = text.boundingRect(with: size, options:.usesLineFragmentOrigin, attributes: attributes, context:nil)
         return SACeil(rect.size.width, dot: 0, isCeil: true)
     }
 }

@@ -11,22 +11,22 @@ import UIKit
 class FileUtility: NSObject {
    
     
-    class func cachePath(fileName:String)->String
+    class func cachePath(_ fileName:String)->String
     {
-      var arr =  NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)
+      var arr =  NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)
        let path = arr[0] 
         return "\(path)/\(fileName)"
     }
     
     
-    class func imageCacheToPath(path:String,image:NSData)->Bool
+    class func imageCacheToPath(_ path:String,image:Data)->Bool
     {
-        return image.writeToFile(path, atomically: true)
+        return ((try? image.write(to: URL(fileURLWithPath: path), options: [.atomic])) != nil)
     }
     
-    class func imageDataFromPath(path:String)->AnyObject
+    class func imageDataFromPath(_ path:String)->AnyObject
     {
-       let exist = NSFileManager.defaultManager().fileExistsAtPath(path)
+       let exist = FileManager.default.fileExists(atPath: path)
         if exist {
           let image = UIImage(contentsOfFile: path)
             if image != nil {

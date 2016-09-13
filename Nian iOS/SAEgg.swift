@@ -11,9 +11,9 @@ import SpriteKit
 
 @objc protocol ShareDelegate {
     /* 当抽到新宠物时，点击分享弹出调用 onShare */
-    func onShare(avc: UIActivityViewController)
-    optional func saEgg(saEgg: SAEgg, tapBackground: Bool)
-    optional func saEgg(saEgg: SAEgg, lotteryResult: NSDictionary)
+    func onShare(_ avc: UIActivityViewController)
+    @objc optional func saEgg(_ saEgg: SAEgg, tapBackground: Bool)
+    @objc optional func saEgg(_ saEgg: SAEgg, lotteryResult: NSDictionary)
 }
 
 class SAEgg: NIAlert, NIAlertDelegate {
@@ -34,7 +34,7 @@ class SAEgg: NIAlert, NIAlertDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func niAlert(niAlert: NIAlert, tapBackground: Bool) {
+    func niAlert(_ niAlert: NIAlert, tapBackground: Bool) {
         // 点击了 saEgg 的 background ，然后交给 delegate 处理
         delegateShare?.saEgg?(self, tapBackground: true)
         
@@ -58,7 +58,7 @@ class SAEgg: NIAlert, NIAlertDelegate {
         }
     }
     
-    func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
+    func niAlert(_ niAlert: NIAlert, didselectAtIndex: Int) {
         if niAlert == self {
             if didselectAtIndex == 1 {
                 niAlert.dismissWithAnimation(.normal)
@@ -66,7 +66,7 @@ class SAEgg: NIAlert, NIAlertDelegate {
                 // 确认抽蛋页面
                 self.confirmNiAlert.delegate = self
                 self.confirmNiAlert.dict = NSMutableDictionary(objects: ["", "抽蛋", "在上方随便选一个蛋！", []],
-                    forKeys: ["img", "title", "content", "buttonArray"])
+                    forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
                 let img1 = self.setupEgg(40, named: "pet_egg1")
                 let img2 = self.setupEgg(104, named: "pet_egg2")
                 let img3 = self.setupEgg(168, named: "pet_egg3")
@@ -80,7 +80,7 @@ class SAEgg: NIAlert, NIAlertDelegate {
             }
         } else if niAlert == lotteryNiAlert {
             if didselectAtIndex == 0 {
-                let card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
+                let card = (Bundle.main.loadNibNamed("Card", owner: self, options: nil))?.first as! Card
                 let petName = self.petData.stringAttributeForKey("name")
                 let petImage = self.petData.stringAttributeForKey("image")
                 let content = "我在念里拿到了可爱的「\(petName)」"
@@ -89,7 +89,7 @@ class SAEgg: NIAlert, NIAlertDelegate {
                 card.heightImage = "360"
                 card.url = "http://img.nian.so/pets/\(petImage)!d"
                 let img = card.getCard()
-                let avc = SAActivityViewController.shareSheetInView([img, content], applicationActivities: [], isStep: true)
+                let avc = SAActivityViewController.shareSheetInView([img, content as AnyObject], applicationActivities: [], isStep: true)
                 delegateShare?.onShare(avc)
             } else if didselectAtIndex == 1 {
                 self.dismissWithAnimation(.normal)
@@ -97,7 +97,7 @@ class SAEgg: NIAlert, NIAlertDelegate {
                 self.lotteryNiAlert.dismissWithAnimation(.normal)
             }
         } else if niAlert == planktonNiAlert {
-            UIView.animateWithDuration(1, animations: { () -> Void in
+            UIView.animate(withDuration: 1, animations: { () -> Void in
                 self.planktonNiAlert.imgView?.setX(-150)
                 self.planktonNiAlert.imgView?.alpha = 0
                 }, completion: { (Bool) -> Void in
@@ -112,19 +112,19 @@ class SAEgg: NIAlert, NIAlertDelegate {
         }
     }
     
-    func onEggTouchDown(sender: UIButton) {
+    func onEggTouchDown(_ sender: UIButton) {
         sender.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1)
     }
     
-    func onEggTouchCancel(sender: UIButton) {
-        sender.backgroundColor = UIColor.clearColor()
+    func onEggTouchCancel(_ sender: UIButton) {
+        sender.backgroundColor = UIColor.clear
     }
     
-    func onEggTouchUp(sender: UIButton) {
+    func onEggTouchUp(_ sender: UIButton) {
         let tag = sender.tag
-        sender.backgroundColor = UIColor.clearColor()
-        self.confirmNiAlert.titleLabel?.hidden = true
-        self.confirmNiAlert.contentLabel?.hidden = true
+        sender.backgroundColor = UIColor.clear
+        self.confirmNiAlert.titleLabel?.isHidden = true
+        self.confirmNiAlert.contentLabel?.isHidden = true
         for view: AnyObject in self.confirmNiAlert._containerView!.subviews {
             if view is UIButton {
                 if view as! UIButton != sender {
@@ -132,34 +132,34 @@ class SAEgg: NIAlert, NIAlertDelegate {
                 }
             }
         }
-        UIView.animateWithDuration(0.6, animations: { () -> Void in
+        UIView.animate(withDuration: 0.6, animations: { () -> Void in
             sender.setX(104)
         })
-        let ac = UIActivityIndicatorView(frame: CGRectMake(121, 150, 30, 30))
+        let ac = UIActivityIndicatorView(frame: CGRect(x: 121, y: 150, width: 30, height: 30))
         ac.color = UIColor.HighlightColor()
-        ac.hidden = false
+        ac.isHidden = false
         ac.startAnimating()
         self.confirmNiAlert._containerView!.addSubview(ac)
         Api.postPetLottery(tag) { json in
             if json != nil {
-                let err = json!.objectForKey("error") as! NSNumber
+                let err = json!.object(forKey: "error") as! NSNumber
                 if err == 0 {
                     // 抽到宠物
-                    self.petData = (json!.objectForKey("data") as! NSDictionary).objectForKey("pet") as! NSDictionary
+                    self.petData = (json!.object(forKey: "data") as! NSDictionary).object(forKey: "pet") as! NSDictionary
                     let petName = self.petData.stringAttributeForKey("name")
                     let petImage = self.petData.stringAttributeForKey("image")
                     let isOwned = self.petData.stringAttributeForKey("own")
                     if let coin = Cookies.get("coin") as? String {
                         if let _coin = Int(coin) {
                             let coinNew = _coin - 3
-                            Cookies.set("\(coinNew)", forKey: "coin")
+                            Cookies.set("\(coinNew)" as AnyObject?, forKey: "coin")
                         }
                     }
                     if isOwned == "0" {
                         // 此前没有这个宠物，出现宠物
                         self.lotteryNiAlert.delegate = self
                         self.lotteryNiAlert.dict = NSMutableDictionary(objects: ["http://img.nian.so/pets/\(petImage)!d", petName, "你获得了一个\(petName)", ["分享", "好"]],
-                            forKeys: ["img", "title", "content", "buttonArray"])
+                            forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
                         self.confirmNiAlert.dismissWithAnimationSwtich(self.lotteryNiAlert)
                         self.delegateShare?.saEgg?(self, lotteryResult: self.petData)
                     } else {
@@ -196,33 +196,33 @@ class SAEgg: NIAlert, NIAlertDelegate {
                         
                         self.planktonNiAlert.delegate = self
                         self.planktonNiAlert.dict = NSMutableDictionary(objects: [UIImage(named: "pet\(id)")!, "浮游生物", "\(arrayContent[id - 1])", ["拜拜"]],
-                            forKeys: ["img", "title", "content", "buttonArray"])
+                            forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
                         self.confirmNiAlert.dismissWithAnimationSwtich(self.planktonNiAlert)
-                        Cookies.set("\(count)", forKey: "plankton")
+                        Cookies.set("\(count)" as AnyObject?, forKey: "plankton")
                     }
                 } else if err == 2 {
                     self.coinLessNiAlert.delegate = self
                     self.coinLessNiAlert.dict = NSMutableDictionary(objects: [UIImage(named: "coinless")!, "念币不足", "没有足够的念币...", ["哦"]],
-                        forKeys: ["img", "title", "content", "buttonArray"])
+                        forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
                     self.confirmNiAlert.dismissWithAnimationSwtich(self.coinLessNiAlert)
                 } else {
                     self.coinLessNiAlert.delegate = self
                     self.coinLessNiAlert.dict = NSMutableDictionary(objects: [UIImage(named: "coinless")!, "奇怪的错误", "遇到了一个奇怪的错误", ["哦"]],
-                        forKeys: ["img", "title", "content", "buttonArray"])
+                        forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
                     self.confirmNiAlert.dismissWithAnimationSwtich(self.coinLessNiAlert)
                 }
             }
         }
     }
     
-    func setupEgg(x: CGFloat, named: String) -> UIButton {
-        let button = UIButton(frame: CGRectMake(x, 40, 64, 80))
-        button.addTarget(self, action: #selector(SAEgg.onEggTouchDown(_:)), forControlEvents: UIControlEvents.TouchDown)
-        button.addTarget(self, action: #selector(SAEgg.onEggTouchDown(_:)), forControlEvents: UIControlEvents.TouchDragInside)
-        button.addTarget(self, action: #selector(SAEgg.onEggTouchUp(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-        button.addTarget(self, action: #selector(SAEgg.onEggTouchCancel(_:)), forControlEvents: UIControlEvents.TouchDragOutside)
-        button.setBackgroundImage(UIImage(named: named), forState: UIControlState())
-        button.setBackgroundImage(UIImage(named: named), forState: UIControlState.Highlighted)
+    func setupEgg(_ x: CGFloat, named: String) -> UIButton {
+        let button = UIButton(frame: CGRect(x: x, y: 40, width: 64, height: 80))
+        button.addTarget(self, action: #selector(SAEgg.onEggTouchDown(_:)), for: UIControlEvents.touchDown)
+        button.addTarget(self, action: #selector(SAEgg.onEggTouchDown(_:)), for: UIControlEvents.touchDragInside)
+        button.addTarget(self, action: #selector(SAEgg.onEggTouchUp(_:)), for: UIControlEvents.touchUpInside)
+        button.addTarget(self, action: #selector(SAEgg.onEggTouchCancel(_:)), for: UIControlEvents.touchDragOutside)
+        button.setBackgroundImage(UIImage(named: named), for: UIControlState())
+        button.setBackgroundImage(UIImage(named: named), for: UIControlState.highlighted)
         button.layer.cornerRadius = 8
         return button
     }

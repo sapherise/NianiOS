@@ -31,11 +31,11 @@ class Promo: SAViewController, UICollectionViewDelegate, UICollectionViewDataSou
         flowLayout.minimumLineSpacing = 20
         flowLayout.itemSize = CGSize(width: 80, height: 124)
         flowLayout.sectionInset = UIEdgeInsets(top: (globalWidth - 320)/2, left: (globalWidth - 320)/2 + 20, bottom: (globalWidth - 320)/2, right: (globalWidth - 320)/2 + 20)
-        collectionView = UICollectionView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64), collectionViewLayout: flowLayout)
+        collectionView = UICollectionView(frame: CGRect(x: 0, y: 64, width: globalWidth, height: globalHeight - 64), collectionViewLayout: flowLayout)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = UIColor.BackgroundColor()
-        collectionView.registerNib(UINib(nibName: "PromoCell", bundle: nil), forCellWithReuseIdentifier: "PromoCell")
+        collectionView.register(UINib(nibName: "PromoCell", bundle: nil), forCellWithReuseIdentifier: "PromoCell")
         collectionView.alwaysBounceVertical = true
         self.view.addSubview(collectionView)
     }
@@ -43,26 +43,26 @@ class Promo: SAViewController, UICollectionViewDelegate, UICollectionViewDataSou
     func load() {
         if let dreams = Cookies.get("NianDreams") as? NSMutableArray {
             for dream in dreams {
-                dataArray.addObject(dream)
+                dataArray.add(dream)
             }
             collectionView.reloadData()
         }
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 //        return UICollectionViewCell()
-        let c: PromoCell! = collectionView.dequeueReusableCellWithReuseIdentifier("PromoCell", forIndexPath: indexPath) as? PromoCell
-        c.data = dataArray[indexPath.row] as! NSDictionary
+        let c: PromoCell! = collectionView.dequeueReusableCell(withReuseIdentifier: "PromoCell", for: indexPath) as? PromoCell
+        c.data = dataArray[(indexPath as NSIndexPath).row] as! NSDictionary
         c.setup()
         return c
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dataArray.count
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let data = dataArray[indexPath.row] as! NSDictionary
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let data = dataArray[(indexPath as NSIndexPath).row] as! NSDictionary
         id = data.stringAttributeForKey("id")
         alert = NIAlert()
         alert.delegate = self
@@ -70,7 +70,7 @@ class Promo: SAViewController, UICollectionViewDelegate, UICollectionViewDataSou
         alert.showWithAnimation(showAnimationStyle.flip)
     }
     
-    func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
+    func niAlert(_ niAlert: NIAlert, didselectAtIndex: Int) {
         if niAlert == self.alert {
             if didselectAtIndex == 0 {
                 if let btn = alert.niButtonArray.firstObject as? NIButton {
@@ -107,7 +107,7 @@ class Promo: SAViewController, UICollectionViewDelegate, UICollectionViewDataSou
         }
     }
     
-    func niAlert(niAlert: NIAlert, tapBackground: Bool) {
+    func niAlert(_ niAlert: NIAlert, tapBackground: Bool) {
         alert.dismissWithAnimation(.normal)
         if alertResult != nil {
             alertResult.dismissWithAnimation(.normal)

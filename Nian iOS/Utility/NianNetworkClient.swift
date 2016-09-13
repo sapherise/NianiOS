@@ -12,7 +12,7 @@ import UIKit
 let baseURLString = "http://api.nian.so/"
 
 /// 大概相当于 typedef
-typealias NetworkClosure = (task: NSURLSessionDataTask, responseObject: AnyObject?, error: NSError?) -> Void
+typealias NetworkClosure = (_ task: URLSessionDataTask, _ responseObject: AnyObject?, _ error: NSError?) -> Void
 
 /*=========================================================================================================================================*/
 
@@ -31,7 +31,7 @@ class NianNetworkClient: AFHTTPSessionManager {
     /**
     单例的 init() 方法都是 private 的， -- 保证线程安全
     */
-    private init() {
+    fileprivate init() {
         super.init(baseURL: nil, sessionConfiguration: nil)
         
 //        self.requestSerializer = AFJSONRequestSerializer()
@@ -49,11 +49,11 @@ class NianNetworkClient: AFHTTPSessionManager {
     
     :returns:
     */
-    func get(string: String, callback: NetworkClosure) -> NSURLSessionDataTask {
-        return  self.GET(baseURLString + string,
+    func get(_ string: String, callback: @escaping NetworkClosure) -> URLSessionDataTask {
+        return  self.get(baseURLString + string,
                     parameters: nil,
                     success: { (task, id) in
-                        callback(task: task, responseObject: id, error: nil)
+                        callback(task, id, nil)
                     },
                     failure: { (task, error) in
                         callback(task: task, responseObject: nil, error: error)
@@ -67,11 +67,11 @@ class NianNetworkClient: AFHTTPSessionManager {
     
     :returns:
     */
-    func post(string: String, content: AnyObject, callback: NetworkClosure) -> NSURLSessionDataTask {
-        return  self.POST(baseURLString + string,
+    func post(_ string: String, content: AnyObject, callback: @escaping NetworkClosure) -> URLSessionDataTask {
+        return  self.post(baseURLString + string,
                     parameters: content,
                     success: { (task, id) in
-                        callback(task: task, responseObject: id, error: nil)
+                        callback(task, id, nil)
                     },
                     failure: { (task, error) in
                         callback(task: task, responseObject: nil, error: error)
@@ -87,11 +87,11 @@ class NianNetworkClient: AFHTTPSessionManager {
      
      :returns: <#return value description#>
      */
-    func put(string: String, content: AnyObject, callback: NetworkClosure) -> NSURLSessionDataTask {
-        return self.PUT(baseURLString + string,
+    func put(_ string: String, content: AnyObject, callback: @escaping NetworkClosure) -> URLSessionDataTask {
+        return self.put(baseURLString + string,
                     parameters: content,
                     success: { (task, id) -> Void in
-                        callback(task: task, responseObject: id, error: nil)
+                        callback(task, id, nil)
                     }, failure: { (task, error) -> Void in
                         callback(task: task, responseObject: nil, error: error)
                 })

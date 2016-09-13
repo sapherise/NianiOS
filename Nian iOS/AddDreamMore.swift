@@ -9,7 +9,7 @@
 import Foundation
 
 protocol delegatePrivate {
-    func update(key: String, value: Int)
+    func update(_ key: String, value: Int)
 }
 
 class AddDreamMore: SAViewController, UIActionSheetDelegate {
@@ -33,47 +33,47 @@ class AddDreamMore: SAViewController, UIActionSheetDelegate {
         let paddingLeft: CGFloat = 16
         data = ["没有人", "我关注的人", "所有人"]
         
-        let scrollView = UIScrollView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64))
+        let scrollView = UIScrollView(frame: CGRect(x: 0, y: 64, width: globalWidth, height: globalHeight - 64))
         self.view.addSubview(scrollView)
         scrollView.backgroundColor = UIColor.GreyBackgroundColor()
         scrollView.alwaysBounceVertical = true
         
         /* 私密设置 */
-        let viewPrivate = UIView(frame: CGRectMake(0, marginTop, globalWidth, h))
+        let viewPrivate = UIView(frame: CGRect(x: 0, y: marginTop, width: globalWidth, height: h))
         scrollView.addSubview(viewPrivate)
-        let labelPrivate = UILabel(frame: CGRectMake(paddingLeft, 0, 200, h))
+        let labelPrivate = UILabel(frame: CGRect(x: paddingLeft, y: 0, width: 200, height: h))
         labelPrivate.text = "设为私密"
         labelPrivate.textColor = UIColor.MainColor()
-        labelPrivate.font = UIFont.systemFontOfSize(16)
+        labelPrivate.font = UIFont.systemFont(ofSize: 16)
         viewPrivate.addSubview(labelPrivate)
         /* 私密开关 */
         btn = UISwitch()
         btn.setX(globalWidth - btn.width() - paddingLeft)
         btn.setY((h - btn.height())/2)
         btn.onTintColor = UIColor.HighlightColor()
-        btn.addTarget(self, action: #selector(self.setPrivate(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        btn.addTarget(self, action: #selector(self.setPrivate(_:)), for: UIControlEvents.valueChanged)
         viewPrivate.addSubview(btn)
         
         /* 邀请设置 */
-        let viewInvite = UIView(frame: CGRectMake(0, viewPrivate.bottom(), globalWidth, h))
-        viewInvite.userInteractionEnabled = true
+        let viewInvite = UIView(frame: CGRect(x: 0, y: viewPrivate.bottom(), width: globalWidth, height: h))
+        viewInvite.isUserInteractionEnabled = true
         viewInvite.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.invite)))
         scrollView.addSubview(viewInvite)
-        let labelInvite = UILabel(frame: CGRectMake(paddingLeft, 0, 200, h))
+        let labelInvite = UILabel(frame: CGRect(x: paddingLeft, y: 0, width: 200, height: h))
         labelInvite.text = "自由加入记本"
         labelInvite.textColor = UIColor.MainColor()
-        labelInvite.font = UIFont.systemFontOfSize(16)
+        labelInvite.font = UIFont.systemFont(ofSize: 16)
         viewInvite.addSubview(labelInvite)
         /* 邀请开关 */
-        let arrow = UIImageView(frame: CGRectMake(0, 0, 8, h))
+        let arrow = UIImageView(frame: CGRect(x: 0, y: 0, width: 8, height: h))
         arrow.setX(globalWidth - arrow.width() - paddingLeft)
         arrow.image = UIImage(named: "setting_cell_arrow")
         viewInvite.addSubview(arrow)
         /* 邀请成员文案 */
-        labelInviteMember = UILabel(frame: CGRectMake(0, 0, 100, h))
+        labelInviteMember = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: h))
         labelInviteMember.setX(globalWidth - arrow.width() - paddingLeft - 8 - labelInviteMember.width())
-        labelInviteMember.textAlignment = .Right
-        labelInviteMember.font = UIFont.systemFontOfSize(14)
+        labelInviteMember.textAlignment = .right
+        labelInviteMember.font = UIFont.systemFont(ofSize: 14)
         labelInviteMember.textColor = UIColor.secAuxiliaryColor()
         viewInvite.addSubview(labelInviteMember)
         
@@ -90,17 +90,17 @@ class AddDreamMore: SAViewController, UIActionSheetDelegate {
     /* 邀请弹窗 */
     func invite() {
         alert = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        alert?.addButtonWithTitle(data[0])
-        alert?.addButtonWithTitle(data[1])
-        alert?.addButtonWithTitle(data[2])
-        alert?.addButtonWithTitle("取消")
+        alert?.addButton(withTitle: data[0])
+        alert?.addButton(withTitle: data[1])
+        alert?.addButton(withTitle: data[2])
+        alert?.addButton(withTitle: "取消")
         alert?.cancelButtonIndex = 3
-        alert?.showInView(self.view)
+        alert?.show(in: self.view)
     }
     
     /* 设置私密或公开 */
-    func setPrivate(sender: UISwitch) {
-        if sender.on {
+    func setPrivate(_ sender: UISwitch) {
+        if sender.isOn {
             delegate?.update("private", value: 1)
         } else {
             delegate?.update("private", value: 0)
@@ -119,7 +119,7 @@ class AddDreamMore: SAViewController, UIActionSheetDelegate {
         labelInviteMember.text = data[permission]
     }
     
-    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
         if actionSheet == alert {
             if buttonIndex < 3 {
                 permission = buttonIndex
@@ -131,9 +131,9 @@ class AddDreamMore: SAViewController, UIActionSheetDelegate {
 }
 
 extension UIView {
-    func addLine(isTop: Bool) {
+    func addLine(_ isTop: Bool) {
         let y = isTop ? 0 : self.height()
-        let line = UIView(frame: CGRectMake(0, y, globalWidth, globalHalf))
+        let line = UIView(frame: CGRect(x: 0, y: y, width: globalWidth, height: globalHalf))
         line.backgroundColor = UIColor.LineColor()
         line.setY(y - globalHalf / 2)
         self.addSubview(line)

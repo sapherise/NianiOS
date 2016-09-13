@@ -9,7 +9,7 @@
 import UIKit
 class RefreshHeaderView: RefreshBaseView {
     class func footer()->RefreshHeaderView{
-        let footer:RefreshHeaderView  = RefreshHeaderView(frame: CGRectMake(0, 0,   UIScreen.mainScreen().bounds.width, RefreshViewHeight))
+        let footer:RefreshHeaderView  = RefreshHeaderView(frame: CGRect(x: 0, y: 0,   width: UIScreen.main.bounds.width, height: RefreshViewHeight))
         return footer
     }
     
@@ -28,13 +28,13 @@ class RefreshHeaderView: RefreshBaseView {
         let statusHeight:CGFloat = self.frame.size.height
         let statusWidth:CGFloat = self.frame.size.width
         //状态标签
-        self.statusLabel.frame = CGRectMake(statusX, statusY + 10.0, statusWidth, statusHeight)
+        self.statusLabel.frame = CGRect(x: statusX, y: statusY + 10.0, width: statusWidth, height: statusHeight)
         //指示器
-        self.activityView.center = CGPointMake(self.frame.size.width * 0.5, self.frame.size.height * 0.5 + 10.0)
+        self.activityView.center = CGPoint(x: self.frame.size.width * 0.5, y: self.frame.size.height * 0.5 + 10.0)
     }
     
-    override func willMoveToSuperview(newSuperview: UIView!) {
-        super.willMoveToSuperview(newSuperview)
+    override func willMove(toSuperview newSuperview: UIView!) {
+        super.willMove(toSuperview: newSuperview)
          // 设置自己的位置和尺寸
         var rect:CGRect = self.frame
         rect.origin.y = -self.frame.size.height
@@ -42,14 +42,14 @@ class RefreshHeaderView: RefreshBaseView {
     }
     
     //监听UIScrollView的contentOffset属性
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-                if (!self.userInteractionEnabled || self.hidden){
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+                if (!self.isUserInteractionEnabled || self.isHidden){
                     return
                 }
-                if (self.State == RefreshState.Refreshing) {
+                if (self.State == RefreshState.refreshing) {
                     return
                 }
-                if RefreshContentOffset.isEqualToString(keyPath!){
+                if RefreshContentOffset.isEqual(to: keyPath!){
                     self.adjustStateWithContentOffset()
                 }
     }
@@ -63,16 +63,16 @@ class RefreshHeaderView: RefreshBaseView {
         if (currentOffsetY >= happenOffsetY) {
             return
         }
-        if self.scrollView.dragging{
+        if self.scrollView.isDragging{
             let normal2pullingOffsetY:CGFloat = happenOffsetY - self.frame.size.height
-            if  self.State == RefreshState.Normal && currentOffsetY < normal2pullingOffsetY{
-                self.State = RefreshState.Pulling
-            }else if self.State == RefreshState.Pulling && currentOffsetY >= normal2pullingOffsetY{
-                self.State = RefreshState.Normal
+            if  self.State == RefreshState.normal && currentOffsetY < normal2pullingOffsetY{
+                self.State = RefreshState.pulling
+            }else if self.State == RefreshState.pulling && currentOffsetY >= normal2pullingOffsetY{
+                self.State = RefreshState.normal
             }
             
-        } else if self.State == RefreshState.Pulling {
-            self.State = RefreshState.Refreshing
+        } else if self.State == RefreshState.pulling {
+            self.State = RefreshState.refreshing
         }
     }
     
@@ -87,10 +87,10 @@ class RefreshHeaderView: RefreshBaseView {
     }
     didSet{
         switch State{
-        case .Normal:
+        case .normal:
             self.statusLabel.text = RefreshHeaderPullToRefresh as String
-            if RefreshState.Refreshing == oldState {
-                UIView.animateWithDuration(RefreshSlowAnimationDuration, animations: {
+            if RefreshState.refreshing == oldState {
+                UIView.animate(withDuration: RefreshSlowAnimationDuration, animations: {
                     var contentInset:UIEdgeInsets = self.scrollView.contentInset
                     contentInset.top = self.scrollViewOriginalInset.top
                     self.scrollView.contentInset = contentInset
@@ -98,14 +98,14 @@ class RefreshHeaderView: RefreshBaseView {
                 
             }
             break
-        case .Pulling:
+        case .pulling:
             // 在这里
             self.statusLabel.text = RefreshHeaderReleaseToRefresh as String
             break
-        case .Refreshing:
+        case .refreshing:
             self.statusLabel.text =  RefreshHeaderRefreshing as String;
             
-            UIView.animateWithDuration(RefreshSlowAnimationDuration, animations: {
+            UIView.animate(withDuration: RefreshSlowAnimationDuration, animations: {
                 let top:CGFloat = self.scrollViewOriginalInset.top + self.frame.size.height
                 var inset:UIEdgeInsets = self.scrollView.contentInset
                 inset.top = top
@@ -122,7 +122,7 @@ class RefreshHeaderView: RefreshBaseView {
     }
     }
     
-    func addState(state:RefreshState){
+    func addState(_ state:RefreshState){
         self.State = state
     }
 }

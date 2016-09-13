@@ -11,19 +11,19 @@ import UIKit
 
 enum ListType {
     /* 查看记本成员 */
-    case Members
+    case members
     
     /* 邀请 */
-    case Invite
+    case invite
     
     /* 赞过进展的人 */
-    case Like
+    case like
     
     /* 关注记本的人 */
-    case Followers
+    case followers
     
     /* 赞过记本的人 */
-    case DreamLikes
+    case dreamLikes
 }
 
 class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDelegate, UIActionSheetDelegate {
@@ -49,25 +49,25 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
     }
     
     func setup() {
-        if type == ListType.Members {
+        if type == ListType.members {
             _setTitle("成员")
             if willShowInviteButton {
                 setBarButtonImage("addFriend", actionGesture: #selector(List.onInvite))
             }
-        } else if type == ListType.Invite {
+        } else if type == ListType.invite {
             _setTitle("邀请")
-        } else if type == ListType.Like {
+        } else if type == ListType.like {
             _setTitle("赞过")
-        } else if type == ListType.DreamLikes {
+        } else if type == ListType.dreamLikes {
             _setTitle("赞过记本")
-        } else if type == ListType.Followers {
+        } else if type == ListType.followers {
             _setTitle("记本听众")
         }
-        tableView = UITableView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64))
+        tableView = UITableView(frame: CGRect(x: 0, y: 64, width: globalWidth, height: globalHeight - 64))
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.registerNib(UINib(nibName: "ListCell", bundle: nil), forCellReuseIdentifier: "ListCell")
-        tableView.separatorStyle = .None
+        tableView.register(UINib(nibName: "ListCell", bundle: nil), forCellReuseIdentifier: "ListCell")
+        tableView.separatorStyle = .none
         view.addSubview(tableView)
         tableView.addHeaderWithCallback { () -> Void in
             self.load(true)
@@ -80,33 +80,33 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
     /* 当点击了邀请后 */
     func onInvite() {
         let vc = List()
-        vc.type = ListType.Invite
+        vc.type = ListType.invite
         vc.id = id
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let c: ListCell! = tableView.dequeueReusableCellWithIdentifier("ListCell", forIndexPath: indexPath) as? ListCell
-        let data = dataArray[indexPath.row] as! NSDictionary
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let c: ListCell! = tableView.dequeueReusableCell(withIdentifier: "ListCell", for: indexPath) as? ListCell
+        let data = dataArray[(indexPath as NSIndexPath).row] as! NSDictionary
         c.data = data
         c.type = type
-        c.num = indexPath.row
+        c.num = (indexPath as NSIndexPath).row
         c.id = id
         c.setup()
         c.delegate = self
         return c
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70 + globalHalf
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataArray.count
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        indexDelete = indexPath.row
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        indexDelete = (indexPath as NSIndexPath).row
         if let dataMe = dataArray[0] as? NSDictionary {
             let uid = dataMe.stringAttributeForKey("uid")
             if uid == SAUid() {
@@ -114,18 +114,18 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
                 ** 同时是成员页面
                 ** 同时不是第一个 indexPath
                 */
-                if type == ListType.Members && indexPath.row > 0 {
+                if type == ListType.members && (indexPath as NSIndexPath).row > 0 {
                     actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-                    actionSheet.addButtonWithTitle("移出这个记本")
-                    actionSheet.addButtonWithTitle("取消")
+                    actionSheet.addButton(withTitle: "移出这个记本")
+                    actionSheet.addButton(withTitle: "取消")
                     actionSheet.cancelButtonIndex = 1
-                    actionSheet.showInView(self.view)
+                    actionSheet.show(in: self.view)
                 }
             }
         }
     }
     
-    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
         if buttonIndex == 0 {
             /* 需要先获得 uid 再移除，不然会越界 */
             if let data = dataArray[indexDelete] as? NSDictionary {
@@ -133,39 +133,39 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
                 Api.getKick(id, uid: uid) { json in
                 }
             }
-            dataArray.removeObjectAtIndex(indexDelete)
+            dataArray.removeObject(at: indexDelete)
             tableView.beginUpdates()
-            tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: indexDelete, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
+            tableView.deleteRows(at: [IndexPath(row: indexDelete, section: 0)], with: UITableViewRowAnimation.left)
             tableView.reloadData()
             tableView.endUpdates()
         }
     }
     
-    func update(index: Int, key: String, value: String) {
+    func update(_ index: Int, key: String, value: String) {
         if let data = dataArray[index] as? NSDictionary {
            let mutableData = NSMutableDictionary(dictionary: data)
             mutableData.setValue(value, forKey: key)
-            dataArray.replaceObjectAtIndex(index, withObject: mutableData)
+            dataArray.replaceObject(at: index, with: mutableData)
             tableView.reloadData()
         }
     }
     
-    func load(clear: Bool) {
+    func load(_ clear: Bool) {
         if clear {
             page = 1
         }
         /* 邀请列表 */
-        if type == ListType.Invite {
+        if type == ListType.invite {
             Api.getMultiInviteList(id, page: page) { json in
                 if json != nil {
-                    if let err = json!.objectForKey("error") as? NSNumber {
+                    if let err = json!.object(forKey: "error") as? NSNumber {
                         if err == 0 {
-                            if let items = json!.objectForKey("data") as? NSArray {
+                            if let items = json!.object(forKey: "data") as? NSArray {
                                 if clear {
                                     self.dataArray.removeAllObjects()
                                 }
                                 for item in items {
-                                    self.dataArray.addObject(item)
+                                    self.dataArray.add(item)
                                 }
                             }
                             self.page += 1
@@ -178,17 +178,17 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
                     }
                 }
             }
-        } else if type == ListType.Members {
+        } else if type == ListType.members {
             Api.getMultiDreamList(id, page: page) { json in
                 if json != nil {
-                    if let err = json!.objectForKey("error") as? NSNumber {
+                    if let err = json!.object(forKey: "error") as? NSNumber {
                         if err == 0 {
-                            if let items = json!.objectForKey("data") as? NSArray {
+                            if let items = json!.object(forKey: "data") as? NSArray {
                                 if clear {
                                     self.dataArray.removeAllObjects()
                                 }
                                 for item in items {
-                                    self.dataArray.addObject(item)
+                                    self.dataArray.add(item)
                                 }
                             }
                             self.page += 1
@@ -201,17 +201,17 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
                     }
                 }
             }
-        } else if type == ListType.Like {
+        } else if type == ListType.like {
             Api.getLike(page, stepId: id) { json in
                 if json != nil {
-                    if let err = json!.objectForKey("error") as? NSNumber {
+                    if let err = json!.object(forKey: "error") as? NSNumber {
                         if err == 0 {
-                            if let items = json!.objectForKey("data") as? NSArray {
+                            if let items = json!.object(forKey: "data") as? NSArray {
                                 if clear {
                                     self.dataArray.removeAllObjects()
                                 }
                                 for item in items {
-                                    self.dataArray.addObject(item)
+                                    self.dataArray.add(item)
                                 }
                             }
                             self.page += 1
@@ -224,18 +224,18 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
                     }
                 }
             }
-        } else if type == ListType.Followers {
+        } else if type == ListType.followers {
             Api.getDreamFollow(id, page: page) { json in
                 if json != nil {
-                    if let err = json!.objectForKey("error") as? NSNumber {
+                    if let err = json!.object(forKey: "error") as? NSNumber {
                         if err == 0 {
-                            if let data = json!.objectForKey("data") as? NSDictionary {
-                                if let users = data.objectForKey("users") as? NSArray {
+                            if let data = json!.object(forKey: "data") as? NSDictionary {
+                                if let users = data.object(forKey: "users") as? NSArray {
                                         if clear {
                                             self.dataArray.removeAllObjects()
                                         }
                                         for item in users {
-                                            self.dataArray.addObject(item)
+                                            self.dataArray.add(item)
                                         }
                                 }
                             }
@@ -249,18 +249,18 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
                     }
                 }
             }
-        } else if type == ListType.DreamLikes {
+        } else if type == ListType.dreamLikes {
             Api.getDreamLike(id, page: page) { json in
                 if json != nil {
-                    if let err = json!.objectForKey("error") as? NSNumber {
+                    if let err = json!.object(forKey: "error") as? NSNumber {
                         if err == 0 {
-                            if let data = json!.objectForKey("data") as? NSDictionary {
-                                if let users = data.objectForKey("users") as? NSArray {
+                            if let data = json!.object(forKey: "data") as? NSDictionary {
+                                if let users = data.object(forKey: "users") as? NSArray {
                                     if clear {
                                         self.dataArray.removeAllObjects()
                                     }
                                     for item in users {
-                                        self.dataArray.addObject(item)
+                                        self.dataArray.add(item)
                                     }
                                 }
                             }

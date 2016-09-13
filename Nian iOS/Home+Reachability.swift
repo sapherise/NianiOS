@@ -9,7 +9,7 @@
 import Foundation
 extension HomeViewController {
     func setupReachability() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeViewController.reachabilityChanged(_:)), name: ReachabilityChangedNotification, object: reachability)
+        NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.reachabilityChanged(_:)), name: NSNotification.Name(rawValue: ReachabilityChangedNotification), object: reachability)
         reachability?.startNotifier()
         if let reachability = reachability {
             let status = reachability.currentReachabilityString
@@ -19,7 +19,7 @@ extension HomeViewController {
     }
     
     // 获取网络改变的通知时
-    func reachabilityChanged(note: NSNotification) {
+    func reachabilityChanged(_ note: Notification) {
         let reachability = note.object as! Reachability
         let status = reachability.currentReachabilityString
 //        Cookies.set(status, forKey: "reachability")

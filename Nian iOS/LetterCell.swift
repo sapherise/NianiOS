@@ -23,7 +23,7 @@ class LetterCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.selectionStyle = .None
+        self.selectionStyle = .none
         self.viewDelete.setX(globalWidth)
         self.setWidth(globalWidth)
         self.lastdate?.setX(globalWidth-92)
@@ -40,7 +40,7 @@ class LetterCell: UITableViewCell {
     }
     
     func setup() {
-        self.selectionStyle = .None
+        self.selectionStyle = .none
         let id = self.data.stringAttributeForKey("id")
         let title = self.data.stringAttributeForKey("title")
         let content = self.data.stringAttributeForKey("content")
@@ -57,9 +57,9 @@ class LetterCell: UITableViewCell {
         
         if unread == "0" {
             labelCount.text = "0"
-            labelCount.hidden = true
+            labelCount.isHidden = true
         } else {
-            labelCount.hidden = false
+            labelCount.isHidden = false
             let w = unread.stringWidthWith(11, height: 20) + 16
             labelCount.text = unread
             labelCount.setWidth(w)

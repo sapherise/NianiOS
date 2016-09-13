@@ -32,22 +32,22 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource, NIA
             ["title": "关于提现", "content": "绑定微信账号后，你可以把奖励以人民币的方式取出至微信零钱。", "image": "premium_wallet"],
             ["title": "提现规则", "content": "每次提现的金额不小于 20 元，手续费为每次提现总额的 20%。", "image": "premium_rules"]
         ]
-        tableView = UITableView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64))
+        tableView = UITableView(frame: CGRect(x: 0, y: 64, width: globalWidth, height: globalHeight - 64))
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.separatorStyle = .None
-        tableView.registerNib(UINib(nibName: "CoinProductTop", bundle: nil), forCellReuseIdentifier: "CoinProductTop")
-        tableView.registerNib(UINib(nibName: "PremiumCell", bundle: nil), forCellReuseIdentifier: "PremiumCell")
+        tableView.separatorStyle = .none
+        tableView.register(UINib(nibName: "CoinProductTop", bundle: nil), forCellReuseIdentifier: "CoinProductTop")
+        tableView.register(UINib(nibName: "PremiumCell", bundle: nil), forCellReuseIdentifier: "PremiumCell")
         self.view.addSubview(tableView)
         tableView.addHeaderWithCallback { 
             self.load()
         }
         tableView.headerBeginRefreshing()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.wechatNotification(_:)), name: "Wechat", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.wechatNotification(_:)), name: NSNotification.Name(rawValue: "Wechat"), object: nil)
     }
     
-    func wechatNotification(notification: NSNotification) {
+    func wechatNotification(_ notification: Notification) {
         if let data = notification.object as? NSDictionary {
             let openid = data.stringAttributeForKey("openid")
             let accessToken = data.stringAttributeForKey("access_token")
@@ -56,23 +56,24 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource, NIA
                 if let _ = error {
                     self.showTipText("网络有点问题，等一会儿再试")
                 } else {
-                    let json = JSON(responseObject!)
-                    if let _ = json["errcode"].number {
-                        self.showTipText("微信授权不成功...")
-                    } else {
-                        let _name = json["nickname"].stringValue
-                        if openid.characters.count > 0 {
-                            SettingModel.bindThirdAccount(openid, nameFrom3rd: _name, type: "wechat") {
-                                (task, responseObject, error) -> Void in
-                                if let _ = error {
-                                    self.showTipText("网络有点问题，等一会儿再试")
-                                } else {
-                                    self.hasWechat = true
-                                    self.wechatName = _name
-                                }
-                            }
-                        }
-                    }
+                    // todo
+//                    let json = JSON(responseObject!)
+//                    if let _ = json["errcode"].number {
+//                        self.showTipText("微信授权不成功...")
+//                    } else {
+//                        let _name = json["nickname"].stringValue
+//                        if openid.characters.count > 0 {
+//                            SettingModel.bindThirdAccount(openid, nameFrom3rd: _name, type: "wechat") {
+//                                (task, responseObject, error) -> Void in
+//                                if let _ = error {
+//                                    self.showTipText("网络有点问题，等一会儿再试")
+//                                } else {
+//                                    self.hasWechat = true
+//                                    self.wechatName = _name
+//                                }
+//                            }
+//                        }
+//                    }
                 }
             }
         }
@@ -81,12 +82,12 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource, NIA
     func load() {
         Api.getBalance() { json in
             if json != nil {
-                if let data = json!.objectForKey("data") as? NSDictionary {
+                if let data = json!.object(forKey: "data") as? NSDictionary {
                     let balance = data.stringAttributeForKey("balance")
                     if let _balance = Int(balance) {
                         self.price = CGFloat(_balance) * 0.01
                     }
-                    if let wechat = data.objectForKey("wechat") as? NSDictionary {
+                    if let wechat = data.object(forKey: "wechat") as? NSDictionary {
                         self.wechatName = wechat.stringAttributeForKey("name")
                         self.hasWechat = wechat.stringAttributeForKey("has") == "1"
                     }
@@ -97,22 +98,22 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource, NIA
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            let c: CoinProductTop! = tableView.dequeueReusableCellWithIdentifier("CoinProductTop", forIndexPath: indexPath) as? CoinProductTop
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if (indexPath as NSIndexPath).section == 0 {
+            let c: CoinProductTop! = tableView.dequeueReusableCell(withIdentifier: "CoinProductTop", for: indexPath) as? CoinProductTop
             c.setup()
             c.labelTitle.text = "余额"
             c.imageHead.image = UIImage(named: "pig")
             c.labelContent.text = "¥\(price)"
-            c.btn.setTitle("提现", forState: UIControlState())
-            c.btn.removeTarget(nil, action: nil, forControlEvents: UIControlEvents.TouchUpInside)
-            c.btn.addTarget(self, action: #selector(self.withdraw), forControlEvents: UIControlEvents.TouchUpInside)
+            c.btn.setTitle("提现", for: UIControlState())
+            c.btn.removeTarget(nil, action: nil, for: UIControlEvents.touchUpInside)
+            c.btn.addTarget(self, action: #selector(self.withdraw), for: UIControlEvents.touchUpInside)
             c.viewLine.setX(40)
             c.viewLine.setWidth(globalWidth - 80)
             return c
         } else {
-            let c: PremiumCell! = tableView.dequeueReusableCellWithIdentifier("PremiumCell", forIndexPath: indexPath) as? PremiumCell
-            c.data = dataArray[indexPath.row] as! NSDictionary
+            let c: PremiumCell! = tableView.dequeueReusableCell(withIdentifier: "PremiumCell", for: indexPath) as? PremiumCell
+            c.data = dataArray[(indexPath as NSIndexPath).row] as! NSDictionary
             c.setup()
             return c
         }
@@ -129,7 +130,7 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource, NIA
         alert!.showWithAnimation(showAnimationStyle.flip)
     }
     
-    func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
+    func niAlert(_ niAlert: NIAlert, didselectAtIndex: Int) {
         if niAlert == alert {
             if didselectAtIndex == 0 {
                 /* 提现，判断是否超过 20 */
@@ -186,14 +187,14 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource, NIA
                 let req = SendAuthReq()
                 req.scope = "snsapi_userinfo"
                 
-                WXApi.sendReq(req)
+                WXApi.send(req)
             } else {
                 self.showTipText("手机未安装微信")
             }
         }
     }
     
-    func niAlert(niAlert: NIAlert, tapBackground: Bool) {
+    func niAlert(_ niAlert: NIAlert, tapBackground: Bool) {
         if niAlert == alert {
             alert!.dismissWithAnimation(.normal)
         } else if niAlert == alertError {
@@ -205,15 +206,15 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource, NIA
         }
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.section == 0 {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if (indexPath as NSIndexPath).section == 0 {
             return 281
         } else {
             return 80
         }
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if price < 0 {
             return 0
         } else {
@@ -225,7 +226,7 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource, NIA
         }
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
 }

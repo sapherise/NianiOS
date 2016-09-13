@@ -31,25 +31,25 @@ class PlayerCellTop: UIView, UIGestureRecognizerDelegate{
     override func awakeFromNib() {
         super.awakeFromNib()
         self.BGImage.clipsToBounds = true
-        self.viewHolder.frame.size = CGSizeMake(globalWidth, globalHeight + 44)
+        self.viewHolder.frame.size = CGSize(width: globalWidth, height: globalHeight + 44)
         self.viewBanner.setY(320)
         self.viewBanner.setWidth(globalWidth)
-        self.viewMenu.frame.origin = CGPointMake(globalWidth/2 - 160, 0)
-        self.BGImage.frame.size = CGSizeMake(globalWidth, 320)
+        self.viewMenu.frame.origin = CGPoint(x: globalWidth/2 - 160, y: 0)
+        self.BGImage.frame.size = CGSize(width: globalWidth, height: 320)
         self.viewHolderHead.setX(globalWidth/2-32)
-        self.viewBlack.frame.size = CGSizeMake(globalWidth, 320)
+        self.viewBlack.frame.size = CGSize(width: globalWidth, height: 320)
         self.btnMain.setX(globalWidth/2 - 105)
         self.btnLetter.setX(globalWidth/2 + 5)
         self.UserFo.setX(globalWidth/2 - 53)
         self.UserFoed.setX(globalWidth/2 + 1)
         self.imageBadge.setX(globalWidth/2 + 60/2 - 14)
         self.labelMenuSlider.backgroundColor = UIColor.HighlightColor()
-        self.imageSex.hidden = true
+        self.imageSex.isHidden = true
         self.layer.masksToBounds = true
     }
     
-    override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
-        let viewHit = super.hitTest(point, withEvent: event)
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let viewHit = super.hitTest(point, with: event)
         if let v = viewHit?.classForCoder {
             let cls = NSStringFromClass(v)
             if cls == "UIView" {

@@ -22,9 +22,9 @@ class Guide: UIView {
     let h = globalWidth * 35.0 / (2.0 * 38.0)
     
     override init(frame: CGRect) {
-        super.init(frame: CGRectMake(0, 0, globalWidth, globalHeight))
+        super.init(frame: CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight))
         self.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)
-        self.userInteractionEnabled = true
+        self.isUserInteractionEnabled = true
         self.tag = 0
         self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(Guide.onTap(_:))))
     }
@@ -47,30 +47,30 @@ class Guide: UIView {
                 "发一张照片也可以~"
             ]
             
-            ghost = UIImageView(frame: CGRectMake(-10, globalHeight - h - 30, globalWidth / 2, h))
+            ghost = UIImageView(frame: CGRect(x: -10, y: globalHeight - h - 30, width: globalWidth / 2, height: h))
             ghost.image = UIImage(named: "guide")
-            ghost.contentMode = UIViewContentMode.ScaleAspectFit
+            ghost.contentMode = UIViewContentMode.scaleAspectFit
             self.addSubview(ghost)
             
-            os = UIView(frame: CGRectMake(globalWidth/2 - xOS, globalHeight - h - yOS, globalWidth / 2 - xOS + 40, hOS))
+            os = UIView(frame: CGRect(x: globalWidth/2 - xOS, y: globalHeight - h - yOS, width: globalWidth / 2 - xOS + 40, height: hOS))
             os.layer.borderWidth = 4
             os.layer.masksToBounds = true
             os.layer.cornerRadius = 8
-            os.layer.borderColor = UIColor.blackColor().CGColor
+            os.layer.borderColor = UIColor.black.cgColor
             os.backgroundColor = UIColor.colorWithHex("#fffef8")
             self.addSubview(os)
             
-            label = UILabel(frame: CGRectMake(padding, padding, os.width() - padding * 2, 0))
+            label = UILabel(frame: CGRect(x: padding, y: padding, width: os.width() - padding * 2, height: 0))
             label.numberOfLines = 0
-            label.font = UIFont.systemFontOfSize(17)
-            label.textColor = UIColor.blackColor()
+            label.font = UIFont.systemFont(ofSize: 17)
+            label.textColor = UIColor.black
             os.addSubview(label)
             
             say(arr[0])
         }
     }
     
-    func say(content: String) {
+    func say(_ content: String) {
         let tag = self.tag
         self.tag = tag + 1
         label.text = ""
@@ -83,7 +83,7 @@ class Guide: UIView {
         for i in 1...l {
             if self.tag == tag + 1 {
                 delay(0.05 * Double(i), closure: { () -> () in
-                    let c = (content as NSString).substringWithRange(NSRange(location: 0, length: i))
+                    let c = (content as NSString).substring(with: NSRange(location: 0, length: i))
                     self.label.text = c
                 })
             }
@@ -94,14 +94,14 @@ class Guide: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func onTap(sender: UIGestureRecognizer) {
+    func onTap(_ sender: UIGestureRecognizer) {
         if let v = sender.view {
             let tag = v.tag
             if arr.count > tag {
                 say(arr[tag])
             } else {
                 self.removeFromSuperview()
-                Cookies.set("1", forKey: "guide")
+                Cookies.set("1" as AnyObject?, forKey: "guide")
             }
         }
     }

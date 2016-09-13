@@ -26,7 +26,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var viewClose:UIImageView!
     let imageArray = ["home","explore","update","letter","bbs"]
     var actionSheetGameOver: UIActionSheet?
-    var timer:NSTimer?
+    var timer:Timer?
     var ni: NIAlert?
     var niAppStore: NIAlert?
     var niAppStoreStar: NIAlert?
@@ -42,8 +42,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     /* 未读消息 */
     var unread: Int32 = 0
     
-    func onReceived(message: RCMessage!, left nLeft: Int32, object: AnyObject!) {
-        NSNotificationCenter.defaultCenter().postNotificationName("Letter", object: message)
+    func onReceived(_ message: RCMessage!, left nLeft: Int32, object: AnyObject!) {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "Letter"), object: message)
         unread += 1
         dotShow()
     }
@@ -55,13 +55,13 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.initViewControllers()
         gameoverCheck()
         setupReachability()
-        RCIMClient.sharedRCIMClient().setReceiveMessageDelegate(self, object: nil)
+        RCIMClient.shared().setReceiveMessageDelegate(self, object: nil)
     }
 
     func gameoverCheck() {
         Api.getGameover() { json in
             if json != nil {
-                let error = json!.objectForKey("error") as? NSNumber
+                let error = json!.object(forKey: "error") as? NSNumber
                 let json = JSON(json!)
                 if error == 0 {
                     let willLogout = json["data"]["gameover"].stringValue
@@ -72,7 +72,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         self.gameoverId = data["dream"]!["id"].stringValue
                         let gameoverDays = data["dream"]!["days"].stringValue
                         
-                        self.GameOverView = (NSBundle.mainBundle().loadNibNamed("Popup", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Popup
+                        self.GameOverView = (Bundle.main.loadNibNamed("Popup", owner: self, options: nil) as NSArray).object(at: 0) as! Popup
                         self.GameOverView.textTitle = "游戏结束"
                         self.GameOverView.textContent = "因为 \(gameoverDays) 天没更新\n你损失了 5 念币"
                         self.GameOverView.heightImage = 130
@@ -80,11 +80,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         self.GameOverView.textBtnSub = " 关闭日更模式"
                         self.GameOverView.btnMain.tag = 1
                         self.GameOverView.btnSub.tag = 2
-                        self.GameOverView.btnMain.addTarget(self, action: #selector(HomeViewController.onBtnGameOverClick(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-                        self.GameOverView.btnSub.addTarget(self, action: #selector(HomeViewController.onBtnGameOverClick(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-                        let gameoverHead = UIImageView(frame: CGRectMake(70, 60, 75, 60))
+                        self.GameOverView.btnMain.addTarget(self, action: #selector(HomeViewController.onBtnGameOverClick(_:)), for: UIControlEvents.touchUpInside)
+                        self.GameOverView.btnSub.addTarget(self, action: #selector(HomeViewController.onBtnGameOverClick(_:)), for: UIControlEvents.touchUpInside)
+                        let gameoverHead = UIImageView(frame: CGRect(x: 70, y: 60, width: 75, height: 60))
                         gameoverHead.image = UIImage(named: "pet_ghost")
-                        let gameoverSpark = UIImageView(frame: CGRectMake(35, 38, 40, 60))
+                        let gameoverSpark = UIImageView(frame: CGRect(x: 35, y: 38, width: 40, height: 60))
                         gameoverSpark.image = UIImage(named: "pet_ghost_spark")
                         self.GameOverView.viewHolder.addSubview(gameoverHead)
                         self.GameOverView.viewHolder.addSubview(gameoverSpark)
@@ -104,28 +104,28 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         }
     }
     
-    func onBtnGameOverClick(sender: UIButton) {
+    func onBtnGameOverClick(_ sender: UIButton) {
         let tag = sender.tag
         self.gameoverMode = tag
         if tag == 1 {
             self.actionSheetGameOver = UIActionSheet(title: "勇敢的你\n确定继续玩日更模式吗？", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-            self.actionSheetGameOver!.addButtonWithTitle("嗯")
-            self.actionSheetGameOver!.addButtonWithTitle("等一下")
+            self.actionSheetGameOver!.addButton(withTitle: "嗯")
+            self.actionSheetGameOver!.addButton(withTitle: "等一下")
             self.actionSheetGameOver!.cancelButtonIndex = 1
-            self.actionSheetGameOver!.showInView(self.view)
+            self.actionSheetGameOver!.show(in: self.view)
         }else{
             self.actionSheetGameOver = UIActionSheet(title: "要关闭日更模式吗？\n关闭后永不停号，但更新奖励减少\n你随时可在设置里开启日更模式", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-            self.actionSheetGameOver!.addButtonWithTitle("嗯")
-            self.actionSheetGameOver!.addButtonWithTitle("等一下")
+            self.actionSheetGameOver!.addButton(withTitle: "嗯")
+            self.actionSheetGameOver!.addButton(withTitle: "等一下")
             self.actionSheetGameOver!.cancelButtonIndex = 1
-            self.actionSheetGameOver!.showInView(self.view)
+            self.actionSheetGameOver!.show(in: self.view)
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navHide()
-        self.navigationController!.interactivePopGestureRecognizer!.enabled = false
+        self.navigationController!.interactivePopGestureRecognizer!.isEnabled = false
         // 当前账户退出，载入其他账户时使用
     }
     
@@ -136,16 +136,16 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     /**
     主要是为了处理通知，跳转到 tab[3] 去
     */
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navShow()
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
     }
     
@@ -177,7 +177,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     
     func noticeDot() {
         if dot != nil {
-            self.dot?.hidden = true
+            self.dot?.isHidden = true
             Api.postLetter() { json in
                 if json != nil {
                     if let data = json as? NSDictionary {
@@ -186,7 +186,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         let noticeNews = Int(data.stringAttributeForKey("notice_news"))
                         if noticeReply != nil && noticeLike != nil && noticeNews != nil {
                             let notice = Int32(noticeReply! + noticeLike! + noticeNews!)
-                            let _letter = RCIMClient.sharedRCIMClient().getUnreadCount([RCConversationType.ConversationType_PRIVATE.rawValue])
+                            let _letter = RCIMClient.shared().getUnreadCount([RCConversationType.ConversationType_PRIVATE.rawValue])
                             let letter = max(0, _letter)
                             self.unread = letter + notice
                             self.dotShow()
@@ -202,9 +202,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         back {
             /* 当不在消息按钮上 */
             if self.unread > 0 && globalTabBarSelected != 103 {
-                self.dot!.hidden = false
-                UIView.animateWithDuration(0.1, delay:0, options: UIViewAnimationOptions(), animations: {
-                    self.dot!.frame = CGRectMake(globalWidth * 0.7+4, 8, 20, 17)
+                self.dot!.isHidden = false
+                UIView.animate(withDuration: 0.1, delay:0, options: UIViewAnimationOptions(), animations: {
+                    self.dot!.frame = CGRect(x: globalWidth * 0.7+4, y: 8, width: 20, height: 17)
                     }, completion: { (complete: Bool) in
                         self.dot!.text = "\(self.unread)"
                 })
@@ -223,10 +223,10 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         
         //总的
         self.view.backgroundColor = BGColor
-        self.tabBar.hidden = true
+        self.tabBar.isHidden = true
         
         //底部
-        self.myTabbar = UIView(frame: CGRectMake(0,globalHeight-49,globalWidth,49)) //x，y，宽度，高度
+        self.myTabbar = UIView(frame: CGRect(x: 0,y: globalHeight-49,width: globalWidth,height: 49)) //x，y，宽度，高度
         self.myTabbar!.backgroundColor = UIColor.NavColor()
         self.view.addSubview(self.myTabbar!)
         
@@ -234,46 +234,46 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         let count = 5
         for index in 0 ..< count {
             let btnWidth = CGFloat(index) * globalWidth * 0.2
-            let button  = UIButton(type: UIButtonType.Custom)
-            button.frame = CGRectMake(btnWidth, 1, globalWidth * 0.2 ,49)
+            let button  = UIButton(type: UIButtonType.custom)
+            button.frame = CGRect(x: btnWidth, y: 1, width: globalWidth * 0.2 ,height: 49)
             button.tag = index+100
             let image = self.imageArray[index]
             let myImage = UIImage(named:"\(image)")
             let myImage2 = UIImage(named:"\(image)_s")
             
-            button.setImage(myImage, forState: UIControlState.Normal)
-            button.setImage(myImage2, forState: UIControlState.Selected)
+            button.setImage(myImage, for: UIControlState())
+            button.setImage(myImage2, for: UIControlState.selected)
             
             button.clipsToBounds = true
-            button.addTarget(self, action: #selector(HomeViewController.tabBarButtonClicked(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self, action: #selector(HomeViewController.tabBarButtonClicked(_:)), for: UIControlEvents.touchUpInside)
             self.myTabbar?.addSubview(button)
             if index == firstSelected {
-                button.selected = true
+                button.isSelected = true
             }
         }
-        self.dot = UILabel(frame: CGRectMake(globalWidth*0.7+4, 10, 20, 15))
-        self.dot!.textColor = UIColor.whiteColor()
-        self.dot!.font = UIFont.systemFontOfSize(10)
-        self.dot!.textAlignment = NSTextAlignment.Center
+        self.dot = UILabel(frame: CGRect(x: globalWidth*0.7+4, y: 10, width: 20, height: 15))
+        self.dot!.textColor = UIColor.white
+        self.dot!.font = UIFont.systemFont(ofSize: 10)
+        self.dot!.textAlignment = NSTextAlignment.center
         self.dot!.backgroundColor = UIColor.HighlightColor()
         self.dot!.layer.cornerRadius = 5
         self.dot!.layer.masksToBounds = true
-        self.dot!.hidden = true
+        self.dot!.isHidden = true
         self.dot!.text = "0"
         self.myTabbar!.addSubview(dot!)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.onURL(_:)), name: "AppURL", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeViewController.QuickActions(_:)), name: "QuickActions", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeViewController.onAppEnterForeground), name: "AppEnterForeground", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeViewController.onAppActive), name: "AppActive", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeViewController.onObserveDeactive), name: "AppDeactive", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.onURL(_:)), name: "AppURL", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.QuickActions(_:)), name: NSNotification.Name(rawValue: "QuickActions"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.onAppEnterForeground), name: NSNotification.Name(rawValue: "AppEnterForeground"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.onAppActive), name: NSNotification.Name(rawValue: "AppActive"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.onObserveDeactive), name: NSNotification.Name(rawValue: "AppDeactive"), object: nil)
         
         /* 当收到远程推送时 */
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeViewController.noticeDot), name: "Notice", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.noticeDot), name: NSNotification.Name(rawValue: "Notice"), object: nil)
     }
     
     // 3D Touch 下的更新进展
-    func QuickActions(sender: NSNotification) {
+    func QuickActions(_ sender: Notification) {
         let type = sender.object as! String
         if type == "1" {
             let vc = AddStep(nibName: "AddStep", bundle: nil)
@@ -286,19 +286,19 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         if self.gameoverMode == 1 {
             Api.postGameoverCoin(self.gameoverId) { json in
                 self.navigationItem.rightBarButtonItems = []
-                self.GameOverView!.hidden = true
+                self.GameOverView!.isHidden = true
             }
         }else{
             Api.postUserFrequency(1) { json in
                 Api.postGameoverCoin(self.gameoverId) { json in
                     self.navigationItem.rightBarButtonItems = []
-                    self.GameOverView!.hidden = true
+                    self.GameOverView!.isHidden = true
                 }
             }
         }
     }
     
-    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
         if actionSheet == self.actionSheetGameOver {
             if buttonIndex == 0 {
                 GameOverHide()
@@ -306,14 +306,14 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         }
     }
     
-    func gameoverButton(word:String) -> UIButton {
-        let button = UIButton(frame: CGRectMake(60, 0, 150, 36))
-        button.backgroundColor = UIColor.blackColor()
-        button.setTitle(word, forState: UIControlState.Normal)
-        button.titleLabel!.font = UIFont.systemFontOfSize(14)
-        button.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+    func gameoverButton(_ word:String) -> UIButton {
+        let button = UIButton(frame: CGRect(x: 60, y: 0, width: 150, height: 36))
+        button.backgroundColor = UIColor.black
+        button.setTitle(word, for: UIControlState())
+        button.titleLabel!.font = UIFont.systemFont(ofSize: 14)
+        button.setTitleColor(UIColor.white, for: UIControlState())
         button.layer.cornerRadius = 18
-        button.addTarget(self, action: #selector(HomeViewController.onBtnGameOverClick(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        button.addTarget(self, action: #selector(HomeViewController.onBtnGameOverClick(_:)), for: UIControlEvents.touchUpInside)
         return button
     }
     
@@ -321,28 +321,28 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func initViewControllers() {
         let storyboardExplore = UIStoryboard(name: "Explore", bundle: nil)
         let NianStoryBoard: UIStoryboard = UIStoryboard(name: "NianViewController", bundle: nil)
-        Nian = NianStoryBoard.instantiateViewControllerWithIdentifier("NianViewController") as! NianViewController
+        Nian = NianStoryBoard.instantiateViewController(withIdentifier: "NianViewController") as! NianViewController
         let vc1 = Nian
-        let vc2 = storyboardExplore.instantiateViewControllerWithIdentifier("ExploreViewController")
+        let vc2 = storyboardExplore.instantiateViewController(withIdentifier: "ExploreViewController")
         let vc3 = AddStep(nibName: "AddStep", bundle: nil)
         let vc4 = MeViewController()
         let vc5 = RedditViewController()
-        self.viewControllers = [vc1, vc2, vc3, vc4, vc5]
+        self.viewControllers = [vc1!, vc2, vc3, vc4, vc5]
         self.customizableViewControllers = nil
         self.selectedIndex = firstSelected
     }
     
     //底部的按钮按下去
-    func tabBarButtonClicked(sender:UIButton){
+    func tabBarButtonClicked(_ sender:UIButton){
         let index = sender.tag
         for i in 0 ..< 5 {
             let button = self.view.viewWithTag(i+100) as? UIButton
             if button != nil {
                 if index != 102 {
                     if button!.tag == index{
-                        button!.selected = true
+                        button!.isSelected = true
                     }else{
-                        button!.selected = false
+                        button!.isSelected = false
                     }
                 }
             }
@@ -359,16 +359,16 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         let idBBS = 104
         
         if index == idExplore {       // 发现
-            NSNotificationCenter.defaultCenter().postNotificationName("exploreTop", object:"\(numExplore)")
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "exploreTop"), object:"\(numExplore)")
             numExplore = numExplore + 1
         }else if index == idBBS {     // 热门
-            NSNotificationCenter.defaultCenter().postNotificationName("reddit", object:"\(numHot)")
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "reddit"), object:"\(numHot)")
             numHot = numHot + 1
         }else if index == idDream {     // 记本
         }else if index == idMe {     // 消息
-            self.dot!.hidden = true
+            self.dot!.isHidden = true
             unread = 0
-            NSNotificationCenter.defaultCenter().postNotificationName("noticeShare", object:"1")
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "noticeShare"), object:"1")
         }else if index == idUpdate {      // 更新
             /* 当缓存中没有记本时，点击第三栏跳转到添加记本 */
             if let NianDreams = Cookies.get("NianDreams") as? NSMutableArray {
@@ -390,15 +390,15 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         }
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if NSStringFromClass(touch.view!.classForCoder) == "UITableViewCellContentView"  {
             return false
         }
         return true
     }
     
-    func onShare(avc: UIActivityViewController) {
-        self.presentViewController(avc, animated: true, completion: nil)
+    func onShare(_ avc: UIActivityViewController) {
+        self.present(avc, animated: true, completion: nil)
     }
 }
 

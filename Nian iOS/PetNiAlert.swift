@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 extension PetViewController {
-    func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
+    func niAlert(_ niAlert: NIAlert, didselectAtIndex: Int) {
         if niAlert == self.upgradeView {
             if didselectAtIndex == 1 {
                 niAlert.dismissWithAnimation(.normal)
@@ -23,10 +23,10 @@ extension PetViewController {
                     _btn.stopAnimating()
                     
                     if json != nil {
-                        let err = json!.objectForKey("error") as! NSNumber
+                        let err = json!.object(forKey: "error") as! NSNumber
                         if err == 0 {
                             self.isUpgradeSuccess = true
-                            let data = json!.objectForKey("data") as! NSDictionary
+                            let data = json!.object(forKey: "data") as! NSDictionary
                             let id = data.stringAttributeForKey("id")
                             let level = data.stringAttributeForKey("level")
                             let image = data.stringAttributeForKey("image")
@@ -42,7 +42,7 @@ extension PetViewController {
                             if let coin = Cookies.get("coin") as? String {
                                 if let _coin = Int(coin) {
                                     let coinNew = _coin - reduce
-                                    Cookies.set("\(coinNew)", forKey: "coin")
+                                    Cookies.set("\(coinNew)" as AnyObject?, forKey: "coin")
                                 }
                             }
                             
@@ -55,7 +55,7 @@ extension PetViewController {
                                             self.evolutionView = NIAlert()
                                             self.evolutionView!.delegate = self
                                             self.evolutionView!.dict = NSMutableDictionary(objects: [self.imageView, name, "\(name)进化了！", [" 嗯！"]],
-                                                forKeys: ["img", "title", "content", "buttonArray"])
+                                                forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
                                             self.upgradeView?.dismissWithAnimationSwtichEvolution(self.evolutionView!, url: image)
                                             let mutableData = NSMutableDictionary(dictionary: d)
                                             mutableData.setValue(image, forKey: "image")
@@ -84,14 +84,14 @@ extension PetViewController {
                             self.upgradeResultView = NIAlert()
                             self.upgradeResultView!.delegate = self
                             self.upgradeResultView!.dict = NSMutableDictionary(objects: [UIImage(named: "coinless")!, "念币不足", "没有足够的念币...", ["哦"]],
-                                forKeys: ["img", "title", "content", "buttonArray"])
+                                forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
                             self.upgradeView?.dismissWithAnimationSwtich(self.upgradeResultView!)
                         } else {
                             self.isUpgradeSuccess = false
                             self.upgradeResultView = NIAlert()
                             self.upgradeResultView!.delegate = self
                             self.upgradeResultView!.dict = NSMutableDictionary(objects: [UIImage(named: "coinless")!, "奇怪的错误", "遇到了一个奇怪的错误...", ["哦"]],
-                                forKeys: ["img", "title", "content", "buttonArray"])
+                                forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
                             self.upgradeView?.dismissWithAnimationSwtich(self.upgradeResultView!)
                         }
                     }
@@ -126,13 +126,13 @@ extension PetViewController {
                 let coins = energy/100
                 Api.getConsume("energy", coins: coins) { json in
                     if json != nil {
-                        let err = json!.objectForKey("error") as! NSNumber
+                        let err = json!.object(forKey: "error") as! NSNumber
                         self.giftView?.dismissWithAnimation(.normal)
                         if err == 0 {
                             if let coin = Cookies.get("coin") as? String {
                                 if let _coin = Int(coin) {
                                     let coinNew = _coin + coins
-                                    Cookies.set("\(coinNew)", forKey: "coin")
+                                    Cookies.set("\(coinNew)" as AnyObject?, forKey: "coin")
                                 }
                             }
                             self.energy = self.energy - coins * 100
@@ -148,7 +148,7 @@ extension PetViewController {
         }
     }
     
-    func niAlert(niAlert: NIAlert, tapBackground: Bool) {
+    func niAlert(_ niAlert: NIAlert, tapBackground: Bool) {
         if niAlert == self.upgradeView {
             self.upgradeView?.dismissWithAnimation(.normal)
         } else if niAlert == self.upgradeResultView {
@@ -164,21 +164,22 @@ extension PetViewController {
     }
     
     func shareVC() {
-        let card = (NSBundle.mainBundle().loadNibNamed("Card", owner: self, options: nil) as NSArray).objectAtIndex(0) as! Card
-        let data = dataArray[current] as! NSDictionary
-        let name = data.stringAttributeForKey("name")
-        let image = data.stringAttributeForKey("image")
-        let content = "我在念里拿到了可爱的「\(name)」"
-        card.content = content
-        card.widthImage = "360"
-        card.heightImage = "360"
-        card.url = "http://img.nian.so/pets/\(image)!d"
-        let img = card.getCard()
-        let avc = SAActivityViewController.shareSheetInView([img, content], applicationActivities: [], isStep: true)
-        self.presentViewController(avc, animated: true, completion: nil)
+        // todo
+//        let card = (Bundle.main.loadNibNamed("Card", owner: self, options: nil) as NSArray).object(at: 0) as! Card
+//        let data = dataArray[current] as! NSDictionary
+//        let name = data.stringAttributeForKey("name")
+//        let image = data.stringAttributeForKey("image")
+//        let content = "我在念里拿到了可爱的「\(name)」"
+//        card.content = content
+//        card.widthImage = "360"
+//        card.heightImage = "360"
+//        card.url = "http://img.nian.so/pets/\(image)!d"
+//        let img = card.getCard()
+//        let avc = SAActivityViewController.shareSheetInView([img, content], applicationActivities: [], isStep: true)
+//        self.present(avc, animated: true, completion: nil)
     }
     
-    func saEgg(saEgg: SAEgg, lotteryResult: NSDictionary) {
+    func saEgg(_ saEgg: SAEgg, lotteryResult: NSDictionary) {
         let id = lotteryResult.stringAttributeForKey("id")
         if self.dataArray.count >= 1 {
             for i: Int in 0...self.dataArray.count - 1 {
@@ -203,10 +204,10 @@ extension PetViewController {
         giftView?.delegate = self
         if energy >= 100 {
             giftView!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "礼物", "要将 \(energy) 个礼物\n兑换为 \(energy/100) 念币吗", [" 嗯！"]],
-                forKeys: ["img", "title", "content", "buttonArray"])
+                forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
         } else {
             giftView!.dict = NSMutableDictionary(objects: [UIImage(named: "coinless")!, "礼物", "这是宠物送给你的礼物\n每 100 个可以兑换 1 念币", ["好"]],
-                forKeys: ["img", "title", "content", "buttonArray"])
+                forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
         }
         giftView?.showWithAnimation(.flip)
     }

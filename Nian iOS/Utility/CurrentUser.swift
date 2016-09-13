@@ -16,18 +16,18 @@ class CurrentUser {
     var uid: String? {
         set {
             let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-            uidKey.setObject(uid, forKey: kSecAttrAccount)
+            uidKey?.setObject(uid, forKey: kSecAttrAccount)
         }
         get {
             let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-            var cookieuid = uidKey.objectForKey(kSecAttrAccount) as? String
+            var cookieuid = uidKey?.object(forKey: kSecAttrAccount) as? String
             
             /**
             *  uid 和 shell 由于以前的原因，可能还在 userdefault 里
             */
             if (cookieuid!).characters.count > 0 && cookieuid != "" {
             } else {
-                cookieuid = NSUserDefaults.standardUserDefaults().objectForKey("uid") as? String
+                cookieuid = UserDefaults.standard.object(forKey: "uid") as? String
             }
             
             return cookieuid
@@ -36,11 +36,11 @@ class CurrentUser {
     var shell: String? {
         set {
             let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-            uidKey.setObject(shell, forKey: kSecValueData)
+            uidKey?.setObject(shell, forKey: kSecValueData)
         }
         get {
             let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-            let cookieshell = uidKey.objectForKey(kSecValueData) as? String
+            let cookieshell = uidKey?.object(forKey: kSecValueData) as? String
             return cookieshell
         }
     }

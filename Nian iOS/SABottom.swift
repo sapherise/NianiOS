@@ -18,13 +18,13 @@ class SABottom: UIView {
         super.awakeFromNib()
         
         self.setWidth(globalWidth)
-        self.viewLine.frame = CGRectMake(0, 0, globalWidth, 0.5)
+        self.viewLine.frame = CGRect(x: 0, y: 0, width: globalWidth, height: 0.5)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.frame.origin = CGPointMake(pointX, pointY)
+        self.frame.origin = CGPoint(x: pointX, y: pointY)
 
     }
 }

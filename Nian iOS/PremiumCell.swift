@@ -17,7 +17,7 @@ class PremiumCell: UITableViewCell {
     @IBOutlet var viewHolder: UIView!
     
     func setup() {
-        self.selectionStyle = .None
+        self.selectionStyle = .none
         let title = data.stringAttributeForKey("title")
         let content = data.stringAttributeForKey("content")
         let image = data.stringAttributeForKey("image")

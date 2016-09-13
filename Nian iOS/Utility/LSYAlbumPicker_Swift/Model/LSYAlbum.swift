@@ -10,8 +10,8 @@ import Foundation
 import AssetsLibrary
 public class LSYAlbum {
     //定义block
-    public typealias albumGroupsBlock = (groups:NSMutableArray)->()
-    public typealias albumAssetsBlock = (assets:NSMutableArray)->()
+    public typealias albumGroupsBlock = (_ groups:NSMutableArray)->()
+    public typealias albumAssetsBlock = (_ assets:NSMutableArray)->()
     //定义类的存储属性
     var assetsGroup:ALAssetsGroup!
     var assetsLibrary:ALAssetsLibrary!
@@ -22,60 +22,67 @@ public class LSYAlbum {
     public class func sharedAlbum()->LSYAlbum! {
         struct LSYAlbumStruct {
             static var album:LSYAlbum!
-            static var onceToken:dispatch_once_t = 0
         }
-        dispatch_once(&LSYAlbumStruct.onceToken, { () -> Void in
+        
+        let myGlobal = {
             LSYAlbumStruct.album = LSYAlbum()
             LSYAlbumStruct.album.assetsLibrary = ALAssetsLibrary()
             LSYAlbumStruct.album.assetsFilter = ALAssetsFilter.allAssets()
-        })
+        }
+        
+        _ = myGlobal
+        
         return LSYAlbumStruct.album;
     }
-    
-    public func setupAlbumGroups(albumGroups:albumGroupsBlock){
+    public func setupAlbumGroups(albumGroups:@escaping albumGroupsBlock){
         let groups = NSMutableArray()
         let resultBlock:ALAssetsLibraryGroupsEnumerationResultsBlock = { (group:ALAssetsGroup!,stop:UnsafeMutablePointer<ObjCBool>)->Void in
             if group != nil {
                 group.setAssetsFilter(self.assetsFilter)
-                let groupType = group.valueForProperty(ALAssetsGroupPropertyType).integerValue
-                if UInt32(groupType)  == ALAssetsGroupSavedPhotos {
-                    groups.insertObject(group, atIndex: 0)
-                } else {
+                let groupType = (group.value(forProperty: ALAssetsGroupPropertyType) as AnyObject).integerValue
+                if UInt32(groupType!)  == ALAssetsGroupSavedPhotos {
+                    groups.insert(group, at: 0)
+                }
+                else
+                {
                     if group.numberOfAssets()>0 {
-                        groups.addObject(group)
+                        groups.add(group)
                     }
                 }
-            } else{
-                self.groups = groups
-                albumGroups(groups: groups)
             }
-        }
+            else{
+                self.groups = groups
+                albumGroups(groups)
+            }
+        } as! ALAssetsLibraryGroupsEnumerationResultsBlock
         let failureBlock:ALAssetsLibraryAccessFailureBlock = {(error:NSError!)->Void in
             self.groups = groups
-            albumGroups(groups: groups)
-        }
+            albumGroups(groups)
+        } as! ALAssetsLibraryAccessFailureBlock
         self.assetsLibrary.enumerateGroupsWithTypes(ALAssetsGroupAll, usingBlock: resultBlock, failureBlock: failureBlock)
     }
-    
-    public func setupAlbumAssets(group:ALAssetsGroup,albumAssets:albumAssetsBlock){
+    public func setupAlbumAssets(group:ALAssetsGroup,albumAssets:@escaping albumAssetsBlock){
         let assets = NSMutableArray()
         group.setAssetsFilter(self.assetsFilter)
         let assetCount = group.numberOfAssets()
         let resultBlock :ALAssetsGroupEnumerationResultsBlock = { (asset:ALAsset!,index:Int,stop:UnsafeMutablePointer<ObjCBool>)->Void in
             if asset != nil {
                 let model:LSYAlbumModel = LSYAlbumModel(data: asset)
-                assets.addObject(model)
-                let assetType:String! = model.asset.valueForProperty(ALAssetPropertyType) as? String
+                assets.add(model)
+                let assetType:String! = model.asset.value(forProperty: ALAssetPropertyType) as? String
                 if assetType == ALAssetTypePhoto {
+                    
+                }
+                else if assetType == ALAssetTypeVideo {
                     
                 }
             }
             else if assets.count >= assetCount {
                 self.assets = assets;
-                albumAssets(assets: assets)
+                albumAssets(assets)
             }
-        }
-        group.enumerateAssetsWithOptions(NSEnumerationOptions.Reverse, usingBlock: resultBlock)
+        } as! ALAssetsGroupEnumerationResultsBlock
+        group.enumerateAssets(options: NSEnumerationOptions.reverse, using: resultBlock)
     }
     
     

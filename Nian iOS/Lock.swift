@@ -8,6 +8,17 @@
 
 import Foundation
 import UIKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 enum lockType: Int {
     /* 启用应用锁，要输入两次 */
@@ -55,10 +66,10 @@ class Lock: SAViewController, UITextViewDelegate {
         var x = (globalWidth - size_width * 4 - padding * 3) / 2
         for _ in 0...3 {
             let v = LockView()
-            v.frame.origin = CGPointMake(x, size_y + 64)
+            v.frame.origin = CGPoint(x: x, y: size_y + 64)
             x += size_width + padding
             self.view.addSubview(v)
-            v.userInteractionEnabled = true
+            v.isUserInteractionEnabled = true
             v.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(Lock.onInput)))
         }
         
@@ -68,18 +79,18 @@ class Lock: SAViewController, UITextViewDelegate {
         } else {
             contentString = "输入应用密码"
         }
-        label = UILabel(frame: CGRectMake(globalWidth/2 - 80, size_y + 64 + size_width + 20, 160, 50))
+        label = UILabel(frame: CGRect(x: globalWidth/2 - 80, y: size_y + 64 + size_width + 20, width: 160, height: 50))
         label.text = contentString
-        label.textAlignment = .Center
+        label.textAlignment = .center
         label.numberOfLines = 0
         label.textColor = UIColor.b3()
-        label.font = UIFont.systemFontOfSize(13)
+        label.font = UIFont.systemFont(ofSize: 13)
         self.view.addSubview(label)
         
         /* 设置一个隐藏的输入框 */
-        textView = UITextView(frame: CGRectMake(40, 300, 0, 0))
-        textView.keyboardType = .NumberPad
-        textView.hidden = true
+        textView = UITextView(frame: CGRect(x: 40, y: 300, width: 0, height: 0))
+        textView.keyboardType = .numberPad
+        textView.isHidden = true
         textView.delegate = self
         self.view.addSubview(textView)
         textView.becomeFirstResponder()
@@ -89,19 +100,19 @@ class Lock: SAViewController, UITextViewDelegate {
     }
     
     /* 设置是否允许手势返回 */
-    func setBack(isAble: Bool) {
+    func setBack(_ isAble: Bool) {
         if isAble {
-            self.navigationController?.fd_fullscreenPopGestureRecognizer.enabled = true
+            self.navigationController?.fd_fullscreenPopGestureRecognizer.isEnabled = true
             self.navigationController?.fd_interactivePopDisabled = false
-            self.navigationController?.interactivePopGestureRecognizer?.enabled = true
+            self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         } else {
-            self.navigationController?.fd_fullscreenPopGestureRecognizer.enabled = false
+            self.navigationController?.fd_fullscreenPopGestureRecognizer.isEnabled = false
             self.navigationController?.fd_interactivePopDisabled = true
-            self.navigationController?.interactivePopGestureRecognizer?.enabled = false
+            self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setBack()
     }
@@ -117,13 +128,13 @@ class Lock: SAViewController, UITextViewDelegate {
     }
     
     /* 设置是否允许按钮返回 */
-    func setBackButton(isAble: Bool) {
+    func setBackButton(_ isAble: Bool) {
         if isAble {
-            let leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: #selector(self.backNavigation))
+            let leftButton = UIBarButtonItem(title: "  ", style: .plain, target: self, action: #selector(self.backNavigation))
             leftButton.image = UIImage(named:"newBack")
             self.navigationItem.leftBarButtonItem = leftButton
         } else {
-            let leftButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: #selector(Lock.onNoBack))
+            let leftButton = UIBarButtonItem(title: "  ", style: .plain, target: self, action: #selector(Lock.onNoBack))
             leftButton.image = UIImage()
             self.navigationItem.leftBarButtonItem = leftButton
         }
@@ -139,7 +150,7 @@ class Lock: SAViewController, UITextViewDelegate {
     }
     
     /* 根据 textView 的内容来改变密码框的样式 */
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         let content = textView.text! as NSString
         let l  = content.length
         var i = 0
@@ -163,9 +174,9 @@ class Lock: SAViewController, UITextViewDelegate {
         if l == 4 {
             if type == lockType.verify {
                 if let password = Cookies.get("Lock") as? String {
-                    if content == password {
+                    if content as String == password {
                         setBack(true)
-                        self.navigationController?.popToRootViewControllerAnimated(true)
+                        self.navigationController?.popToRootViewController(animated: true)
                     } else {
                         wrong()
                     }
@@ -180,9 +191,9 @@ class Lock: SAViewController, UITextViewDelegate {
                     if textView.text! == passwordTmp {
                         /* 两次输入的密码都一样，保存并返回 */
                         setBack(true)
-                        self.navigationController?.popViewControllerAnimated(true)
+                        self.navigationController?.popViewController(animated: true)
                         delegate?.setLockState(true)
-                        Cookies.set(passwordTmp, forKey: "Lock")
+                        Cookies.set(passwordTmp as AnyObject?, forKey: "Lock")
                         self.showTipText("应用密码设好了")
                     } else {
                         wrong()
@@ -190,9 +201,9 @@ class Lock: SAViewController, UITextViewDelegate {
                 }
             } else if type == lockType.off {
                 if let password = Cookies.get("Lock") as? String {
-                    if content == password {
+                    if content as String == password {
                         setBack(true)
-                        self.navigationController?.popViewControllerAnimated(true)
+                        self.navigationController?.popViewController(animated: true)
                         delegate?.setLockState(false)
                         Cookies.remove("Lock")
                         self.showTipText("应用密码关掉了")
@@ -208,23 +219,23 @@ class Lock: SAViewController, UITextViewDelegate {
     func wrong() {
         clear()
         let x = label.x()
-        UIView.animateWithDuration(0.1, animations: { () -> Void in
+        UIView.animate(withDuration: 0.1, animations: { () -> Void in
             self.label.setX(x - 5)
-            }) { (Bool) -> Void in
-                UIView.animateWithDuration(0.1, animations: { () -> Void in
+            }, completion: { (Bool) -> Void in
+                UIView.animate(withDuration: 0.1, animations: { () -> Void in
                     self.label.setX(x + 5)
-                    }) { (Bool) -> Void in
-                        UIView.animateWithDuration(0.1, animations: { () -> Void in
+                    }, completion: { (Bool) -> Void in
+                        UIView.animate(withDuration: 0.1, animations: { () -> Void in
                             self.label.setX(x - 5)
-                            }) { (Bool) -> Void in
-                                UIView.animateWithDuration(0.1, animations: { () -> Void in
+                            }, completion: { (Bool) -> Void in
+                                UIView.animate(withDuration: 0.1, animations: { () -> Void in
                                     self.label.setX(x + 5)
-                                    }) { (Bool) -> Void in
+                                    }, completion: { (Bool) -> Void in
                                         self.label.setX(x)
-                                }
-                        }
-                }
-        }
+                                }) 
+                        }) 
+                }) 
+        }) 
     }
     
     /* 清除密码框 */
@@ -243,7 +254,7 @@ class Lock: SAViewController, UITextViewDelegate {
     }
     
     /* 判断是否可以改变 textView 内容 */
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         /* 说明输入的是数字 */
         if Int(text) != nil {
             let content = textView.text!
@@ -272,17 +283,17 @@ class LockView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.blackColor()
-        self.frame.size = CGSizeMake(50, 50)
+        self.backgroundColor = UIColor.black
+        self.frame.size = CGSize(width: 50, height: 50)
         self.layer.cornerRadius = 6
         self.layer.masksToBounds = true
         point = UIView()
-        point.frame.size = CGSizeMake(12, 12)
+        point.frame.size = CGSize(width: 12, height: 12)
         point.center = self.center
         point.backgroundColor = UIColor.b3()
         point.layer.masksToBounds = true
         point.layer.cornerRadius = 6
-        point.hidden = true
+        point.isHidden = true
         self.addSubview(point)
     }
 
@@ -290,11 +301,11 @@ class LockView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setup(isInputed: Bool) {
+    func setup(_ isInputed: Bool) {
         if isInputed {
-            point.hidden = false
+            point.isHidden = false
         } else {
-            point.hidden = true
+            point.isHidden = true
         }
     }
 }

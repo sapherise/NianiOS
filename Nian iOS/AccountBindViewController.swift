@@ -9,7 +9,7 @@
 import UIKit
 
 protocol UpdateUserDictDelegate {
-    func updateUserDict(email: String)
+    func updateUserDict(_ email: String)
 }
 
 class AccountBindViewController: SAViewController, UIActionSheetDelegate {
@@ -34,61 +34,61 @@ class AccountBindViewController: SAViewController, UIActionSheetDelegate {
         // Do any additional setup after loading the view.
         self._setTitle("账号和绑定设置")
         
-        self.tableview.registerClass(AccountBindCell.self, forCellReuseIdentifier: "AccountBindCell")
-        self.tableview.tableHeaderView = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 24))
-        self.tableview.separatorStyle = .None
+        self.tableview.register(AccountBindCell.self, forCellReuseIdentifier: "AccountBindCell")
+        self.tableview.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 24))
+        self.tableview.separatorStyle = .none
         
         self.startAnimating()
-        
-        SettingModel.getUserAllOauth() {
-            (task, responseObject, error) in
-            
-            self.stopAnimating()
-            
-            if let _ = error {
-                self.showTipText("网络有点问题，等一会儿再试")
-            } else {
-                let json = JSON(responseObject!)
-                
-                if json["error"].numberValue != 0 {
-                    
-                } else {
-                    self.bindDict = json["data"].dictionaryObject!
-                    
-                    self.tableview.reloadData()
-                }
-                
-            }
-        }
+        // todo
+//        SettingModel.getUserAllOauth() {
+//            (task, responseObject, error) in
+//            
+//            self.stopAnimating()
+//            
+//            if let _ = error {
+//                self.showTipText("网络有点问题，等一会儿再试")
+//            } else {
+////                let json = JSON(responseObject!)
+////                
+////                if json["error"].numberValue != 0 {
+////                    
+////                } else {
+////                    self.bindDict = json["data"].dictionaryObject!
+////                    
+////                    self.tableview.reloadData()
+////                }
+//                    // todo
+//            }
+//        }
         
     }
     
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AccountBindViewController.handleBindWeibo(_:)), name: "weibo", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AccountBindViewController.handleBindWechat(_:)), name: "Wechat", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(AccountBindViewController.handleBindWeibo(_:)), name: NSNotification.Name(rawValue: "weibo"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(AccountBindViewController.handleBindWechat(_:)), name: NSNotification.Name(rawValue: "Wechat"), object: nil)
     }
     
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "weibo", object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "Wechat", object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "weibo"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "Wechat"), object: nil)
     }
     
 }
 
 extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource {
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
     
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if section == 0 {
             return 1
@@ -99,16 +99,16 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
         return 1
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        var cell = tableView.dequeueReusableCellWithIdentifier("AccountBindCell") as? AccountBindCell
+        var cell = tableView.dequeueReusableCell(withIdentifier: "AccountBindCell") as? AccountBindCell
         
         if cell == nil {
-           cell = AccountBindCell.init(style: .Value1, reuseIdentifier: "AccountBindCell")
+           cell = AccountBindCell.init(style: .value1, reuseIdentifier: "AccountBindCell")
         }
         
-        if indexPath.section == 0 {
-            if indexPath.row == 0 {
+        if (indexPath as NSIndexPath).section == 0 {
+            if (indexPath as NSIndexPath).row == 0 {
                 if self.userEmail == "" {
                     cell?.imageView?.image = UIImage(named: "account_mail")
                 } else {
@@ -118,8 +118,8 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                 
                 cell?.textLabel?.text = "邮箱"
             }
-        } else if indexPath.section == 1 {
-            if indexPath.row == 0 {
+        } else if (indexPath as NSIndexPath).section == 1 {
+            if (indexPath as NSIndexPath).row == 0 {
                 if self.bindDict["wechat"] as? String == "1" {
                     cell?.imageView?.image = UIImage(named: "account_wechat_binding")
                     cell?.detailTextLabel?.text = self.bindDict["wechat_username"] as? String
@@ -127,12 +127,12 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     cell?.imageView?.image = UIImage(named: "account_wechat")
                     cell?.detailTextLabel?.text = ""
                 }
-                let v = UIView(frame: CGRectMake(16, cell!.height() - globalHalf, globalWidth - 16, globalHalf))
+                let v = UIView(frame: CGRect(x: 16, y: cell!.height() - globalHalf, width: globalWidth - 16, height: globalHalf))
                 v.backgroundColor = UIColor.e6()
                 cell?.addSubview(v)
                 cell?.textLabel?.text = "微信"
                 
-            } else if indexPath.row == 1 {
+            } else if (indexPath as NSIndexPath).row == 1 {
                 if self.bindDict["QQ"] as? String == "1" {
                     cell?.imageView?.image = UIImage(named: "account_qq_binding")
                     cell?.detailTextLabel?.text = self.bindDict["QQ_username"] as? String
@@ -140,12 +140,12 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     cell?.imageView?.image = UIImage(named: "account_qq")
                     cell?.detailTextLabel?.text = ""
                 }
-                let v = UIView(frame: CGRectMake(16, cell!.height() - globalHalf, globalWidth - 16, globalHalf))
+                let v = UIView(frame: CGRect(x: 16, y: cell!.height() - globalHalf, width: globalWidth - 16, height: globalHalf))
                 v.backgroundColor = UIColor.e6()
                 cell?.addSubview(v)
                 cell?.textLabel?.text = "QQ"
                 
-            } else if indexPath.row == 2 {
+            } else if (indexPath as NSIndexPath).row == 2 {
                 if self.bindDict["weibo"] as? String == "1" {
                     cell?.imageView?.image = UIImage(named: "account_weibo_binding")
                     cell?.detailTextLabel?.text = self.bindDict["weibo_username"] as? String
@@ -161,7 +161,7 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
         return cell!
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
             return globalHalf
         } else if section == 1 {
@@ -170,21 +170,21 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
         return globalHalf
     }
     
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
             
             // 邮箱的顶部分割线
-            let _view = UIView(frame: CGRectMake(0, 0, self.view.frame.width, globalHalf))
+            let _view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: globalHalf))
             _view.backgroundColor = UIColor(red: 0xE6/255.0, green: 0xE6/255.0, blue: 0xE6/255.0, alpha: 1.0)
             
             return _view
         } else if section == 1 {
             
             // QQ和微信的上下分割线
-            let containerView = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 24))
+            let containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 24))
             
-            let _view1 = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 23.5))
-            let _view2 = UIView(frame: CGRectMake(0, 24 - globalHalf, self.view.frame.width, globalHalf))
+            let _view1 = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 23.5))
+            let _view2 = UIView(frame: CGRect(x: 0, y: 24 - globalHalf, width: self.view.frame.width, height: globalHalf))
             _view2.backgroundColor = UIColor.e6()
             
             containerView.addSubview(_view1)
@@ -197,7 +197,7 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
     }
    
     
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if section == 1 {
             return 24
         } else if section == 0 {
@@ -207,16 +207,16 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
         return globalHalf
     }
     
-    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == 1 {
-            let _containerView = UIView(frame: CGRectMake(0, 0, self.view.frame.width, 24))
+            let _containerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 24))
             
-            let _view = UIView(frame: CGRectMake(0, 0, self.view.frame.width, globalHalf))
+            let _view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: globalHalf))
             _view.backgroundColor = UIColor.e6()
             
-            let label = UILabel(frame: CGRectMake(16, 8, self.view.frame.width, 15))
+            let label = UILabel(frame: CGRect(x: 16, y: 8, width: self.view.frame.width, height: 15))
             label.text = "绑定社交网络账号来玩念"
-            label.font = UIFont.systemFontOfSize(12)
+            label.font = UIFont.systemFont(ofSize: 12)
             label.textColor = UIColor.b3()
             
             _containerView.addSubview(_view)
@@ -225,7 +225,7 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
             return _containerView
             
         } else if section == 0 {
-            let _view = UIView(frame: CGRectMake(0, 0, self.view.frame.width, globalHalf))
+            let _view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: globalHalf))
             _view.backgroundColor = UIColor.e6()
             
             return _view
@@ -234,10 +234,10 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
         return nil
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if indexPath.section == 0 {
-            if indexPath.row == 0 {
+        if (indexPath as NSIndexPath).section == 0 {
+            if (indexPath as NSIndexPath).row == 0 {
                 let bindEmailVC = BindEmailViewController(nibName: "BindEmailView", bundle: nil)
                 bindEmailVC.delegate = self
                 
@@ -248,10 +248,10 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     bindEmailVC.modeType = .modify
                 }
                 
-                self.navigationController?.presentViewController(bindEmailVC, animated: true, completion: nil)
+                self.navigationController?.present(bindEmailVC, animated: true, completion: nil)
             }
-        } else if indexPath.section == 1 {
-            if indexPath.row == 0 {
+        } else if (indexPath as NSIndexPath).section == 1 {
+            if (indexPath as NSIndexPath).row == 0 {
                 if self.bindDict["wechat"] as? String == "1" {
                     
                     if self.userEmail == "" {
@@ -263,23 +263,23 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     }
                     
                     actionSheet = UIActionSheet(title: "微信账号：" + (self.bindDict["wechat_username"] as! String), delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-                    actionSheet!.addButtonWithTitle("解除绑定")
-                    actionSheet!.addButtonWithTitle("取消")
+                    actionSheet!.addButton(withTitle: "解除绑定")
+                    actionSheet!.addButton(withTitle: "取消")
                     actionSheet!.cancelButtonIndex = 1
-                    actionSheet!.showInView(self.view)
+                    actionSheet!.show(in: self.view)
                 } else {
                     if WXApi.isWXAppInstalled() {
                         let req = SendAuthReq()
                         req.scope = "snsapi_userinfo"
                         
-                        WXApi.sendReq(req)
+                        WXApi.send(req)
                     } else {
                         self.showTipText("手机未安装微信")
                     }
                     
                 }
             
-            } else if indexPath.row == 1 {
+            } else if (indexPath as NSIndexPath).row == 1 {
                 if self.bindDict["QQ"] as? String == "1" {
                    
                     if self.userEmail == "" {
@@ -291,10 +291,10 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     }
                     
                     actionSheetQQ = UIActionSheet(title: "QQ 账号：" + (self.bindDict["QQ_username"] as! String), delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-                    actionSheetQQ!.addButtonWithTitle("解除绑定")
-                    actionSheetQQ!.addButtonWithTitle("取消")
+                    actionSheetQQ!.addButton(withTitle: "解除绑定")
+                    actionSheetQQ!.addButton(withTitle: "取消")
                     actionSheetQQ!.cancelButtonIndex = 1
-                    actionSheetQQ!.showInView(self.view)
+                    actionSheetQQ!.show(in: self.view)
                 } else {
                     let permissions = [
                         kOPEN_PERMISSION_GET_USER_INFO,
@@ -326,7 +326,7 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                 }
             
             
-            } else if indexPath.row == 2 {
+            } else if (indexPath as NSIndexPath).row == 2 {
                 if self.bindDict["weibo"] as? String == "1" {
                    
                     if self.userEmail == "" {
@@ -339,22 +339,22 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     
                     
                     actionSheetWeibo = UIActionSheet(title: "微博账号：" + (self.bindDict["weibo_username"] as! String), delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-                    actionSheetWeibo!.addButtonWithTitle("解除绑定")
-                    actionSheetWeibo!.addButtonWithTitle("取消")
+                    actionSheetWeibo!.addButton(withTitle: "解除绑定")
+                    actionSheetWeibo!.addButton(withTitle: "取消")
                     actionSheetWeibo!.cancelButtonIndex = 1
-                    actionSheetWeibo!.showInView(self.view)
+                    actionSheetWeibo!.show(in: self.view)
                 } else {
                     let request = WBAuthorizeRequest()
                     request.redirectURI = "https://api.weibo.com/oauth2/default.html"
                     request.scope = "all"
                     request.userInfo = ["SSO_From": "WelcomeViewController"]
-                    WeiboSDK.sendRequest(request)
+                    WeiboSDK.send(request)
                 }
             }
         }
     }
     
-    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+    @objc(actionSheet:clickedButtonAtIndex:) func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
         if actionSheet == self.actionSheet {
             if buttonIndex == 0 {
                 /* 解除微信 */
@@ -362,18 +362,19 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     if let _ = error {
                         self.showTipText("网络有点问题，等一会儿再试")
                     } else {
-                        let json = JSON(responseObject!)
-                        
-                        if json["error"] != 0 {
-                            self.showTipText("网络有点问题，等一会儿再试")
-                        } else {
-                            self.bindDict["wechat"] = "0"
-                            self.bindDict["wechat_username"] = ""
-                            self.tableview.beginUpdates()
-                            self.tableview.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: .None)
-                            self.tableview.endUpdates()
-                            self.showTipText("微信解除绑定成功")
-                        }
+                        // todo
+//                        let json = JSON(responseObject!)
+//                        
+//                        if json["error"] != 0 {
+//                            self.showTipText("网络有点问题，等一会儿再试")
+//                        } else {
+//                            self.bindDict["wechat"] = "0" as AnyObject?
+//                            self.bindDict["wechat_username"] = "" as AnyObject?
+//                            self.tableview.beginUpdates()
+//                            self.tableview.reloadRows(at: [IndexPath(row: 0, section: 1)], with: .none)
+//                            self.tableview.endUpdates()
+//                            self.showTipText("微信解除绑定成功")
+//                        }
                     }
                 })
             }
@@ -383,19 +384,19 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     if let _ = error {
                         self.showTipText("网络有点问题，等一会儿再试")
                     } else {
-                        
-                        let json = JSON(responseObject!)
-                        
-                        if json["error"] != 0 {
-                            self.showTipText("网络有点问题，等一会儿再试")
-                        } else {
-                            self.bindDict["QQ"] = 1
-                            self.bindDict["QQ_username"] = ""
-                            self.tableview.beginUpdates()
-                            self.tableview.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 1)], withRowAnimation: .None)
-                            self.tableview.endUpdates()
-                            self.showTipText("QQ 解除绑定成功")
-                        }
+                        // todo
+//                        let json = JSON(responseObject!)
+//                        
+//                        if json["error"] != 0 {
+//                            self.showTipText("网络有点问题，等一会儿再试")
+//                        } else {
+//                            self.bindDict["QQ"] = 1 as AnyObject?
+//                            self.bindDict["QQ_username"] = ""
+//                            self.tableview.beginUpdates()
+//                            self.tableview.reloadRows(at: [IndexPath(row: 1, section: 1)], with: .none)
+//                            self.tableview.endUpdates()
+//                            self.showTipText("QQ 解除绑定成功")
+//                        }
                     }
                 })
             }
@@ -405,21 +406,21 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
                     if let _ = error {
                         self.showTipText("网络有点问题，等一会儿再试")
                     } else {
-                        
-                        let json = JSON(responseObject!)
-                        
-                        if json["error"] != 0 {
-                            self.showTipText("网络有点问题，等一会儿再试")
-                        } else {
-                            self.bindDict["weibo"] = "0"
-                            self.bindDict["weibo_username"] = ""
-                            
-                            self.tableview.beginUpdates()
-                            self.tableview.reloadRowsAtIndexPaths([NSIndexPath(forRow: 2, inSection: 1)], withRowAnimation: .None)
-                            self.tableview.endUpdates()
-                            
-                            self.showTipText("微博解除绑定成功")
-                        }
+                        // todo
+//                        let json = JSON(responseObject!)
+//                        
+//                        if json["error"] != 0 {
+//                            self.showTipText("网络有点问题，等一会儿再试")
+//                        } else {
+//                            self.bindDict["weibo"] = "0" as AnyObject?
+//                            self.bindDict["weibo_username"] = "" as AnyObject?
+//                            
+//                            self.tableview.beginUpdates()
+//                            self.tableview.reloadRows(at: [IndexPath(row: 2, section: 1)], with: .none)
+//                            self.tableview.endUpdates()
+//                            
+//                            self.showTipText("微博解除绑定成功")
+//                        }
                     }
                 })
             }
@@ -448,21 +449,22 @@ extension AccountBindViewController: TencentLoginDelegate, TencentSessionDelegat
             LogOrRegModel.getQQName(accessToken, openid: openid, appid: appid) {
                 (task, responseObject, error) in
                 
-                if let _ = error {
-                    self.showTipText("网络有点问题，等一会儿再试")
-                } else {
-                    let json = JSON(responseObject!)
-                    
-                    if json["ret"].numberValue != 0 {
-                        self.showTipText("QQ 授权不成功...")
-                    } else {
-                        let _name = json["nickname"].stringValue
-                        
-                        if _name.characters.count > 0 {
-                            self.bind3rdAccount(openid, nameFrom3rd: _name, type: "QQ")
-                        }
-                    }
-                }
+                // todo
+//                if let _ = error {
+//                    self.showTipText("网络有点问题，等一会儿再试")
+//                } else {
+//                    let json = JSON(responseObject!)
+//                    
+//                    if json["ret"].numberValue != 0 {
+//                        self.showTipText("QQ 授权不成功...")
+//                    } else {
+//                        let _name = json["nickname"].stringValue
+//                        
+//                        if _name.characters.count > 0 {
+//                            self.bind3rdAccount(openid, nameFrom3rd: _name, type: "QQ")
+//                        }
+//                    }
+//                }
             }
             
         } else {
@@ -475,7 +477,7 @@ extension AccountBindViewController: TencentLoginDelegate, TencentSessionDelegat
      * 登录失败后的回调
      * param cancelled 代表用户是否主动退出登录
      */
-    func tencentDidNotLogin(cancelled: Bool) {
+    func tencentDidNotLogin(_ cancelled: Bool) {
         self.showTipText("绑定 QQ 失败...")
     }
     
@@ -491,7 +493,7 @@ extension AccountBindViewController: TencentLoginDelegate, TencentSessionDelegat
 
 extension AccountBindViewController {
 
-    func handleBindWeibo(noti: NSNotification) {
+    func handleBindWeibo(_ noti: Notification) {
         guard let notiObject = noti.object else {
             return
         }
@@ -527,7 +529,7 @@ extension AccountBindViewController {
     }
 
 
-    func handleBindWechat(noti: NSNotification) {
+    func handleBindWechat(_ noti: Notification) {
         guard let notiObject = noti.object else {
             return
         }
@@ -562,7 +564,7 @@ extension AccountBindViewController {
     }
     
     
-    func bind3rdAccount(id: String, nameFrom3rd: String, type: String) {
+    func bind3rdAccount(_ id: String, nameFrom3rd: String, type: String) {
     
         SettingModel.bindThirdAccount(id, nameFrom3rd: nameFrom3rd, type: type) {
             (task, responseObject, error) -> Void in
@@ -576,11 +578,11 @@ extension AccountBindViewController {
                 } else {
                     
                     if type == "wechat" {
-                        self.bindDict["wechat"] = "1"
-                        self.bindDict["wechat_username"] = nameFrom3rd
+                        self.bindDict["wechat"] = "1" as AnyObject?
+                        self.bindDict["wechat_username"] = nameFrom3rd as AnyObject?
                         
                         self.tableview.beginUpdates()
-                        self.tableview.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 1)], withRowAnimation: .None)
+                        self.tableview.reloadRows(at: [IndexPath(row: 0, section: 1)], with: .none)
                         self.tableview.endUpdates()
                         
                     } else if type == "QQ" {
@@ -588,7 +590,7 @@ extension AccountBindViewController {
                         self.bindDict["QQ_username"] = nameFrom3rd
                         
                         self.tableview.beginUpdates()
-                        self.tableview.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 1)], withRowAnimation: .None)
+                        self.tableview.reloadRows(at: [IndexPath(row: 1, section: 1)], with: .none)
                         self.tableview.endUpdates()
                         
                     } else if type == "weibo" {
@@ -596,7 +598,7 @@ extension AccountBindViewController {
                         self.bindDict["weibo_username"] = nameFrom3rd
                         
                         self.tableview.beginUpdates()
-                        self.tableview.reloadRowsAtIndexPaths([NSIndexPath(forRow: 2, inSection: 1)], withRowAnimation: .None)
+                        self.tableview.reloadRows(at: [IndexPath(row: 2, section: 1)], with: .none)
                         self.tableview.endUpdates()
                     
                     }
@@ -610,14 +612,14 @@ extension AccountBindViewController {
 
 extension AccountBindViewController: bindEmailDelegate {
     
-    func bindEmail(email email: String) {
+    func bindEmail(email: String) {
         self.userEmail = email
         
         // 修改邮箱成功后，调用协议来修改 userDict
         delegate?.updateUserDict(email)
         
         self.tableview.beginUpdates()
-        self.tableview.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .None)
+        self.tableview.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
         self.tableview.endUpdates()
     }
     

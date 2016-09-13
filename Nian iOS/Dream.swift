@@ -7,6 +7,26 @@
 //
 
 import UIKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewDataSource, UIActionSheetDelegate, editDreamDelegate, topDelegate, ShareDelegate {
     
@@ -40,11 +60,11 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         load()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.viewBackFix()
         
@@ -68,36 +88,36 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         
         self.view.backgroundColor = UIColor.BackgroundColor()
         
-        self.SATableView = VVeboTableView(frame:CGRectMake(0, 0, globalWidth, globalHeight))
+        self.SATableView = VVeboTableView(frame:CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight))
         self.SATableView.delegate = self
         self.SATableView.dataSource = self
-        self.SATableView.separatorStyle = .None
+        self.SATableView.separatorStyle = .none
         self.automaticallyAdjustsScrollViewInsets = false
         
         let nib = UINib(nibName:"DreamCell", bundle: nil)
         let nib2 = UINib(nibName:"DreamCellTop", bundle: nil)
         
-        self.SATableView.registerNib(nib, forCellReuseIdentifier: "dream")
-        self.SATableView.registerNib(nib2, forCellReuseIdentifier: "dreamtop")
+        self.SATableView.register(nib, forCellReuseIdentifier: "dream")
+        self.SATableView.register(nib2, forCellReuseIdentifier: "dreamtop")
         self.view.addSubview(self.SATableView)
         currenTableView = SATableView
         
         //标题颜色
-        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = UIColor.whiteColor()
-        titleLabel.textAlignment = NSTextAlignment.Center
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+        let titleLabel:UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 40))
+        titleLabel.textColor = UIColor.white
+        titleLabel.textAlignment = NSTextAlignment.center
         self.navigationItem.titleView = titleLabel
         
         /* 添加导航栏 */
-        navView = UIImageView(frame: CGRectMake(0, 0, globalWidth, 64))
+        navView = UIImageView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: 64))
         navView.backgroundColor = UIColor.NavColor()
-        navView.hidden = true
+        navView.isHidden = true
         navView.layer.masksToBounds = true
         self.SATableView.addSubview(navView)
     }
     
-    func load(clear: Bool = true){
+    func load(_ clear: Bool = true){
         if clear {
             self.page = 1
         }
@@ -107,8 +127,8 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         }
         Api.getDreamStep(Id, page: page, sort: sort) { json in
             if json != nil {
-                if json!.objectForKey("error") as! NSNumber != 0 {
-                    let status = json!.objectForKey("status") as! NSNumber
+                if json!.object(forKey: "error") as! NSNumber != 0 {
+                    let status = json!.object(forKey: "status") as! NSNumber
                     self.navigationItem.rightBarButtonItems = []
                     if status == 404 {
                         self.SATableView.addGhost("这个记本\n不见了")
@@ -118,12 +138,12 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
                         self.showTipText("遇到了一个奇怪的错误，代码是 \(status)")
                     }
                 } else {
-                    let data: AnyObject? = json!.objectForKey("data")
+                    let data: AnyObject? = json!.object(forKey: "data")
                     if clear {
-                        self.dataArrayTop = self.DataDecode(data!.objectForKey("dream") as! NSDictionary)
+                        self.dataArrayTop = self.DataDecode(data!.object(forKey: "dream") as! NSDictionary)
                         self.dataArray.removeAllObjects()
                         globalVVeboReload = true
-                        let btnMore = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: #selector(DreamViewController.setupNavBtn))
+                        let btnMore = UIBarButtonItem(title: "  ", style: .plain, target: self, action: #selector(DreamViewController.setupNavBtn))
                         btnMore.image = UIImage(named: "more")
                         self.navigationItem.rightBarButtonItems = [btnMore]
                         
@@ -136,10 +156,10 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
                     } else {
                         globalVVeboReload = false
                     }
-                    let steps = data!.objectForKey("steps") as! NSArray
+                    let steps = data!.object(forKey: "steps") as! NSArray
                     for d in steps {
                         let data = VVeboCell.SACellDataRecode(d as! NSDictionary)
-                        self.dataArray.addObject(data)
+                        self.dataArray.add(data)
                     }
                     self.currentDataArray = self.dataArray
                     self.SATableView.reloadData()
@@ -187,10 +207,10 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         acDelete.saActivityImage = UIImage(named: "av_delete")
         acDelete.saActivityFunction = {
             self.deleteDreamSheet = UIActionSheet(title: "再见啦，记本 #\(self.Id)", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-            self.deleteDreamSheet!.addButtonWithTitle("确定删除")
-            self.deleteDreamSheet!.addButtonWithTitle("取消")
+            self.deleteDreamSheet!.addButton(withTitle: "确定删除")
+            self.deleteDreamSheet!.addButton(withTitle: "取消")
             self.deleteDreamSheet!.cancelButtonIndex = 1
-            self.deleteDreamSheet!.showInView(self.view)
+            self.deleteDreamSheet!.show(in: self.view)
         }
         
         let acLike = SAActivity()
@@ -220,10 +240,10 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         acQuit.saActivityImage = UIImage(named: "av_quit")
         acQuit.saActivityFunction = {
             self.quitSheet = UIActionSheet(title: "再见啦，记本 #\(self.Id)", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-            self.quitSheet.addButtonWithTitle("确定退出")
-            self.quitSheet.addButtonWithTitle("取消")
+            self.quitSheet.addButton(withTitle: "确定退出")
+            self.quitSheet.addButton(withTitle: "取消")
             self.quitSheet.cancelButtonIndex = 1
-            self.quitSheet.showInView(self.view)
+            self.quitSheet.show(in: self.view)
         }
         
         let acTime = SAActivity()
@@ -243,8 +263,8 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         } else if joined == "1" {
             arr = [acQuit, acLike, acReport, acTime]
         }
-        let avc = SAActivityViewController.shareSheetInView(["「\(title)」- 来自念", NSURL(string: "http://nian.so/m/dream/\(self.Id)")!], applicationActivities: arr)
-        self.presentViewController(avc, animated: true, completion: nil)
+        let avc = SAActivityViewController.shareSheetInView(["「\(title)」- 来自念", URL(string: "http://nian.so/m/dream/\(self.Id)")!], applicationActivities: arr)
+        self.present(avc, animated: true, completion: nil)
     }
     
     func onStep(){
@@ -255,19 +275,19 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
             } else if dataArrayTop.stringAttributeForKey("percent") == "1" {
                 title = "\(title)（完成）"
             }
-            UIView.animateWithDuration(0.3, animations: {
+            UIView.animate(withDuration: 0.3, animations: {
                 self.SATableView.contentOffset.y = title.stringHeightBoldWith(18, width: 240) + 252 + 52
             })
         }
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            let c = tableView.dequeueReusableCellWithIdentifier("dreamtop", forIndexPath: indexPath) as! DreamCellTop
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if (indexPath as NSIndexPath).section == 0 {
+            let c = tableView.dequeueReusableCell(withIdentifier: "dreamtop", for: indexPath) as! DreamCellTop
             c.data = dataArrayTop != nil ? NSMutableDictionary(dictionary: dataArrayTop) : nil
             c.delegate = self
             c.setup()
@@ -283,7 +303,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         let mutableData = NSMutableDictionary(dictionary: dataArrayTop)
         mutableData.setValue("1", forKey: "followed")
         dataArrayTop = mutableData
-        SATableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.None)
+        SATableView.reloadSections(IndexSet(integer: 0), with: UITableViewRowAnimation.none)
         Api.getFollowDream(id) { json in }
     }
     
@@ -292,14 +312,14 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         let mutableData = NSMutableDictionary(dictionary: dataArrayTop)
         mutableData.setValue("0", forKey: "followed")
         dataArrayTop = mutableData
-        SATableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.None)
+        SATableView.reloadSections(IndexSet(integer: 0), with: UITableViewRowAnimation.none)
         Api.getUnFollowDream(id) { json in }
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.section == 0 {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if (indexPath as NSIndexPath).section == 0 {
             if dataArrayTop != nil {
-                if let h = dataArrayTop.objectForKey("heightCell") as? CGFloat {
+                if let h = dataArrayTop.object(forKey: "heightCell") as? CGFloat {
                     return h
                 }
             }
@@ -309,7 +329,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         }
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 1
         }else{
@@ -329,14 +349,14 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         })
     }
     
-    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
         if actionSheet == self.deleteDreamSheet {
             if buttonIndex == 0 {       //删除记本
                 self.navigationItem.rightBarButtonItems = buttonArray()
                 Api.getDeleteDream(self.Id, callback: { json in
                     self.navigationItem.rightBarButtonItems = []
                     self.delegateDelete?.deleteDreamCallback(self.Id)
-                    self.navigationController?.popViewControllerAnimated(true)
+                    self.navigationController?.popViewController(animated: true)
                 })
             }
         } else if actionSheet == quitSheet {
@@ -354,7 +374,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
                             let data = Nian.dataArray[i] as! NSDictionary
                             let _id = data.stringAttributeForKey("id")
                             if _id == self.Id {
-                                Nian.dataArray.removeObjectAtIndex(i)
+                                Nian.dataArray.removeObject(at: i)
                                 Nian.reloadFromDataArray()
                                 Cookies.set(Nian.dataArray, forKey: "NianDreams")
                                 break
@@ -364,7 +384,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
                     //
                     
                     
-                    self.navigationController?.popViewControllerAnimated(true)
+                    self.navigationController?.popViewController(animated: true)
                 }
             }
         }
@@ -387,12 +407,12 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         if let permission = Int(dataArrayTop.stringAttributeForKey("permission")) {
             editdreamVC.permission = permission
         }
-        let tags: Array<String> = dataArrayTop.objectForKey("tags") as! Array
+        let tags: Array<String> = dataArrayTop.object(forKey: "tags") as! Array
         editdreamVC.tagsArray = tags
         self.navigationController?.pushViewController(editdreamVC, animated: true)
     }
     
-    func editDream(editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTags: Array<String>, editPermission: Int) {
+    func editDream(_ editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTags: Array<String>, editPermission: Int) {
         let mutableData = NSMutableDictionary(dictionary: dataArrayTop)
         mutableData.setValue(editPrivate, forKey: "private")
         mutableData.setValue(editTitle, forKey: "title")
@@ -411,16 +431,16 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
             let t = totalUser + 1
             d.setValue("\(t)", forKey: "total_users")
         }
-        if let editors = dataArrayTop.objectForKey("editors") as? NSArray {
+        if let editors = dataArrayTop.object(forKey: "editors") as? NSArray {
             let arr = NSMutableArray(array: editors)
-            arr.addObject(SAUid())
+            arr.add(SAUid())
             d.setValue(arr, forKey: "editors")
         }
         dataArrayTop = d
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer.isKind(of: UIScreenEdgePanGestureRecognizer.self) {
             let v = otherGestureRecognizer.view?.frame.origin.y
             if v > 0 {
                 return false
@@ -429,8 +449,8 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         return true
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        if gestureRecognizer.isKindOfClass(UIScreenEdgePanGestureRecognizer) {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer.isKind(of: UIScreenEdgePanGestureRecognizer.self) {
             let v = otherGestureRecognizer.view?.frame.origin.y
             if v == 0 {
                 return true
@@ -439,24 +459,24 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         return false
     }
     
-    func onShare(avc: UIActivityViewController) {
-        self.presentViewController(avc, animated: true, completion: nil)
+    func onShare(_ avc: UIActivityViewController) {
+        self.present(avc, animated: true, completion: nil)
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView == SATableView {
             let y = SATableView.contentOffset.y
             dreamCellTop?.scroll(y)
             if y > 32 {
-                navView.hidden = false
+                navView.isHidden = false
                 navView.setY(y)
             } else {
-                navView.hidden = true
+                navView.isHidden = true
             }
         }
     }
     
-    func DataDecode(data: NSDictionary) -> NSDictionary {
+    func DataDecode(_ data: NSDictionary) -> NSDictionary {
         let thePrivate = data.stringAttributeForKey("private")
         let percent = data.stringAttributeForKey("percent")
         let title = data.stringAttributeForKey("title").decode()

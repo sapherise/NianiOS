@@ -14,13 +14,13 @@ extension ExploreViewController {
     func setupTables() {
         
         // 关注
-        tableView = VVeboTableView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 64 - 49), style: .Plain)
+        tableView = VVeboTableView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight - 64 - 49), style: .plain)
         scrollView.addSubview(tableView)
         currenTableView = tableView
         
         // 动态
-        tableViewDynamic = VVeboTableView(frame: CGRectMake(globalWidth, 0, globalWidth, globalHeight - 64 - 49), style: .Plain)
-        tableViewDynamic.registerNib(UINib(nibName: "ExploreDynamicDreamCell", bundle: nil), forCellReuseIdentifier: "ExploreDynamicDreamCell")
+        tableViewDynamic = VVeboTableView(frame: CGRect(x: globalWidth, y: 0, width: globalWidth, height: globalHeight - 64 - 49), style: .plain)
+        tableViewDynamic.register(UINib(nibName: "ExploreDynamicDreamCell", bundle: nil), forCellReuseIdentifier: "ExploreDynamicDreamCell")
         scrollView.addSubview(tableViewDynamic)
         
         tableView.dataSource = self
@@ -56,7 +56,7 @@ extension ExploreViewController {
         tableView.headerBeginRefreshing()
     }
     
-    func load(clear: Bool) {
+    func load(_ clear: Bool) {
         if clear {
             page = 1
         }
@@ -70,12 +70,12 @@ extension ExploreViewController {
                 } else {
                     globalVVeboReload = false
                 }
-                let data: AnyObject? = json!.objectForKey("data")
-                let items = data!.objectForKey("items") as! NSArray
+                let data: AnyObject? = json!.object(forKey: "data")
+                let items = data!.object(forKey: "items") as! NSArray
                 if items.count != 0 {
                     for item in items {
                         let data = VVeboCell.SACellDataRecode(item as! NSDictionary)
-                        self.dataArray.addObject(data)
+                        self.dataArray.add(data)
                     }
                     
                     /* 当是第一页时，缓存到本地 */
@@ -86,7 +86,7 @@ extension ExploreViewController {
                     self.currentDataArray = self.dataArray
                     self.tableView.tableHeaderView = nil
                 } else if clear {
-                    self.tableView.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 49 - 64))
+                    self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight - 49 - 64))
                     self.tableView.tableHeaderView?.addGhost("这是关注页面！\n当你关注了一些人或记本时\n这里会发生微妙变化")
                 }
                 /* 当 current 为 -1 或者 0 时 */
@@ -100,7 +100,7 @@ extension ExploreViewController {
         })
     }
     
-    func loadDynamic(clear: Bool) {
+    func loadDynamic(_ clear: Bool) {
         if clear {
             pageDynamic = 1
         }
@@ -108,8 +108,8 @@ extension ExploreViewController {
             json in
             if json != nil {
                 globalTabhasLoaded[1] = true
-                let data: AnyObject? = json!.objectForKey("data")
-                let items = data!.objectForKey("items") as! NSArray
+                let data: AnyObject? = json!.object(forKey: "data")
+                let items = data!.object(forKey: "items") as! NSArray
                 if items.count != 0 {
                     if clear {
                         globalVVeboReload = true
@@ -119,12 +119,12 @@ extension ExploreViewController {
                     }
                     for item in items {
                         let data = VVeboCell.SACellDataRecode(item as! NSDictionary)
-                        self.dataArrayDynamic.addObject(data)
+                        self.dataArrayDynamic.add(data)
                     }
                     self.currentDataArray = self.dataArrayDynamic
                     self.tableViewDynamic.tableHeaderView = nil
                 } else if clear {
-                    self.tableViewDynamic.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 49 - 64))
+                    self.tableViewDynamic.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight - 49 - 64))
                     self.tableViewDynamic.tableHeaderView?.addGhost("这是动态页面！\n你关注的人赞过的内容\n都会出现在这里")
                 }
                 if self.current == 1 {

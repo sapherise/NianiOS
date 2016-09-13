@@ -22,7 +22,7 @@ class SADoubleCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.selectionStyle = .None
+        self.selectionStyle = .none
         self.imageHead.layer.cornerRadius = type == 0 ? 4 : 20
         self.imageHead.layer.masksToBounds = true
         self.viewHolder.setWidth(globalWidth)
@@ -53,17 +53,17 @@ class SADoubleCell: UITableViewCell {
             }
         }
         if bool == "0" {
-            self.btnMain.layer.borderColor = UIColor.HighlightColor().CGColor
+            self.btnMain.layer.borderColor = UIColor.HighlightColor().cgColor
             self.btnMain.layer.borderWidth = 1
-            self.btnMain.setTitleColor(UIColor.HighlightColor(), forState: UIControlState())
-            self.btnMain.backgroundColor = UIColor.whiteColor()
-            self.btnMain.setTitle(content[0], forState: UIControlState())
+            self.btnMain.setTitleColor(UIColor.HighlightColor(), for: UIControlState())
+            self.btnMain.backgroundColor = UIColor.white
+            self.btnMain.setTitle(content[0], for: UIControlState())
         } else {
-            self.btnMain.layer.borderColor = UIColor.HighlightColor().CGColor
+            self.btnMain.layer.borderColor = UIColor.HighlightColor().cgColor
             self.btnMain.layer.borderWidth = 1
-            self.btnMain.setTitleColor(UIColor.whiteColor(), forState: UIControlState())
+            self.btnMain.setTitleColor(UIColor.white, for: UIControlState())
             self.btnMain.backgroundColor = UIColor.HighlightColor()
-            self.btnMain.setTitle(content[1], forState: UIControlState())
+            self.btnMain.setTitle(content[1], for: UIControlState())
         }
     }
 }

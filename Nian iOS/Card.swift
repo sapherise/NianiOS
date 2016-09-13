@@ -23,7 +23,7 @@ class Card: UIView {
     var widthCard: CGFloat = 360
     
     override func awakeFromNib() {
-        self.frame = CGRectMake(10, 10, widthCard, widthCard)
+        self.frame = CGRect(x: 10, y: 10, width: widthCard, height: widthCard)
         viewLine.setHeight(globalHalf)
         viewLineTop.setHeight(globalHalf)
     }
@@ -38,12 +38,12 @@ class Card: UIView {
         let h = SACeil(self.heightImage.toCGFloat(), dot: 0, isCeil: false)
         if w != 0 {
             heightNew = h * (self.widthCard - self.num * 2) / w
-            self.image.frame = CGRectMake(self.num, self.num * 2 + 1, self.widthCard - self.num * 2, heightNew)
+            self.image.frame = CGRect(x: self.num, y: self.num * 2 + 1, width: self.widthCard - self.num * 2, height: heightNew)
             self.labelContent.setY(self.image.bottom() + self.num)
-            let imageCache = SDImageCache.sharedImageCache().imageFromDiskCacheForKey(self.url)
+            let imageCache = SDImageCache.shared().imageFromDiskCache(forKey: self.url)
             self.image.image = imageCache
         } else {
-            self.image.hidden = true
+            self.image.isHidden = true
             self.labelContent.setY(self.num * 2)
         }
         let heightLine = "".stringHeightWith(12, width: self.widthCard - self.num * 4)
@@ -55,7 +55,7 @@ class Card: UIView {
         }
         self.labelContent.text = self.content
         self.labelContent.setHeight(heightContent)
-        self.labelContent.textAlignment = heightContent == heightLine ? NSTextAlignment.Center : NSTextAlignment.Left
+        self.labelContent.textAlignment = heightContent == heightLine ? NSTextAlignment.center : NSTextAlignment.left
         
         self.viewLine.setY(self.labelContent.bottom() + self.num)
         self.viewNian.setY(self.viewLine.bottom() + self.num)

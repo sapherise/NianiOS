@@ -28,22 +28,22 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     func setupViews() {
-        self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        self.navView = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: 64))
         self.navView.backgroundColor = UIColor.NavColor()
         self.view.addSubview(self.navView)
         
-        self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64))
+        self.tableView = UITableView(frame:CGRect(x: 0, y: 64, width: globalWidth, height: globalHeight - 64))
         self.tableView!.delegate = self;
         self.tableView!.dataSource = self;
         self.tableView!.backgroundColor = BGColor
-        self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.none
         let nib = UINib(nibName:"LikeCell", bundle: nil)
         
-        self.tableView!.registerNib(nib, forCellReuseIdentifier: identifier)
+        self.tableView!.register(nib, forCellReuseIdentifier: identifier)
         self.view.addSubview(self.tableView!)
         
-        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = UIColor.whiteColor()
+        let titleLabel:UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 40))
+        titleLabel.textColor = UIColor.white
         if self.urlIdentify == 0 {
             titleLabel.text = "赞过"
         }else if self.urlIdentify == 1 {
@@ -53,7 +53,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         }else if self.urlIdentify == 3 {
             titleLabel.text = "赞过记本"
         }
-        titleLabel.textAlignment = NSTextAlignment.Center
+        titleLabel.textAlignment = NSTextAlignment.center
         self.navigationItem.titleView = titleLabel
         
         self.viewBack()
@@ -64,14 +64,14 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         let url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as! NSObject != NSNull(){
-                let arr = data.objectForKey("items") as! NSArray
+                let arr = data.object(forKey: "items") as! NSArray
                 for data : AnyObject  in arr{
-                    self.dataArray.addObject(data)
+                    self.dataArray.add(data)
                 }
                 self.tableView!.reloadData()
                 self.tableView!.footerEndRefreshing()
                 self.page += 1
-                if ( data.objectForKey("total") as! Int ) < 30 {
+                if ( data.object(forKey: "total") as! Int ) < 30 {
                     self.tableView!.setFooterHidden(true)
                 }
             }
@@ -83,13 +83,13 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         let url = urlString()
         SAHttpRequest.requestWithURL(url,completionHandler:{ data in
             if data as! NSObject != NSNull(){
-                if ( data.objectForKey("total") as! Int ) < 30 {
+                if ( data.object(forKey: "total") as! Int ) < 30 {
                     self.tableView!.setFooterHidden(true)
                 }
-                let arr = data.objectForKey("items") as! NSArray
+                let arr = data.object(forKey: "items") as! NSArray
                 self.dataArray.removeAllObjects()
                 for data : AnyObject  in arr{
-                    self.dataArray.addObject(data)
+                    self.dataArray.add(data)
                 }
                 self.tableView!.reloadData()
                 self.tableView!.headerEndRefreshing()
@@ -114,17 +114,17 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         }
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.dataArray.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? LikeCell
-        let index = indexPath.row
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? LikeCell
+        let index = (indexPath as NSIndexPath).row
         let data = self.dataArray[index] as! NSDictionary
         cell!.data = data
         cell!.urlIdentify = self.urlIdentify
@@ -134,11 +134,11 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         return cell!
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return  71
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.viewBackFix()
     }

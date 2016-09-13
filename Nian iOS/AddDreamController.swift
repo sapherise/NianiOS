@@ -9,7 +9,7 @@
 import UIKit
 
 protocol editDreamDelegate {
-    func editDream(editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTags: Array<String>, editPermission: Int)
+    func editDream(_ editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTags: Array<String>, editPermission: Int)
 }
 
 class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UITextFieldDelegate, delegatePrivate {
@@ -54,30 +54,30 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
         self.actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         
-        self.actionSheet!.addButtonWithTitle("相册")
-        self.actionSheet!.addButtonWithTitle("拍照")
-        self.actionSheet!.addButtonWithTitle("取消")
+        self.actionSheet!.addButton(withTitle: "相册")
+        self.actionSheet!.addButton(withTitle: "拍照")
+        self.actionSheet!.addButton(withTitle: "取消")
         
         self.actionSheet!.cancelButtonIndex = 2
         
-        self.actionSheet!.showInView(self.view)
+        self.actionSheet!.show(in: self.view)
     }
     
-    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
         if actionSheet == self.actionSheet {
             if buttonIndex == 0 {
                 self.imagePicker = UIImagePickerController()
                 self.imagePicker!.delegate = self
                 self.imagePicker!.allowsEditing = true
-                self.imagePicker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-                self.presentViewController(self.imagePicker!, animated: true, completion: nil)
+                self.imagePicker!.sourceType = UIImagePickerControllerSourceType.photoLibrary
+                self.present(self.imagePicker!, animated: true, completion: nil)
             } else if buttonIndex == 1 {
                 self.imagePicker = UIImagePickerController()
                 self.imagePicker!.delegate = self
                 self.imagePicker!.allowsEditing = true
-                if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
-                    self.imagePicker!.sourceType = UIImagePickerControllerSourceType.Camera
-                    self.presentViewController(self.imagePicker!, animated: true, completion: nil)
+                if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera){
+                    self.imagePicker!.sourceType = UIImagePickerControllerSourceType.camera
+                    self.present(self.imagePicker!, animated: true, completion: nil)
                 }
             }
         } else if actionSheet == self.setDreamActionSheet {
@@ -95,7 +95,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
     }
     
-    func update(key: String, value: Int) {
+    func update(_ key: String, value: Int) {
         if key == "private" {
             isPrivate = value
         } else if key == "permission" {
@@ -103,28 +103,28 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [AnyHashable: Any]!) {
+        self.dismiss(animated: true, completion: nil)
         self.uploadFile(image)
     }
     
-    func uploadFile(img:UIImage){
-        self.uploadWait!.hidden = false
+    func uploadFile(_ img:UIImage){
+        self.uploadWait!.isHidden = false
         self.imageDreamHead.image = UIImage(named: "add_no_plus")
         self.uploadWait!.startAnimating()
         let uy = UpYun()
         uy.successBlocker = ({(data: AnyObject!) in
-            self.uploadWait!.hidden = true
-            self.uploadUrl = data.objectForKey("url") as! String
+            self.uploadWait!.isHidden = true
+            self.uploadUrl = data.object(forKey: "url") as! String
             self.uploadUrl = SAReplace(self.uploadUrl, before: "/dream/", after: "") as String
             let url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
-            self.imageDreamHead.contentMode = .ScaleToFill
+            self.imageDreamHead.contentMode = .scaleToFill
             self.imageDreamHead.image = img
             setCacheImage(url, img: img, width: (globalWidth - 40) * globalScale)
             self.uploadWait!.stopAnimating()
         })
         uy.failBlocker = ({(error: NSError!) in
-            self.uploadWait!.hidden = true
+            self.uploadWait!.isHidden = true
             self.uploadWait!.stopAnimating()
             self.imageDreamHead.image = UIImage(named: "add_plus")
         })
@@ -139,31 +139,31 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         setupViews()
     }
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
         
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
-        notificationCenter.removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        notificationCenter.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: #selector(AddDreamController.handleKeyboardWillShowNotification(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(AddDreamController.handleKeyboardWillHideNotification(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(AddDreamController.handleKeyboardWillShowNotification(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(AddDreamController.handleKeyboardWillHideNotification(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         
         let height = 78 + field2.frame.size.height + tokenView.tokenField.frame.size.height
-        let tmpSize: CGSize = CGSizeMake(self.containerView.frame.size.width, max(height, UIScreen.mainScreen().bounds.size.height - 64))
+        let tmpSize: CGSize = CGSize(width: self.containerView.frame.size.width, height: max(height, UIScreen.main.bounds.size.height - 64))
         self.scrollView.contentSize = tmpSize
         
         self.view.layoutIfNeeded()
@@ -172,20 +172,20 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func setupViews(){
         self.automaticallyAdjustsScrollViewInsets = false
         
-        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        let navView = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: 64))
         navView.backgroundColor = UIColor.NavColor()
         
-        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = UIColor.whiteColor()
+        let titleLabel:UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 40))
+        titleLabel.textColor = UIColor.white
         titleLabel.text = self.isEdit == 1 ? "编辑记本" : "新记本！"
-        titleLabel.textAlignment = NSTextAlignment.Center
+        titleLabel.textAlignment = NSTextAlignment.center
         self.navigationItem.titleView = titleLabel
         
         self.viewBack()
         self.view.addSubview(navView)
         
         swipeGesuture = UISwipeGestureRecognizer(target: self, action: #selector(AddDreamController.dismissKeyboard(_:)))
-        swipeGesuture!.direction = UISwipeGestureRecognizerDirection.Down
+        swipeGesuture!.direction = UISwipeGestureRecognizerDirection.down
         swipeGesuture!.cancelsTouchesInView = true
         self.view.addGestureRecognizer(swipeGesuture!)
 
@@ -202,9 +202,9 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.field1.setWidth(globalWidth - 124)
         self.setPrivate.setX(globalWidth - 44)
         self.field2.setWidth(globalWidth)
-        UIScreen.mainScreen().bounds.height > 480 ? self.field2.setHeight(120) : self.field2.setHeight(96)
+        UIScreen.main.bounds.height > 480 ? self.field2.setHeight(120) : self.field2.setHeight(96)
         self.field2.textContainerInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
-        self.tokenView.setY(CGRectGetMaxY(self.field2.frame))
+        self.tokenView.setY(self.field2.frame.maxY)
         self.tokenView.setWidth(globalWidth)
         self.seperatorView.setWidth(globalWidth)
         self.seperatorView.backgroundColor = UIColor(red:0.9, green:0.9, blue:0.9, alpha:1)
@@ -215,7 +215,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.field1.textColor = UIColor(red:0.2, green:0.2, blue:0.2, alpha:1)
         
         self.field2.attributedPlaceholder = NSAttributedString(string: "记本简介（可选）" ,
-                                                            attributes: [NSFontAttributeName: UIFont.systemFontOfSize(14),
+                                                            attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 14),
                                                                 NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)])
         self.field2.textColor = UIColor(red:0.2, green:0.2, blue:0.2, alpha:1)
         self.field2.delegate = self
@@ -224,7 +224,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
         setPrivate.image = UIImage(named: "dream_settings")
         
-        uploadWait.transform = CGAffineTransformMakeScale(0.7, 0.7)
+        uploadWait.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
         uploadWait.center = imageDreamHead.center
         uploadWait.color = UIColor(red:0.6, green:0.6, blue:0.6, alpha:0.6)
     
@@ -232,13 +232,13 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         tokenView.delegate = self
         tokenView.tokenField.delegate = self
         tokenView.shouldSearchInBackground = false
-        tokenView.tokenField.tokenizingCharacters = NSCharacterSet(charactersInString: "#")
+        tokenView.tokenField.tokenizingCharacters = CharacterSet(charactersIn: "#")
         tokenView.tokenField.setPromptText("     ")
         tokenView.tokenField.tokenLimit = 20;
         tokenView.tokenField.placeholder = "添加标签"
         tokenView.canCancelContentTouches = false
         tokenView.delaysContentTouches = false
-        tokenView.scrollEnabled = false
+        tokenView.isScrollEnabled = false
 
         if self.isEdit == 1 {
             self.field1!.text = self.editTitle.decode()
@@ -246,24 +246,24 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             
             if tagsArray.count > 0 {
                 for i in 0...(tagsArray.count - 1) {
-                    tokenView.tokenField.addTokenWithTitle(tagsArray[i].decode())
-                    tokenView.tokenField.layoutTokensAnimated(false)
+                    tokenView.tokenField.addToken(withTitle: tagsArray[i].decode())
+                    tokenView.tokenField.layoutTokens(animated: false)
                 }
             }
             
             self.uploadUrl = self.editImage
             let url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
             imageDreamHead.setImage(url)
-            let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: #selector(AddDreamController.editDreamOK))
+            let rightButton = UIBarButtonItem(title: "  ", style: .plain, target: self, action: #selector(AddDreamController.editDreamOK))
             rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];
         } else {
-            let rightButton = UIBarButtonItem(title: "  ", style: .Plain, target: self, action: #selector(AddDreamController.addDreamOK))
+            let rightButton = UIBarButtonItem(title: "  ", style: .plain, target: self, action: #selector(AddDreamController.addDreamOK))
             rightButton.image = UIImage(named:"newOK")
             self.navigationItem.rightBarButtonItems = [rightButton];
         }
         
-        self.uploadWait!.hidden = true
+        self.uploadWait!.isHidden = true
     }
     
     /* 添加或修改记本的更多设置 */
@@ -275,7 +275,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func dismissKeyboard(sender: UISwipeGestureRecognizer){
+    func dismissKeyboard(_ sender: UISwipeGestureRecognizer){
         self.dismissKeyboard()
     }
     
@@ -295,13 +295,13 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.navigationItem.rightBarButtonItems = buttonArray()
             Api.postAddDream(title, content: content, uploadUrl: self.uploadUrl, isPrivate: self.isPrivate, tags: tags!, permission: "\(permission)") {
                 json in
-                let error = json!.objectForKey("error") as! NSNumber
+                let error = json!.object(forKey: "error") as! NSNumber
                 if error == 0 {
-                    let data = json!.objectForKey("data") as! NSDictionary
+                    let data = json!.object(forKey: "data") as! NSDictionary
                     let id = data.stringAttributeForKey("dream")
                     let img = data.stringAttributeForKey("image")
                     self.delegateAddDream?.addDreamCallback(id, img: img, title: (self.field1.text)!)
-                    self.navigationController?.popViewControllerAnimated(true)
+                    self.navigationController?.popViewController(animated: true)
                 }
             }
         } else {
@@ -340,7 +340,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             
             Api.postEditDream(self.editId, title: title!, content: content!, uploadUrl: self.uploadUrl, editPrivate: self.isPrivate, tags: tagsString, permission: "\(permission)"){
                 json in
-                let error = json!.objectForKey("error") as! NSNumber
+                let error = json!.object(forKey: "error") as! NSNumber
                 if error == 0 {
                     if let dreams = Cookies.get("NianDreams") as? NSMutableArray {
                         var i = 0
@@ -352,7 +352,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
                                     let mutableData = NSMutableDictionary(dictionary: dream)
                                     mutableData.setValue(self.field1!.text!, forKey: "title")
                                     mutableData.setValue(self.uploadUrl, forKey: "image")
-                                    arr.replaceObjectAtIndex(i, withObject: mutableData)
+                                    arr.replaceObject(at: i, with: mutableData)
                                     Cookies.set(arr, forKey: "NianDreams")
                                     Nian.loadFromLocal()
                                     break
@@ -363,7 +363,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
                     }
                     
                     self.delegate?.editDream(self.isPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2.text)!, editImage: self.uploadUrl, editTags:tagsArray, editPermission: self.permission)
-                    self.navigationController?.popViewControllerAnimated(true)
+                    self.navigationController?.popViewController(animated: true)
                 }
             }
         } else {
@@ -371,46 +371,46 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
     }
     
-    func onTagSelected(tag: String, tagType: Int) {
+    func onTagSelected(_ tag: String, tagType: Int) {
 //        self.labelTag?.text = tag
 //        self.tagType = tagType + 1
     }
     
     //MARK: keyboard notification && UITextView Delegate method
    
-    func handleKeyboardWillShowNotification(notification: NSNotification) {
-        let userInfo = notification.userInfo!
+    func handleKeyboardWillShowNotification(_ notification: Notification) {
+        let userInfo = (notification as NSNotification).userInfo!
         
-        let animationDuration: NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
+        let animationDuration: TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
         
         // Convert the keyboard frame from screen to view coordinates.
-        let keyboardScreenEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        let keyboardScreenEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
-        let keyboardViewEndFrame = view.convertRect(keyboardScreenEndFrame, fromView: view.window)
+        let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
         let originDelta = keyboardViewEndFrame.height   // abs(keyboardViewEndFrame.origin.y - keyboardViewBeginFrame.origin.y)
         keyboardHeight = originDelta
         
-        if self.tokenView.tokenField.isFirstResponder() {
-            tokenView.frame.size = CGSize(width: self.tokenView.frame.width, height: UIScreen.mainScreen().bounds.height - keyboardHeight - 64)
+        if self.tokenView.tokenField.isFirstResponder {
+            tokenView.frame.size = CGSize(width: self.tokenView.frame.width, height: UIScreen.main.bounds.height - keyboardHeight - 64)
             
             self.scrollView.contentSize = CGSize(width: self.scrollView.frame.size.width, height: 78 + field2.frame.height + tokenView.frame.height)
             self.containerView.setHeight(self.scrollView.contentSize.height - 1)
             
-            UIView.animateWithDuration(0, delay: 0, options: UIViewAnimationOptions.BeginFromCurrentState, animations: {
-                self.scrollView.setContentOffset(CGPointMake(0, self.field2.frame.height + 78), animated: false)
+            UIView.animate(withDuration: 0, delay: 0, options: UIViewAnimationOptions.beginFromCurrentState, animations: {
+                self.scrollView.setContentOffset(CGPoint(x: 0, y: self.field2.frame.height + 78), animated: false)
             }, completion: nil)
         }
         
-        if field2.isFirstResponder() {
-            let _rect = field2.caretRectForPosition((field2.selectedTextRange?.end)!)
+        if field2.isFirstResponder {
+            let _rect = field2.caretRect(for: (field2.selectedTextRange?.end)!)
             
-            if ((_rect.origin.y + UIFont.systemFontOfSize(14).lineHeight + 78 + keyboardHeight) > (UIScreen.mainScreen().bounds.height - 64)) {
-                let extraHeight = _rect.origin.y + 78 - self.scrollView.contentOffset.y + keyboardHeight + UIFont.systemFontOfSize(14).lineHeight
-                let heightExcludeNavbar = UIScreen.mainScreen().bounds.height - 64
+            if ((_rect.origin.y + UIFont.systemFont(ofSize: 14).lineHeight + 78 + keyboardHeight) > (UIScreen.main.bounds.height - 64)) {
+                let extraHeight = _rect.origin.y + 78 - self.scrollView.contentOffset.y + keyboardHeight + UIFont.systemFont(ofSize: 14).lineHeight
+                let heightExcludeNavbar = UIScreen.main.bounds.height - 64
                 let extraScrollOffset = extraHeight - heightExcludeNavbar
                 
-                UIView.animateWithDuration(animationDuration, delay: 0, options: UIViewAnimationOptions.BeginFromCurrentState, animations: { () -> Void in
-                    self.scrollView.setContentOffset(CGPointMake(0, self.scrollView.contentOffset.y + extraScrollOffset), animated: false)
+                UIView.animate(withDuration: animationDuration, delay: 0, options: UIViewAnimationOptions.beginFromCurrentState, animations: { () -> Void in
+                    self.scrollView.setContentOffset(CGPoint(x: 0, y: self.scrollView.contentOffset.y + extraScrollOffset), animated: false)
                 }, completion: nil)
             }
         }
@@ -418,52 +418,52 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         keyboardShown = true
     }
 
-    func handleKeyboardWillHideNotification(notification: NSNotification) {
+    func handleKeyboardWillHideNotification(_ notification: Notification) {
         keyboardShown = false
         
-        let userInfo = notification.userInfo!
-        let animationDuration: NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
+        let userInfo = (notification as NSNotification).userInfo!
+        let animationDuration: TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
         
-        self.scrollView.contentSize = CGSize(width: self.scrollView.frame.size.width, height: 78 + field2.frame.height + CGRectGetMaxY(tokenView.tokenField.frame))
+        self.scrollView.contentSize = CGSize(width: self.scrollView.frame.size.width, height: 78 + field2.frame.height + tokenView.tokenField.frame.maxY)
         self.containerView.setHeight(self.scrollView.contentSize.height - 1)
         
-        UIView.animateWithDuration(animationDuration, delay: 0, options: UIViewAnimationOptions.BeginFromCurrentState, animations: {
-            self.scrollView.setContentOffset(CGPointMake(0, 0), animated: false)
+        UIView.animate(withDuration: animationDuration, delay: 0, options: UIViewAnimationOptions.beginFromCurrentState, animations: {
+            self.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
             }, completion: nil)
     }
 
     // text view delegate 
     /* 在编辑 “记本简介” 时，根据选择的内容来实现滚动 */
-    func textViewDidChangeSelection(textView: UITextView) {
+    func textViewDidChangeSelection(_ textView: UITextView) {
         if textView.tag == 16555 {
             /**/
             let tmpField2Height = textView.text.stringHeightWith(14.0, width: textView.contentSize.width - textView.contentInset.left * 2) + textView.contentInset.top * 2
-            let field2DefaultHeight: CGFloat = UIScreen.mainScreen().bounds.height > 480 ? 120 : 96
+            let field2DefaultHeight: CGFloat = UIScreen.main.bounds.height > 480 ? 120 : 96
             self.field2.frame.size.height = field2DefaultHeight > tmpField2Height ? field2DefaultHeight : tmpField2Height
-            self.tokenView.frame.origin.y = CGRectGetMaxY(self.field2.frame)
+            self.tokenView.frame.origin.y = self.field2.frame.maxY
             self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: 78 + field2.frame.height + tokenView.frame.height)
             self.containerView.frame.size = CGSize(width: self.containerView.frame.width, height: self.scrollView.contentSize.height)
         }
     }
     
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         if textView.tag == 16555 {
-            let _rect = field2.caretRectForPosition((field2.selectedTextRange?.end)!)
+            let _rect = field2.caretRect(for: (field2.selectedTextRange?.end)!)
             
-            if ((_rect.origin.y + UIFont.systemFontOfSize(14).lineHeight + 78 + keyboardHeight) > (UIScreen.mainScreen().bounds.height - 64)) {
-                let extraHeight = _rect.origin.y + 78 - self.scrollView.contentOffset.y + keyboardHeight + UIFont.systemFontOfSize(14).lineHeight
-                let heightExcludeNavbar = UIScreen.mainScreen().bounds.height - 64
+            if ((_rect.origin.y + UIFont.systemFont(ofSize: 14).lineHeight + 78 + keyboardHeight) > (UIScreen.main.bounds.height - 64)) {
+                let extraHeight = _rect.origin.y + 78 - self.scrollView.contentOffset.y + keyboardHeight + UIFont.systemFont(ofSize: 14).lineHeight
+                let heightExcludeNavbar = UIScreen.main.bounds.height - 64
                 let extraScrollOffset = extraHeight - heightExcludeNavbar
                 
-                UIView.animateWithDuration(0, delay: 0, options: UIViewAnimationOptions.BeginFromCurrentState, animations: {
-                    self.scrollView.setContentOffset(CGPointMake(0, self.scrollView.contentOffset.y + extraScrollOffset), animated: false)
+                UIView.animate(withDuration: 0, delay: 0, options: UIViewAnimationOptions.beginFromCurrentState, animations: {
+                    self.scrollView.setContentOffset(CGPoint(x: 0, y: self.scrollView.contentOffset.y + extraScrollOffset), animated: false)
                 }, completion: nil)
             }
         }
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isKindOfClass(UITableView) || touch.view!.isKindOfClass(UITableViewCell) {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if touch.view!.isKind(of: UITableView.self) || touch.view!.isKind(of: UITableViewCell.self) {
             return false
         }
         
@@ -475,26 +475,26 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
 //MARK: token field delegate
 
 extension AddDreamController: TITokenFieldDelegate {
-    func tokenFieldDidBeginEditing(field: TITokenField!) {
-        if self.tokenView.tokenField.isFirstResponder() {
+    func tokenFieldDidBeginEditing(_ field: TITokenField!) {
+        if self.tokenView.tokenField.isFirstResponder {
             if keyboardShown {
-                tokenView.frame.size = CGSize(width: self.tokenView.frame.width, height: UIScreen.mainScreen().bounds.height - keyboardHeight - 64)
+                tokenView.frame.size = CGSize(width: self.tokenView.frame.width, height: UIScreen.main.bounds.height - keyboardHeight - 64)
                 
                 self.scrollView.contentSize = CGSize(width: self.scrollView.frame.size.width, height: 78 + field2.frame.height + tokenView.frame.height)
                 self.containerView.setHeight(self.scrollView.contentSize.height - 1)
                 
-                UIView.animateWithDuration(0.25, delay: 0, options: UIViewAnimationOptions.BeginFromCurrentState, animations: {
-                    self.scrollView.setContentOffset(CGPointMake(0, self.field2.frame.height + 78), animated: false)
+                UIView.animate(withDuration: 0.25, delay: 0, options: UIViewAnimationOptions.beginFromCurrentState, animations: {
+                    self.scrollView.setContentOffset(CGPoint(x: 0, y: self.field2.frame.height + 78), animated: false)
                 }, completion: nil)
             }
         }
     }
     
-    func tokenField(field: TITokenField!, shouldUseCustomSearchForSearchString searchString: String!) -> Bool {
+    func tokenField(_ field: TITokenField!, shouldUseCustomSearchForSearch searchString: String!) -> Bool {
         return true
     }
     
-    func tokenField(field: TITokenField!, performCustomSearchForSearchString searchString: String!, withCompletionHandler completionHandler: (([AnyObject]!) -> Void)!) {
+    func tokenField(_ field: TITokenField!, performCustomSearchForSearch searchString: String!, withCompletionHandler completionHandler: (([AnyObject]?) -> Void)!) {
         var data: Array<String> = []
         
         if searchString.characters.count > 0 {
@@ -502,10 +502,10 @@ extension AddDreamController: TITokenFieldDelegate {
             Api.getAutoComplete(_string, callback: {
                 json in
                 if json != nil {
-                    let error = json!.objectForKey("error") as! NSNumber
+                    let error = json!.object(forKey: "error") as! NSNumber
                     
                     if error == 0 {
-                        data = json!.objectForKey("data") as! Array
+                        data = json!.object(forKey: "data") as! Array
                         
                         if data.count > 0 {
                             for i in 0...(data.count - 1) {
@@ -519,7 +519,7 @@ extension AddDreamController: TITokenFieldDelegate {
         }
     }
     
-    func tokenField(tokenField: TITokenField!, didAddToken token: TIToken!) {
+    func tokenField(_ tokenField: TITokenField!, didAdd token: TIToken!) {
 //        _string.removeAtIndex(advance(token.title.startIndex, 0))
         if self.tagsArray.contains(token.title) {
             return
@@ -530,7 +530,7 @@ extension AddDreamController: TITokenFieldDelegate {
         })
     }
     
-    func tokenField(tokenField: TITokenField!, didChangeFrame frame: CGRect) {
+    func tokenField(_ tokenField: TITokenField!, didChangeFrame frame: CGRect) {
     }
     
 }
@@ -538,7 +538,7 @@ extension AddDreamController: TITokenFieldDelegate {
 //MARK: UIScrollView Delegate
 
 extension AddDreamController: UIScrollViewDelegate {
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         self.dismissKeyboard()
     }
 }

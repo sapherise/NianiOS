@@ -11,7 +11,7 @@ import UIKit
 import AssetsLibrary
 
 protocol LSYAlbumPickerDelegate : class{
-    func AlbumPickerDidFinishPick(assets:NSArray)
+    func AlbumPickerDidFinishPick(_ assets:NSArray)
 }
 class LSYAlbumPicker: SAViewController {
     let albumPickerCellIdentifer: String = "albumPickerCellIdentifer"
@@ -27,16 +27,16 @@ class LSYAlbumPicker: SAViewController {
             albumView.allowsMultipleSelection = true
             albumView.delegate = self
             albumView.dataSource = self
-            albumView.registerNib(UINib(nibName: "LSYAlbumPickerCell", bundle: nil), forCellWithReuseIdentifier: "albumPickerCellIdentifer")
+            albumView.register(UINib(nibName: "LSYAlbumPickerCell", bundle: nil), forCellWithReuseIdentifier: "albumPickerCellIdentifer")
             self.view.addSubview(albumView)
         }
     }
-    private func setup(){
-        if let _title = self.group.valueForProperty(ALAssetsGroupPropertyName) as? String {
+    fileprivate func setup(){
+        if let _title = self.group.value(forProperty: ALAssetsGroupPropertyName) as? String {
             _setTitle(_title)
         }
         setBarButtonImage("newOK", actionGesture: #selector(LSYAlbumPicker.onOK))
-        self.view.backgroundColor = UIColor.blackColor()
+        self.view.backgroundColor = UIColor.black
         
         let widthImage = (globalWidth - padding * 2) / 3
         let flowLayout = UICollectionViewFlowLayout()
@@ -45,7 +45,7 @@ class LSYAlbumPicker: SAViewController {
         flowLayout.itemSize = CGSize(width: widthImage, height: widthImage)
         flowLayout.sectionInset = UIEdgeInsets(top: padding, left: 0, bottom: padding, right: 0)
         
-        self.albumView = UICollectionView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64), collectionViewLayout: flowLayout)
+        self.albumView = UICollectionView(frame: CGRect(x: 0, y: 64, width: globalWidth, height: globalHeight - 64), collectionViewLayout: flowLayout)
         LSYAlbum.sharedAlbum().setupAlbumAssets(self.group, albumAssets: { (assets) -> () in
             self.albumAssets = assets
             self.albumView.reloadData()
@@ -64,9 +64,9 @@ class LSYAlbumPicker: SAViewController {
                 let num = selectedArray[i]
                 let obj = albumAssets[num] as! LSYAlbumModel
                 let asset = obj.asset
-                arr.append(asset)
+                arr.append(asset!)
             }
         }
-        delegate.AlbumPickerDidFinishPick(arr)
+        delegate.AlbumPickerDidFinishPick(arr as NSArray)
     }
 }

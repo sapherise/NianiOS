@@ -14,17 +14,17 @@ class AccountBindCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         
-        self.contentView.bounds = UIScreen.mainScreen().bounds
+        self.contentView.bounds = UIScreen.main.bounds
     }
     
     /**
      
      */
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Value1, reuseIdentifier: reuseIdentifier)
+        super.init(style: .value1, reuseIdentifier: reuseIdentifier)
         
-        self.accessoryType = .DisclosureIndicator
-        self.selectionStyle = .None
+        self.accessoryType = .disclosureIndicator
+        self.selectionStyle = .none
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -32,7 +32,7 @@ class AccountBindCell: UITableViewCell {
         
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state

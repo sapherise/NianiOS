@@ -7,6 +7,26 @@
 //
 
 import UIKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 /**
  LogOrRegViewController 上的唯一的复用的 Button 的功能类型
@@ -58,13 +78,13 @@ class LogOrRegViewController: UIViewController {
         didSet {
             switch functionalType! {
             case .confirm:
-                self.functionalButton?.setTitle("确定", forState: .Normal)
+                self.functionalButton?.setTitle("确定", for: UIControlState())
             case .logIn:
-                self.functionalButton.setTitle("登录", forState: .Normal)
-                self.descriptionLabel.hidden = true
+                self.functionalButton.setTitle("登录", for: UIControlState())
+                self.descriptionLabel.isHidden = true
             case .register:
-                self.functionalButton.setTitle("注册", forState: .Normal)
-                self.descriptionLabel.hidden = true
+                self.functionalButton.setTitle("注册", for: UIControlState())
+                self.descriptionLabel.isHidden = true
             }
         }
     }
@@ -90,14 +110,14 @@ class LogOrRegViewController: UIViewController {
         
         self.emailTextField.layer.cornerRadius = 22
         self.emailTextField.layer.masksToBounds = true
-        self.emailTextField.leftViewMode = .Always
+        self.emailTextField.leftViewMode = .always
         
         // Do any additional setup after loading the view.
         if self.functionalType == .confirm {
-            self.passwordTextField.hidden = true
-            self.nicknameTextField.hidden = true
-            self.forgetPWDButton.hidden = true
-            self.privacyContainerView.hidden = true
+            self.passwordTextField.isHidden = true
+            self.nicknameTextField.isHidden = true
+            self.forgetPWDButton.isHidden = true
+            self.privacyContainerView.isHidden = true
         }
         
         /* 设置 all textfields 的 delegate  */
@@ -106,17 +126,17 @@ class LogOrRegViewController: UIViewController {
         self.nicknameTextField.delegate = self
         
         /// 监听 email textfield 不能有变化
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        NotificationCenter.default.addObserver(self,
             selector: #selector(LogOrRegViewController.emailTextFieldDidChange(_:)),
-            name: UITextFieldTextDidChangeNotification,
+            name: NSNotification.Name.UITextFieldTextDidChange,
             object: self.emailTextField)
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        NSNotificationCenter.defaultCenter().removeObserver(self,
-            name: UITextFieldTextDidChangeNotification,
+        NotificationCenter.default.removeObserver(self,
+            name: NSNotification.Name.UITextFieldTextDidChange,
             object: self.emailTextField)
     }
     
@@ -127,7 +147,7 @@ class LogOrRegViewController: UIViewController {
     
     :param: noti <#noti description#>
     */
-    func emailTextFieldDidChange(noti: NSNotification) {
+    func emailTextFieldDidChange(_ noti: Notification) {
         if self.functionalType != .confirm {
             let _textfield = noti.object as! UITextField
             
@@ -145,9 +165,9 @@ class LogOrRegViewController: UIViewController {
     /**
      重置密码
      */
-    @IBAction func resetPassword(sender: UIButton) {
+    @IBAction func resetPassword(_ sender: UIButton) {
         // 收起键盘
-        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         
         let _tmpType = self.functionalType
         
@@ -193,8 +213,8 @@ class LogOrRegViewController: UIViewController {
     
     //MARK: - click on functionalButton
     
-    @IBAction func onFunctionalButton(sender: UIButton) {
-        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
+    @IBAction func onFunctionalButton(_ sender: UIButton) {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         
         self.handleEvent()
     }
@@ -202,22 +222,22 @@ class LogOrRegViewController: UIViewController {
     /**
      点击空白 dismiss keyboard
      */
-    @IBAction func dismissKeyboard(sender: UIControl) {
-        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
+    @IBAction func dismissKeyboard(_ sender: UIControl) {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
     
     /**
      无论何时点击左上角的 cancel button, 都将回到 welcome view controller
      */
-    @IBAction func backWelcomeViewController(sender: UIButton) {
-        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func backWelcomeViewController(_ sender: UIButton) {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
@@ -225,13 +245,13 @@ class LogOrRegViewController: UIViewController {
             let regInfo = RegInfo(email: self.emailTextField.text!, nickname: self.nicknameTextField.text!, password: self.passwordTextField.text!)
             
             /// 进入选择模式的 xib
-            let patternViewController = segue.destinationViewController as! PatternViewController
+            let patternViewController = segue.destination as! PatternViewController
             /// 传递注册时需要的数据
             patternViewController.regInfo = regInfo
         }
         
         if segue.identifier == "toPrivacyVC" {
-            let privacyWebView = segue.destinationViewController as! PrivacyViewController
+            let privacyWebView = segue.destination as! PrivacyViewController
             privacyWebView.urlString = "http://nian.so/privacy.php"
         }
         
@@ -243,8 +263,8 @@ class LogOrRegViewController: UIViewController {
 // MARK: - UITextFieldDelegate
 extension LogOrRegViewController: UITextFieldDelegate {
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         
         if self.functionalType == .confirm {
             if textField == self.emailTextField {
@@ -338,7 +358,7 @@ extension LogOrRegViewController {
                             let uid = json["data"]["uid"].stringValue
                             let username = json["data"]["username"].stringValue
                             
-                            NSUserDefaults.standardUserDefaults().setObject(username, forKey: "user")
+                            UserDefaults.standard.set(username, forKey: "user")
                             
                             /// uid 和 shell 保存到 keychain
                             let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
@@ -385,7 +405,7 @@ extension LogOrRegViewController {
                                     self.showTipText("昵称被占用...")
                                     
                                 } else if json["error"] == 0 {
-                                    self.performSegueWithIdentifier("toModeVC", sender: nil)
+                                    self.performSegue(withIdentifier: "toModeVC", sender: nil)
                                 }
                             }
                         })
@@ -411,7 +431,7 @@ extension LogOrRegViewController {
     /**
      验证邮箱是否正确
      */
-    func validateEmailAddress(text: String) -> Bool {
+    func validateEmailAddress(_ text: String) -> Bool {
         if text == "" {
             return false
         } else if !text.isValidEmail() {
@@ -424,7 +444,7 @@ extension LogOrRegViewController {
     /**
      验证昵称是否符合要求
      */
-    func validateNickname(name: String) -> Bool {
+    func validateNickname(_ name: String) -> Bool {
         if name == "" {
             self.showTipText("名字不能是空的...")
             
@@ -449,19 +469,19 @@ extension LogOrRegViewController {
         
         self.passwordTextField.layer.cornerRadius = 22
         self.passwordTextField.layer.masksToBounds = true
-        self.passwordTextField.leftViewMode = .Always
+        self.passwordTextField.leftViewMode = .always
         
         self.nicknameTextField.layer.cornerRadius = 22
         self.nicknameTextField.layer.masksToBounds = true
-        self.nicknameTextField.leftViewMode = .Always
+        self.nicknameTextField.leftViewMode = .always
         
-        self.passwordTextField.hidden = false
-        self.nicknameTextField.hidden = false
+        self.passwordTextField.isHidden = false
+        self.nicknameTextField.isHidden = false
         self.functionalType = .register
         
         self.view.layoutIfNeeded()
         
-        UIView.animateWithDuration(0.4, animations: {
+        UIView.animate(withDuration: 0.4, animations: {
             self.emailTextFieldToTop.constant = 48
             self.pwdTextFieldTopToEmail.constant = 8
             self.nicknameTextFieldTopToPwd.constant = 8
@@ -470,7 +490,7 @@ extension LogOrRegViewController {
             self.view.layoutIfNeeded()
         })
         
-        self.privacyContainerView.hidden = false
+        self.privacyContainerView.isHidden = false
     }
     
     /**
@@ -479,14 +499,14 @@ extension LogOrRegViewController {
     func handleRegisterEmail() {
         self.passwordTextField.layer.cornerRadius = 22
         self.passwordTextField.layer.masksToBounds = true
-        self.passwordTextField.leftViewMode = .Always
+        self.passwordTextField.leftViewMode = .always
         
-        self.passwordTextField.hidden = false
+        self.passwordTextField.isHidden = false
         self.functionalType = .logIn
         
         self.view.layoutIfNeeded()
         
-        UIView.animateWithDuration(0.4, animations: {
+        UIView.animate(withDuration: 0.4, animations: {
             self.emailTextFieldToTop.constant = 48
             self.pwdTextFieldTopToEmail.constant = 8
             self.functionalButtonTopToEmail.constant = 76
@@ -494,7 +514,7 @@ extension LogOrRegViewController {
             self.view.layoutIfNeeded()
         })
         
-        self.forgetPWDButton.hidden = false
+        self.forgetPWDButton.isHidden = false
         
         self.passwordTextField.becomeFirstResponder()
     }
@@ -509,7 +529,7 @@ extension LogOrRegViewController {
             
             self.view.layoutIfNeeded()
             
-            UIView.animateWithDuration(0.4, animations: {
+            UIView.animate(withDuration: 0.4, animations: {
                 self.pwdTextFieldTopToEmail.constant = -44
                 self.functionalButtonTopToEmail.constant = 24
                 
@@ -518,7 +538,7 @@ extension LogOrRegViewController {
                 self.view.layoutIfNeeded()
                 }, completion: { finished in
                     if finished {
-                        self.passwordTextField.hidden = true
+                        self.passwordTextField.isHidden = true
                     }
             })
             
@@ -526,7 +546,7 @@ extension LogOrRegViewController {
             
             self.view.layoutIfNeeded()
             
-            UIView.animateWithDuration(0.4, animations: {
+            UIView.animate(withDuration: 0.4, animations: {
                 self.pwdTextFieldTopToEmail.constant = -44
                 self.nicknameTextFieldTopToPwd.constant = -44
                 self.functionalButtonTopToEmail.constant = 24
@@ -536,8 +556,8 @@ extension LogOrRegViewController {
                 self.view.layoutIfNeeded()
                 }, completion: { finished in
                     if finished {
-                        self.passwordTextField.hidden = true
-                        self.nicknameTextField.hidden = true
+                        self.passwordTextField.isHidden = true
+                        self.nicknameTextField.isHidden = true
                     }
             })
         }
@@ -549,11 +569,11 @@ extension LogOrRegViewController {
 // MARK: - NIAlert Delegate
 extension LogOrRegViewController: NIAlertDelegate {
     
-    func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
+    func niAlert(_ niAlert: NIAlert, didselectAtIndex: Int) {
         niAlert.dismissWithAnimation(.normal)
     }
     
-    func niAlert(niAlert: NIAlert, tapBackground: Bool) {
+    func niAlert(_ niAlert: NIAlert, tapBackground: Bool) {
         niAlert.dismissWithAnimation(.normal)
     }
     

@@ -22,7 +22,7 @@ class LevelView: UIView {
     @IBOutlet var viewBottom: UIView!
     @IBOutlet var viewBottomHolder: UIView!
     
-    var marks: [Bool] = [Bool](count: 32, repeatedValue: false)
+    var marks: [Bool] = [Bool](repeating: false, count: 32)
     var textLeft: Int = 0
     var textRight: Int = 0
     
@@ -41,8 +41,8 @@ class LevelView: UIView {
         if let uid = Int(SAUid()) {
             Api.getUserTop(uid) { json in
                 if json != nil {
-                    if let data = json!.objectForKey("data") {
-                        if let user = data.objectForKey("user") as? NSDictionary {
+                    if let data = json!.object(forKey: "data") {
+                        if let user = data.object(forKey: "user") as? NSDictionary {
                             let likes = user.stringAttributeForKey("likes")
                             let steps = user.stringAttributeForKey("step")
                             let followed = user.stringAttributeForKey("followed")
@@ -57,10 +57,10 @@ class LevelView: UIView {
         
         Api.getLevelCalendar(){ json in
             if json != nil {
-                self.marks = [Bool](count: 32, repeatedValue: false)
-                let items = json!.objectForKey("items") as! NSArray
+                self.marks = [Bool](repeating: false, count: 32)
+                let items = json!.object(forKey: "items") as! NSArray
                 for item in items {
-                    let lastdate = (item.objectForKey("lastdate") as! NSString).doubleValue
+                    let lastdate = ((item as AnyObject).object(forKey: "lastdate") as! NSString).doubleValue
                     let date = V.getDay(lastdate)
                     self.marks[Int(date)!] = true
                 }
@@ -71,34 +71,34 @@ class LevelView: UIView {
         }
     }
     
-    func layoutAMonth(marks: [Bool]) {
-        let calendar = NSCalendar.currentCalendar()
-        let comoponents = calendar.components([NSCalendarUnit.NSYearCalendarUnit, NSCalendarUnit.NSMonthCalendarUnit], fromDate: NSDate())
+    func layoutAMonth(_ marks: [Bool]) {
+        let calendar = Calendar.current
+        let comoponents = (calendar as NSCalendar).components([NSCalendar.Unit.NSYearCalendarUnit, NSCalendar.Unit.NSMonthCalendarUnit], from: Date())
         let year = comoponents.year
         let month = comoponents.month
         
-        let dffd = NSDateFormatter()
+        let dffd = DateFormatter()
         dffd.dateFormat = "MM/dd/yyyy"
-        let firstDay :NSDate = dffd.dateFromString("\(month)/01/\(year)")!
+        let firstDay :Date = dffd.date(from: "\(month)/01/\(year)")!
         
-        let dfmn = NSDateFormatter()
+        let dfmn = DateFormatter()
         dfmn.dateFormat = "MM"
-        let strMonthNum = dfmn.stringFromDate(firstDay)
+        let strMonthNum = dfmn.string(from: firstDay)
         
-        let dfm = NSDateFormatter()
+        let dfm = DateFormatter()
         dfm.dateFormat = "MMMM"
         
-        let df = NSDateFormatter()
+        let df = DateFormatter()
         df.dateFormat = "e"
-        let theDayOfWeekForFirst :NSString! = df.stringFromDate(firstDay)
+        let theDayOfWeekForFirst :NSString! = df.string(from: firstDay) as NSString!
         
         let i: Int = theDayOfWeekForFirst.integerValue
         var theDayOfWeek :CGFloat! = CGFloat(i)
         var thePosY :CGFloat! = 40
         
-        let todayD = NSDateFormatter()
+        let todayD = DateFormatter()
         todayD.dateFormat = "d"
-        let todayDInt = Int(todayD.stringFromDate(NSDate()))!
+        let todayDInt = Int(todayD.string(from: Date()))!
         
         let numDaysInMonth = 31
         
@@ -109,18 +109,18 @@ class LevelView: UIView {
             
             let strAll = "\(strMonthNum)/\(index)/\(year)"
             
-            let todayF = NSDateFormatter()
+            let todayF = DateFormatter()
             todayF.dateFormat = "MM/d/yyyy"
-            let firstDay = todayF.stringFromDate(NSDate())
-            let cF = NSDateFormatter()
+            let firstDay = todayF.string(from: Date())
+            let cF = DateFormatter()
             cF.dateFormat = "MM/dd/yyyy"
                 //make a button
                 let myB = UILabel()
                 myB.text = "\(index)"
-                myB.textAlignment = NSTextAlignment.Center
+                myB.textAlignment = NSTextAlignment.center
                 myB.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
                 myB.font = UIFont(name: "Verdana", size: 11)
-                myB.frame = CGRectMake(thePosX, thePosY, 24, 24)
+                myB.frame = CGRect(x: thePosX, y: thePosY, width: 24, height: 24)
                 if marks[index] {
                     myB.textColor = UIColor.HighlightColor()
                     if index <= todayDInt {
@@ -136,7 +136,7 @@ class LevelView: UIView {
                 
                 if (strAll == firstDay) {
                     myB.backgroundColor = UIColor.HighlightColor()
-                    myB.textColor = UIColor.whiteColor()
+                    myB.textColor = UIColor.white
                     myB.layer.cornerRadius = 3
                     myB.layer.masksToBounds = true
                 }

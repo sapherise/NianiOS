@@ -29,9 +29,9 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     func setupViews() {
         viewBack()
-        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        let navView = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: 64))
         navView.backgroundColor = UIColor.NavColor()
-        let labelNav = UILabel(frame: CGRectMake(0, 20, globalWidth, 44))
+        let labelNav = UILabel(frame: CGRect(x: 0, y: 20, width: globalWidth, height: 44))
         var textTitle = "消息"
         if self.tag == 1 {
             textTitle = "回应"
@@ -41,20 +41,20 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
             textTitle = "通知"
         }
         labelNav.text = textTitle
-        labelNav.textColor = UIColor.whiteColor()
-        labelNav.font = UIFont.systemFontOfSize(17)
-        labelNav.textAlignment = NSTextAlignment.Center
+        labelNav.textColor = UIColor.white
+        labelNav.font = UIFont.systemFont(ofSize: 17)
+        labelNav.textAlignment = NSTextAlignment.center
         navView.addSubview(labelNav)
         self.view.addSubview(navView)
         
-        self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64))
+        self.tableView = UITableView(frame:CGRect(x: 0, y: 64, width: globalWidth, height: globalHeight - 64))
         self.tableView!.delegate = self
         self.tableView!.dataSource = self
         self.tableView!.backgroundColor = BGColor
-        self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.none
         let nib = UINib(nibName:"MeCell", bundle: nil)
         
-        self.tableView!.registerNib(nib, forCellReuseIdentifier: identifier)
+        self.tableView!.register(nib, forCellReuseIdentifier: identifier)
         self.view.addSubview(self.tableView!)
     }
     
@@ -81,7 +81,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
 //        })
 //    }
     
-    func load(clear: Bool = true) {
+    func load(_ clear: Bool = true) {
         if clear {
             page = 1
         }
@@ -91,9 +91,9 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
                 if clear {
                     self.dataArray.removeAllObjects()
                 }
-                let items = (json!.objectForKey("data") as! NSDictionary).objectForKey("items") as! NSArray
+                let items = (json!.object(forKey: "data") as! NSDictionary).object(forKey: "items") as! NSArray
                 for item in items {
-                    self.dataArray.addObject(item)
+                    self.dataArray.add(item)
                 }
                 self.tableView?.reloadData()
                 self.tableView?.headerEndRefreshing()
@@ -108,53 +108,53 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.dataArray.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? MeCell
-        let index = indexPath.row
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? MeCell
+        let index = (indexPath as NSIndexPath).row
         let data = self.dataArray[index] as! NSDictionary
         cell!.data = data
         cell!.avatarView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(MeNextViewController.userclick(_:))))
-        if indexPath.row == self.dataArray.count - 1 {
-            cell!.viewLine.hidden = true
+        if (indexPath as NSIndexPath).row == self.dataArray.count - 1 {
+            cell!.viewLine.isHidden = true
         }else{
-            cell!.viewLine.hidden = false
+            cell!.viewLine.isHidden = false
         }
         cell!._layoutSubviews()
         
         return cell!
     }
     
-    func onDreamClick(sender:UIGestureRecognizer){
+    func onDreamClick(_ sender:UIGestureRecognizer){
         let tag = sender.view!.tag
         let dreamVC = DreamViewController()
         dreamVC.Id = "\(tag)"
         self.navigationController!.pushViewController(dreamVC, animated: true)
     }
     
-    func userclick(sender:UITapGestureRecognizer){
+    func userclick(_ sender:UITapGestureRecognizer){
         let UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
         self.navigationController!.pushViewController(UserVC, animated: true)
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let index = indexPath.row
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let index = (indexPath as NSIndexPath).row
         let data = self.dataArray[index] as! NSDictionary
         return  MeCell.cellHeightByData(data)
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
-        let index = indexPath.row
+        let index = (indexPath as NSIndexPath).row
         let data = self.dataArray[index] as! NSDictionary
         let uid = data.stringAttributeForKey("cuid")
         let dream = data.stringAttributeForKey("dream")
@@ -248,7 +248,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         })
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.viewBackFix()
     }

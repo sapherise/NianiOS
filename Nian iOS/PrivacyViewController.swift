@@ -19,9 +19,9 @@ class PrivacyViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        let url = NSURL(string: urlString)
+        let url = URL(string: urlString)
         if url != nil {
-            let request = NSURLRequest(URL: url!)
+            let request = URLRequest(url: url!)
             web.loadRequest(request)
         } else {
             self.showTipText("网址错误")
@@ -36,8 +36,8 @@ class PrivacyViewController: UIViewController {
     /**
      返回之前的界面
      */
-    @IBAction func dismiss(sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func dismiss(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
     }
 
     /*

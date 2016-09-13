@@ -12,8 +12,8 @@ let DEFAULT_IMAGE_WIDTH = globalWidth > 750 ? "!300xx" : "!200xx"
 
 class VVImageCollectionView: UICollectionView {
 
-    typealias DownloadedSingleImage = (image: UIImage, url: NSURL?) -> Void
-    typealias ImageSelectedHandler = (path: String, indexPath: NSIndexPath) -> Void
+    typealias DownloadedSingleImage = (_ image: UIImage, _ url: URL?) -> Void
+    typealias ImageSelectedHandler = (_ path: String, _ indexPath: IndexPath) -> Void
     
     let placeholderImage = UIImage(named: "drop")
 
@@ -23,9 +23,9 @@ class VVImageCollectionView: UICollectionView {
     
     var containImages = [String: UIImage]()
     
-    private var _imagesBaseURL = NSURL(string: "http://img.nian.so/step/")!
+    fileprivate var _imagesBaseURL = URL(string: "http://img.nian.so/step/")!
     
-    var imagesBaseURL: NSURL {
+    var imagesBaseURL: URL {
         set(newValue) {
             self._imagesBaseURL = newValue
         }
@@ -34,7 +34,7 @@ class VVImageCollectionView: UICollectionView {
         }
     }
 
-    let sd_manager = SDWebImageManager.sharedManager()
+    let sd_manager = SDWebImageManager.shared()
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
@@ -42,7 +42,7 @@ class VVImageCollectionView: UICollectionView {
         self.delegate = self
         self.dataSource = self
         
-        self.registerClass(VVImageViewCell.self, forCellWithReuseIdentifier: "VVImageViewCell")
+        self.register(VVImageViewCell.self, forCellWithReuseIdentifier: "VVImageViewCell")
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -69,23 +69,23 @@ class VVImageCollectionView: UICollectionView {
     }
     
 
-    func downloadImages(urls: NSArray, callback: DownloadedSingleImage) {
+    func downloadImages(_ urls: NSArray, callback: @escaping DownloadedSingleImage) {
         for tmp in 0 ..< urls.count {
             let dict = self.imagesDataSource[tmp] as! NSDictionary
             let _imageURLString = dict["path"] as! String
-            var _imageURL = NSURL(string: _imageURLString + DEFAULT_IMAGE_WIDTH, relativeToURL: self._imagesBaseURL)!
+            var _imageURL = URL(string: _imageURLString + DEFAULT_IMAGE_WIDTH, relativeTo: self._imagesBaseURL)!
             
             if urls.count == 1 {
-                _imageURL = NSURL(string: _imageURLString + "!large", relativeToURL: self._imagesBaseURL)!
+                _imageURL = URL(string: _imageURLString + "!large", relativeTo: self._imagesBaseURL)!
             }
             
-            sd_manager.downloadImageWithURL(_imageURL,
+            sd_manager.downloadImage(with: _imageURL,
                 options: SDWebImageOptions(rawValue: 0),
                 progress: { (receivedSize, expectedSize) -> Void in
                     
                 }, completed: { (image, error, cacheType, finished, imageURL) -> Void in
                     if let _ = error {
-                        callback(image: self.placeholderImage!, url: NSURL())
+                        callback(image: self.placeholderImage!, url: URL())
                     } else {
                         callback(image: image, url: imageURL)
                     }
@@ -94,8 +94,8 @@ class VVImageCollectionView: UICollectionView {
     }
     
     func cancelImageRequestOperation() {
-        self.sd_manager.cancelAll()
-        self.containImages.removeAll(keepCapacity: false)
+        self.sd_manager?.cancelAll()
+        self.containImages.removeAll(keepingCapacity: false)
         
         self.reloadData()
     }
@@ -103,24 +103,24 @@ class VVImageCollectionView: UICollectionView {
 
 extension VVImageCollectionView: UICollectionViewDelegate, UICollectionViewDataSource {
 
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.imagesDataSource.count
     }
     
     // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("VVImageViewCell", forIndexPath: indexPath) as! VVImageViewCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "VVImageViewCell", for: indexPath) as! VVImageViewCell
         
-        if indexPath.row < self.containImages.count {
-            cell.imageView.image = self.containImages[(self.imagesDataSource[indexPath.row] as! NSDictionary)["path"] as! String]
+        if (indexPath as NSIndexPath).row < self.containImages.count {
+            cell.imageView.image = self.containImages[(self.imagesDataSource[(indexPath as NSIndexPath).row] as! NSDictionary)["path"] as! String]
         }
         
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if self.imagesDataSource.count > indexPath.row {
-            imageSelectedHandler!(path: (self.imagesDataSource[indexPath.row] as! NSDictionary)["path"] as! String, indexPath: indexPath)
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if self.imagesDataSource.count > (indexPath as NSIndexPath).row {
+            imageSelectedHandler!((self.imagesDataSource[(indexPath as NSIndexPath).row] as! NSDictionary)["path"] as! String, indexPath)
         }
     }
     
@@ -128,31 +128,31 @@ extension VVImageCollectionView: UICollectionViewDelegate, UICollectionViewDataS
 
 extension VVImageCollectionView: UICollectionViewDelegateFlowLayout {
 
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let tmpCount = self.imagesDataSource.count
         
         if tmpCount == 1 {
-            return CGSizeMake(globalWidth - 32, globalWidth - 32)
+            return CGSize(width: globalWidth - 32, height: globalWidth - 32)
         } else if tmpCount == 2 || tmpCount == 4 {
             let _tmp = floor((globalWidth - 32 - 2)/2)
-            return CGSizeMake(_tmp, _tmp)
+            return CGSize(width: _tmp, height: _tmp)
         } else if tmpCount > 0 {
             let _tmp = floor((globalWidth - 32 - 4) / 3)
             
             if tmpCount == 5 || tmpCount == 8 {
-                if indexPath.row == tmpCount - 1 {
-                    return CGSizeMake(_tmp * 2 + 2, _tmp)
+                if (indexPath as NSIndexPath).row == tmpCount - 1 {
+                    return CGSize(width: _tmp * 2 + 2, height: _tmp)
                 }
             } else if tmpCount == 7 {
-                if indexPath.row == tmpCount - 1 {
-                    return CGSizeMake(globalWidth - 32, _tmp)
+                if (indexPath as NSIndexPath).row == tmpCount - 1 {
+                    return CGSize(width: globalWidth - 32, height: _tmp)
                 }
             }
             
-            return CGSizeMake(_tmp, _tmp)
+            return CGSize(width: _tmp, height: _tmp)
         }
         
-        return CGSizeZero
+        return CGSize.zero
     }
 }
 
@@ -160,7 +160,7 @@ class VVImageViewCell: UICollectionViewCell {
     
     let imageView: UIImageView = {
         let _imageview = UIImageView()
-        _imageview.contentMode = .ScaleAspectFill
+        _imageview.contentMode = .scaleAspectFill
         _imageview.clipsToBounds = true
         return _imageview
     }()

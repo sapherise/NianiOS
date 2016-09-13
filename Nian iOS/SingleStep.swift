@@ -26,7 +26,7 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
         tableView.headerBeginRefreshing()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.viewBackFix()
     }
@@ -34,26 +34,26 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
     func setupViews() {
         self.viewBack()
         
-        self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        self.navView = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: 64))
         self.navView.backgroundColor = UIColor.NavColor()
         self.view.addSubview(self.navView)
         
-        self.view.backgroundColor = UIColor.whiteColor()
+        self.view.backgroundColor = UIColor.white
         
-        self.tableView = VVeboTableView(frame:CGRectMake(0, 64, globalWidth,globalHeight - 64))
+        self.tableView = VVeboTableView(frame:CGRect(x: 0, y: 64, width: globalWidth,height: globalHeight - 64))
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.none
         self.view.addSubview(self.tableView)
         
         currenTableView = tableView
         
         //标题颜色
-        self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
-        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = UIColor.whiteColor()
+        self.navigationController!.navigationBar.tintColor = UIColor.white
+        let titleLabel:UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 40))
+        titleLabel.textColor = UIColor.white
         titleLabel.text = "进展"
-        titleLabel.textAlignment = NSTextAlignment.Center
+        titleLabel.textAlignment = NSTextAlignment.center
         self.navigationItem.titleView = titleLabel
     }
     
@@ -62,16 +62,16 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
         Api.getSingleStep(self.Id) { json in
             if json != nil {
                 self.dataArray.removeAllObjects()
-                let arr = json!.objectForKey("data")
-                let error = json!.objectForKey("error") as? NSNumber
+                let arr = json!.object(forKey: "data")
+                let error = json!.object(forKey: "error") as? NSNumber
                 if error == 0 {
-                    let data = arr!.objectForKey("step") as! NSDictionary
+                    let data = (arr! as AnyObject).object(forKey: "step") as! NSDictionary
                     let hidden = data.stringAttributeForKey("hidden")
                     if hidden == "0" {
                         let d = VVeboCell.SACellDataRecode(data)
-                        self.dataArray.addObject(d)
+                        self.dataArray.add(d)
                     } else {
-                        self.tableView?.tableHeaderView = UIView(frame: CGRectMake(0, 0, globalWidth, globalHeight - 49 - 64))
+                        self.tableView?.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight - 49 - 64))
                         self.tableView?.tableHeaderView?.addGhost("这条进展\n不见了")
                     }
                 }
@@ -82,12 +82,12 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
         }
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let c = getCell(indexPath, dataArray: dataArray, type: 1)
         (c as VVeboCell).labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(SingleStepViewController.onComment)))
         return c
@@ -108,7 +108,7 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
         }
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return getHeight(indexPath, dataArray: dataArray)
     }
 
@@ -118,7 +118,7 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
         })
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.dataArray.count
     }
     

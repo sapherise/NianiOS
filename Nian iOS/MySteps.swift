@@ -31,41 +31,41 @@ class MySteps: VVeboViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.headerBeginRefreshing()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         viewBackFix()
     }
     
     func setupViews() {
         viewBack()
-        navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        navView = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: 64))
         navView.backgroundColor = UIColor.NavColor()
         self.view.addSubview(navView)
-        self.view.backgroundColor = UIColor.whiteColor()
+        self.view.backgroundColor = UIColor.white
         
-        tableView = VVeboTableView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64))
+        tableView = VVeboTableView(frame: CGRect(x: 0, y: 64, width: globalWidth, height: globalHeight - 64))
         tableView.delegate = self
         tableView.dataSource = self
         view.addSubview(tableView)
         currenTableView = tableView
         
-        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        let titleLabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = UIColor.whiteColor()
+        navigationController?.navigationBar.tintColor = UIColor.white
+        let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 40))
+        titleLabel.textColor = UIColor.white
         titleLabel.text = type == CollectType.mysteps ? "我的进展" : "赞过的进展"
-        titleLabel.textAlignment = .Center
+        titleLabel.textAlignment = .center
         navigationItem.titleView = titleLabel
     }
     
-    func load(clear: Bool) {
+    func load(_ clear: Bool) {
         if clear {
             page = 1
         }
         if type == CollectType.mysteps {
             Api.getUserActive(SAUid(), page: page) { json in
                 if json != nil {
-                    let data = json!.objectForKey("data")
-                    let arr = data!.objectForKey("steps") as! NSArray
+                    let data = json!.object(forKey: "data")
+                    let arr = (data! as AnyObject).object(forKey: "steps") as! NSArray
                     if clear {
                         self.dataArray.removeAllObjects()
                         globalVVeboReload = true
@@ -74,7 +74,7 @@ class MySteps: VVeboViewController, UITableViewDelegate, UITableViewDataSource {
                     }
                     for data in arr {
                         let d = VVeboCell.SACellDataRecode(data as! NSDictionary)
-                        self.dataArray.addObject(d)
+                        self.dataArray.add(d)
                     }
                     self.currentDataArray = self.dataArray
                     self.tableView.reloadData()
@@ -86,7 +86,7 @@ class MySteps: VVeboViewController, UITableViewDelegate, UITableViewDataSource {
         } else {
             Api.getLikeSteps(page) { json in
                 if json != nil {
-                    let arr = json!.objectForKey("data") as! NSArray
+                    let arr = json!.object(forKey: "data") as! NSArray
                     if clear {
                         self.dataArray.removeAllObjects()
                         globalVVeboReload = true
@@ -95,7 +95,7 @@ class MySteps: VVeboViewController, UITableViewDelegate, UITableViewDataSource {
                     }
                     for data in arr {
                         let d = VVeboCell.SACellDataRecode(data as! NSDictionary)
-                        self.dataArray.addObject(d)
+                        self.dataArray.add(d)
                     }
                     self.currentDataArray = self.dataArray
                     self.tableView.reloadData()
@@ -107,20 +107,20 @@ class MySteps: VVeboViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return getCell(indexPath, dataArray: dataArray, type: 1)
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return getHeight(indexPath, dataArray: dataArray)
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataArray.count
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let data = dataArray[indexPath.row] as! NSDictionary
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let data = dataArray[(indexPath as NSIndexPath).row] as! NSDictionary
         let id = data.stringAttributeForKey("dream")
         let vc = DreamViewController()
         vc.Id = id

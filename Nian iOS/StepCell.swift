@@ -25,13 +25,13 @@ class StepCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.selectionStyle = .None
-        self.title1?.hidden = true
-        self.img1?.hidden = true
-        self.title2?.hidden = true
-        self.img2?.hidden = true
-        self.title3?.hidden = true
-        self.img3?.hidden = true
+        self.selectionStyle = .none
+        self.title1?.isHidden = true
+        self.img1?.isHidden = true
+        self.title2?.isHidden = true
+        self.img2?.isHidden = true
+        self.title3?.isHidden = true
+        self.img3?.isHidden = true
         self.img1!.layer.cornerRadius = 4
         self.img2!.layer.cornerRadius = 4
         self.img3!.layer.cornerRadius = 4
@@ -58,8 +58,8 @@ class StepCell: UITableViewCell {
             self.title1!.text = title1
             self.img1!.setImage("http://img.nian.so/dream/\(img1)!ios")
             self.img1?.tag = Int(id1)!
-            self.title1?.hidden = false
-            self.img1?.hidden = false
+            self.title1?.isHidden = false
+            self.img1?.isHidden = false
         }else{
             self.img1?.tag = 1
         }
@@ -68,8 +68,8 @@ class StepCell: UITableViewCell {
             self.title2!.text = title2
             self.img2!.setImage("http://img.nian.so/dream/\(img2)!ios")
             self.img2?.tag = Int(id2)!
-            self.title2?.hidden = false
-            self.img2?.hidden = false
+            self.title2?.isHidden = false
+            self.img2?.isHidden = false
         }else{
             self.img2?.tag = 1
         }
@@ -78,8 +78,8 @@ class StepCell: UITableViewCell {
             self.title3!.text = title3
             self.img3!.setImage("http://img.nian.so/dream/\(img3)!ios")
             self.img3?.tag = Int(id3)!
-            self.title3?.hidden = false
-            self.img3?.hidden = false
+            self.title3?.isHidden = false
+            self.img3?.isHidden = false
         }else{
             self.img3?.tag = 1
         }

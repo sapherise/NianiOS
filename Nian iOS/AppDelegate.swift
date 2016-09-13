@@ -11,19 +11,19 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDelegate {
     var window: UIWindow?
     
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        application.setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
-        self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        application.setStatusBarHidden(false, with: UIStatusBarAnimation.none)
+        self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window!.backgroundColor = BGColor
         
         let welcomeStoryboard = UIStoryboard(name: "Welcome", bundle: nil)
-        let welcomeViewController = welcomeStoryboard.instantiateViewControllerWithIdentifier("welcomeViewController")
+        let welcomeViewController = welcomeStoryboard.instantiateViewController(withIdentifier: "welcomeViewController")
         
         let navigationViewController = UINavigationController(rootViewController: welcomeViewController)
-        navigationViewController.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-        navigationViewController.navigationBar.tintColor = UIColor.whiteColor()
+        navigationViewController.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        navigationViewController.navigationBar.tintColor = UIColor.white
         navigationViewController.navigationBar.clipsToBounds = true
-        navigationViewController.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+        navigationViewController.navigationBar.barStyle = UIBarStyle.blackTranslucent
         
         self.window!.rootViewController = navigationViewController
         self.window!.makeKeyAndVisible()
@@ -31,120 +31,120 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         WeiboSDK.enableDebugMode(false)
         WeiboSDK.registerApp("4189056912")
         WXApi.registerApp("wx08fea299d0177c01")
-        MobClick.startWithAppkey("54b48fa8fd98c59154000ff2")
+        MobClick.start(withAppkey: "54b48fa8fd98c59154000ff2")
         
         application.clearBadge()
         
         /* 融云 IM 接入 */
-        RCIMClient.sharedRCIMClient().initWithAppKey("4z3hlwrv3t1yt")
+        RCIMClient.shared().initWithAppKey("4z3hlwrv3t1yt")
         
         // check current shortcut item
         if #available(iOS 9.0, *) {
-            if let item = launchOptions?[UIApplicationLaunchOptionsShortcutItemKey] as? UIApplicationShortcutItem {
+            if let item = launchOptions?[UIApplicationLaunchOptionsKey.shortcutItem] as? UIApplicationShortcutItem {
                 QuickActionsForItem(item)
             }
         }
         
         /* 融云推送 */
         if #available(iOS 8.0, *) {
-            let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+            let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
             application.registerUserNotificationSettings(settings)
             application.registerForRemoteNotifications()
         } else {
-            application.registerForRemoteNotificationTypes([.Alert, .Badge, .Sound])
+            application.registerForRemoteNotifications(matching: [.alert, .badge, .sound])
         }
         
         return true
     }
     
-    func applicationWillResignActive(application: UIApplication) {
-        NSNotificationCenter.defaultCenter().postNotificationName("AppDeactive", object: nil)
+    func applicationWillResignActive(_ application: UIApplication) {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "AppDeactive"), object: nil)
     }
     
-    func applicationDidEnterBackground(application: UIApplication) {
+    func applicationDidEnterBackground(_ application: UIApplication) {
     }
     
-    func applicationWillEnterForeground(application: UIApplication) {
-        NSNotificationCenter.defaultCenter().postNotificationName("AppEnterForeground", object: nil)
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "AppEnterForeground"), object: nil)
         application.clearBadge()
     }
     
-    func applicationDidBecomeActive(application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication) {
         application.clearBadge()
     }
 
-    func applicationWillTerminate(application: UIApplication) {
+    func applicationWillTerminate(_ application: UIApplication) {
     }
     
-    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-        let token = deviceToken.description.stringByReplacingOccurrencesOfString("<", withString: "").stringByReplacingOccurrencesOfString(">", withString: "").stringByReplacingOccurrencesOfString(" ", withString: "")
-        RCIMClient.sharedRCIMClient().setDeviceToken(token)
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let token = deviceToken.description.replacingOccurrences(of: "<", with: "").replacingOccurrences(of: ">", with: "").replacingOccurrences(of: " ", with: "")
+        RCIMClient.shared().setDeviceToken(token)
     }
 
-    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
     }
     
     @available(iOS 8.0, *)
-    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
+    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
         application.registerForRemoteNotifications()
     }
     
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-        RCIMClient.sharedRCIMClient().recordRemoteNotificationEvent(userInfo)
-        NSNotificationCenter.defaultCenter().postNotificationName("Notice", object: nil)
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
+        RCIMClient.shared().recordRemoteNotificationEvent(userInfo)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "Notice"), object: nil)
     }
     
-    func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
+    func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
     }
     
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         let s = url.scheme
         if s == "nian" {
             delay(1, closure: { () -> () in
-                NSNotificationCenter.defaultCenter().postNotificationName("AppURL", object: "\(url)")
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "AppURL"), object: "\(url)")
             })
             return true
         } else if s == "wb4189056912" {
-            return WeiboSDK.handleOpenURL(url, delegate: self)
+            return WeiboSDK.handleOpen(url, delegate: self)
         } else if s == "tencent1104358951" {
-            return TencentOAuth.HandleOpenURL(url)
+            return TencentOAuth.handleOpen(url)
         } else if s == "wx08fea299d0177c01" {
-            return WXApi.handleOpenURL(url, delegate: self)
+            return WXApi.handleOpen(url, delegate: self)
         } else if s == "nianalipay" {
-            AlipaySDK.defaultService().processOrderWithPaymentResult(url) { resultDic in
+            AlipaySDK.defaultService().processOrder(withPaymentResult: url) { resultDic in
             }
         }
         return true
     }
     
-    func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
+    func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
         let s = url.scheme
         if s == "wb4189056912" {
-            return WeiboSDK.handleOpenURL(url, delegate: self)
+            return WeiboSDK.handleOpen(url, delegate: self)
         } else if s == "tencent1104358951" {
-            return TencentOAuth.HandleOpenURL(url)
+            return TencentOAuth.handleOpen(url)
         }
         return true
     }
     
-    func didReceiveWeiboRequest(request: WBBaseRequest!) {
+    func didReceiveWeiboRequest(_ request: WBBaseRequest!) {
     }
     
-    func didReceiveWeiboResponse(response: WBBaseResponse!) {
+    func didReceiveWeiboResponse(_ response: WBBaseResponse!) {
         if response.userInfo != nil  {
             let json = response.userInfo as NSDictionary
             let uid = json.stringAttributeForKey("uid")
             let token = json.stringAttributeForKey("access_token")
             
-            NSNotificationCenter.defaultCenter().postNotificationName("weibo", object:[uid, token])
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "weibo"), object:[uid, token])
         }
     }
     
     
     
     /* 微信回调 */
-    func onResp(resp: BaseResp!) {
-        if resp.isKindOfClass(SendAuthResp) {
+    func onResp(_ resp: BaseResp!) {
+        if resp.isKind(of: SendAuthResp.self) {
             let _resp = resp as! SendAuthResp
             
             let manager = AFHTTPSessionManager()
@@ -153,19 +153,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
             
             let accessUrlStr = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=\(WX_APP_ID)&secret=\(WX_SECRET_ID)&code=\(_resp.code)&grant_type=authorization_code"
             
-            manager.GET(accessUrlStr,
+            manager.get(accessUrlStr,
                 parameters: nil,
                 success: {
                     (task, id) in
-                    NSNotificationCenter.defaultCenter().postNotificationName("Wechat", object: id)
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "Wechat"), object: id)
                     
                 }, failure: {
                     (task, error) in
             })   
-        } else if resp.isKindOfClass(PayResp) {
+        } else if resp.isKind(of: PayResp.self) {
             let response = resp as! PayResp
             let code = response.errCode
-            NSNotificationCenter.defaultCenter().postNotificationName("onWechatResult", object: "\(code)")
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "onWechatResult"), object: "\(code)")
         }
     }
     
@@ -186,16 +186,16 @@ extension HandleForShorCutItem {
     
     /// Shortcut Item, also called a Home screen dynamic quick action, specifies a user-initiated action for app.
     @available(iOS 9.0, *)
-    func QuickActionsForItem(shortcutItem: UIApplicationShortcutItem) {
+    func QuickActionsForItem(_ shortcutItem: UIApplicationShortcutItem) {
         if let shorchutItemType = QuickActionsType.init(rawValue: shortcutItem.type) {
             switch shorchutItemType {
             case .AddStep:
                 delay(1, closure: { () -> () in
-                    NSNotificationCenter.defaultCenter().postNotificationName("QuickActions", object: "1")
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "QuickActions"), object: "1")
                 })
             case .Egg:
                 delay(1, closure: { () -> () in
-                    NSNotificationCenter.defaultCenter().postNotificationName("QuickActionsEgg", object: "2")
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "QuickActionsEgg"), object: "2")
                 })
             }
         }
@@ -203,7 +203,7 @@ extension HandleForShorCutItem {
     
     /// Calls - user selects a Home screen quick action for app
     @available(iOS 9.0, *)
-    func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
         // perform action for shortcut item selected
         QuickActionsForItem(shortcutItem)
     }

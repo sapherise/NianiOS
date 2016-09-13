@@ -46,7 +46,7 @@ extension UIColor {
     /* 背景颜色*/
     class func BackgroundColor() -> UIColor {
         if theme == 1 {
-            return UIColor.whiteColor()
+            return UIColor.white
         }
         return UIColor(red: 0x1e/255.0, green: 0x20/255.0, blue: 0x25/255.0, alpha: 1)
     }

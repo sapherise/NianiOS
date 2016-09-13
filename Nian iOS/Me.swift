@@ -28,52 +28,52 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.tableView.headerBeginRefreshing()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "noticeShare", object:nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "Letter", object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "noticeShare"), object:nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "Letter"), object: nil)
         navShow()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MeViewController.noticeShare), name: "noticeShare", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MeViewController.Letter(_:)), name: "Letter", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MeViewController.noticeShare), name: NSNotification.Name(rawValue: "noticeShare"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MeViewController.Letter(_:)), name: NSNotification.Name(rawValue: "Letter"), object: nil)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navHide()
-        self.navigationController!.interactivePopGestureRecognizer!.enabled = false
+        self.navigationController!.interactivePopGestureRecognizer!.isEnabled = false
         load()
     }
     
-    func Letter(noti: NSNotification) {
+    func Letter(_ noti: Notification) {
         self.load()
     }
     
     func setupViews() {
-        let navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        let navView = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: 64))
         navView.backgroundColor = UIColor.NavColor()
-        labelNav.frame = CGRectMake(0, 20, globalWidth, 44)
-        labelNav.textColor = UIColor.whiteColor()
-        labelNav.font = UIFont.systemFontOfSize(17)
+        labelNav.frame = CGRect(x: 0, y: 20, width: globalWidth, height: 44)
+        labelNav.textColor = UIColor.white
+        labelNav.font = UIFont.systemFont(ofSize: 17)
         labelNav.text = "消息"
-        labelNav.textAlignment = NSTextAlignment.Center
+        labelNav.textAlignment = NSTextAlignment.center
         navView.addSubview(labelNav)
         self.view.addSubview(navView)
         
-        self.tableView = UITableView(frame:CGRectMake(0, 64, globalWidth, globalHeight - 64 - 49))
+        self.tableView = UITableView(frame:CGRect(x: 0, y: 64, width: globalWidth, height: globalHeight - 64 - 49))
         self.tableView!.delegate = self;
         self.tableView!.dataSource = self;
         self.tableView!.backgroundColor = BGColor
-        self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.none
         let nib = UINib(nibName:"LetterCell", bundle: nil)
         let nib2 = UINib(nibName:"MeCellTop", bundle: nil)
         
-        self.tableView!.registerNib(nib, forCellReuseIdentifier: "LetterCell")
-        self.tableView!.registerNib(nib2, forCellReuseIdentifier: "MeCellTop")
-        self.tableView!.tableFooterView = UIView(frame: CGRectMake(0, 0, globalWidth, 20))
+        self.tableView!.register(nib, forCellReuseIdentifier: "LetterCell")
+        self.tableView!.register(nib2, forCellReuseIdentifier: "MeCellTop")
+        self.tableView!.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: 20))
         self.view.addSubview(self.tableView!)
     }
     
@@ -93,8 +93,8 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func load(){
         self.dataArray.removeAllObjects()
-        let arr = RCIMClient.sharedRCIMClient().getConversationList([RCConversationType.ConversationType_PRIVATE.rawValue])
-        for item in arr {
+        let arr = RCIMClient.shared().getConversationList([RCConversationType.ConversationType_PRIVATE.rawValue])
+        for item in arr! {
             if let conversation = item as? RCConversation {
                 if let _json = conversation.jsonDict {
                     let json = _json as NSDictionary
@@ -109,7 +109,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
                     if let nameSelf = Cookies.get("user") as? String {
                         
                         /* 传值为 他人昵称 : 自己昵称 */
-                        var arr = extra.componentsSeparatedByString(":")
+                        var arr = extra.components(separatedBy: ":")
                         var name = ""
                         if arr.count > 1 {
                             let a1 = arr[0]
@@ -124,7 +124,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
                         let time = ("\(conversation.sentTime / Int64(1000))" as NSString).doubleValue
                         let lastdate = V.absoluteTime(time)
                         let e = ["id": id, "title": name, "content": content, "unread": "\(unread)", "lastdate": lastdate]
-                        self.dataArray.addObject(e)
+                        self.dataArray.add(e)
                     }
                 }
             }
@@ -132,14 +132,14 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         back {
             self.tableView.reloadData()
             if self.dataArray.count == 0 {
-                let viewHeader = UIView(frame: CGRectMake(0, 0, globalWidth, 200))
+                let viewHeader = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: 200))
                 let viewQuestion = viewEmpty(globalWidth, content: "这里是空的\n要去给好友写信吗")
                 viewQuestion.setY(70)
                 let btnGo = UIButton()
                 btnGo.setButtonNice("  嗯！")
                 btnGo.setX(globalWidth/2-50)
                 btnGo.setY(viewQuestion.bottom())
-                btnGo.addTarget(self, action: #selector(MeViewController.onBtnGoClick), forControlEvents: UIControlEvents.TouchUpInside)
+                btnGo.addTarget(self, action: #selector(MeViewController.onBtnGoClick), for: UIControlEvents.touchUpInside)
                 viewHeader.addSubview(viewQuestion)
                 viewHeader.addSubview(btnGo)
                 self.tableView.tableFooterView = viewHeader
@@ -156,11 +156,11 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.navigationController!.pushViewController(LikeVC, animated: true)
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 1
         }else{
@@ -168,24 +168,24 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }
     }
     
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if indexPath.section == 0 {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if (indexPath as NSIndexPath).section == 0 {
             return false
         }
         return true
     }
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        let data = self.dataArray[indexPath.row] as! NSDictionary
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        let data = self.dataArray[(indexPath as NSIndexPath).row] as! NSDictionary
         let id = data.stringAttributeForKey("id")
-        RCIMClient.sharedRCIMClient().clearMessages(RCConversationType.ConversationType_PRIVATE, targetId: id)
-        RCIMClient.sharedRCIMClient().removeConversation(RCConversationType.ConversationType_PRIVATE, targetId: id)
+        RCIMClient.shared().clearMessages(RCConversationType.ConversationType_PRIVATE, targetId: id)
+        RCIMClient.shared().remove(RCConversationType.ConversationType_PRIVATE, targetId: id)
         load()
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("MeCellTop", forIndexPath: indexPath) as? MeCellTop
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if (indexPath as NSIndexPath).section == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MeCellTop", for: indexPath) as? MeCellTop
             cell!.numLeft.text = self.numLeft
             cell!.numMiddle.text = self.numMiddel
             cell!.numRight.text = self.numRight
@@ -200,16 +200,16 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
             cell!.viewRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(MeViewController.onTopClick(_:))))
             return cell!
         }else{
-            let c: LetterCell! = tableView.dequeueReusableCellWithIdentifier("LetterCell", forIndexPath: indexPath) as? LetterCell
-            if dataArray.count > indexPath.row {
-                c.data = dataArray[indexPath.row] as! NSDictionary
+            let c: LetterCell! = tableView.dequeueReusableCell(withIdentifier: "LetterCell", for: indexPath) as? LetterCell
+            if dataArray.count > (indexPath as NSIndexPath).row {
+                c.data = dataArray[(indexPath as NSIndexPath).row] as! NSDictionary
                 c.setup()
             }
             return c
         }
     }
     
-    func onTopClick(sender: UIGestureRecognizer) {
+    func onTopClick(_ sender: UIGestureRecognizer) {
         let MeNextVC = MeNextViewController()
         
         if let tag = sender.view?.tag {
@@ -227,53 +227,53 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
             self.navigationController?.pushViewController(MeNextVC, animated: true)
         }
         if let v = sender.view {
-            let views:NSArray = v.subviews
+            let views:NSArray = v.subviews as NSArray
             for view:AnyObject in views {
                 if NSStringFromClass(view.classForCoder) == "UILabel"  {
                     let l = view as! UILabel
                     if l.frame.origin.y == 25 {
                         l.text = "0"
-                        l.textColor = UIColor.blackColor()
+                        l.textColor = UIColor.black
                     }
                 }
             }
         }
     }
     
-    func onUserClick(sender:UIGestureRecognizer) {
+    func onUserClick(_ sender:UIGestureRecognizer) {
         let tag = sender.view!.tag
         let UserVC = PlayerViewController()
         UserVC.Id = "\(tag)"
         self.navigationController?.pushViewController(UserVC, animated: true)
     }
     
-    func onDreamClick(sender:UIGestureRecognizer){
+    func onDreamClick(_ sender:UIGestureRecognizer){
         let tag = sender.view!.tag
         let dreamVC = DreamViewController()
         dreamVC.Id = "\(tag)"
         self.navigationController!.pushViewController(dreamVC, animated: true)
     }
     
-    func userclick(sender:UITapGestureRecognizer){
+    func userclick(_ sender:UITapGestureRecognizer){
         let UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
         self.navigationController!.pushViewController(UserVC, animated: true)
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.section == 0 {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if (indexPath as NSIndexPath).section == 0 {
             return 75
         }else{
             return 81
         }
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.section == 1 {
-            let data = self.dataArray[indexPath.row] as! NSDictionary
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if (indexPath as NSIndexPath).section == 1 {
+            let data = self.dataArray[(indexPath as NSIndexPath).row] as! NSDictionary
             let mutableData = NSMutableDictionary(dictionary: data)
             mutableData.setValue("0", forKey: "unread")
-            dataArray.replaceObjectAtIndex(indexPath.row, withObject: mutableData)
+            dataArray.replaceObject(at: (indexPath as NSIndexPath).row, with: mutableData)
             tableView.reloadData()
             let vc = CircleController()
             if let id = Int(data.stringAttributeForKey("id")) {
@@ -296,12 +296,12 @@ extension UILabel {
     func setColorful(){
         if let content = Int(self.text!) {
             if content == 0 {
-                self.textColor = UIColor.blackColor()
+                self.textColor = UIColor.black
             }else{
                 self.textColor = UIColor.HighlightColor()
             }
         }else{
-            self.textColor = UIColor.blackColor()
+            self.textColor = UIColor.black
         }
     }
 }

@@ -10,7 +10,7 @@ import UIKit
 
 @objc protocol bindEmailDelegate {
 
-    optional func bindEmail(email email: String)
+    @objc optional func bindEmail(email: String)
 }
 
 
@@ -54,9 +54,9 @@ class BindEmailViewController: UIViewController {
         didSet {
             switch bindFuntionType! {
             case .confirm:
-                self.confirmButton.setTitle("好", forState: .Normal)
+                self.confirmButton.setTitle("好", for: UIControlState())
             case .finish:
-                self.confirmButton.setTitle("完成", forState: .Normal)
+                self.confirmButton.setTitle("完成", for: UIControlState())
             }
         }
     }
@@ -71,45 +71,45 @@ class BindEmailViewController: UIViewController {
         
         self.emailTextField.layer.cornerRadius = 22
         self.emailTextField.layer.masksToBounds = true
-        self.emailTextField.leftViewMode = .Always
+        self.emailTextField.leftViewMode = .always
         
         self.passwordTextField.layer.cornerRadius = 22
         self.passwordTextField.layer.masksToBounds = true
-        self.passwordTextField.leftViewMode = .Always
+        self.passwordTextField.leftViewMode = .always
         
         if self.modeType == .bind {
-            self.passwordTextField.hidden = true
+            self.passwordTextField.isHidden = true
         } else if self.modeType == .modify {
             
             self.discriptionLabel.text = "输入密码来换一个\n登录邮箱"
-            self.emailTextField.hidden = true
+            self.emailTextField.isHidden = true
         }
         
         self.emailTextField.delegate = self
         self.passwordTextField.delegate = self
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        NotificationCenter.default.addObserver(self,
                                             selector: #selector(BindEmailViewController.emailTextFieldDidChange(_:)),
-                                            name: UITextFieldTextDidChangeNotification,
+                                            name: NSNotification.Name.UITextFieldTextDidChange,
                                             object: self.emailTextField)
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        NSNotificationCenter.defaultCenter().removeObserver(self,
-                                            name: UITextFieldTextDidChangeNotification,
+        NotificationCenter.default.removeObserver(self,
+                                            name: NSNotification.Name.UITextFieldTextDidChange,
                                             object: self.emailTextField)
     }
     
-    func emailTextFieldDidChange(noti: NSNotification) {
+    func emailTextFieldDidChange(_ noti: Notification) {
         if self.bindFuntionType == .finish {
             let _textfield = noti.object as! UITextField
             
             if _textfield == self.emailTextField {
                 self.view.layoutIfNeeded()
                 
-                UIView.animateWithDuration(0.4, animations: {
+                UIView.animate(withDuration: 0.4, animations: {
                     self.pwdTextFieldTopToEmail.constant = -44
                     self.emailTextFieldToTop.constant = 131
                     self.buttonTopToEmail.constant = 24
@@ -117,11 +117,11 @@ class BindEmailViewController: UIViewController {
                     self.view.layoutIfNeeded()
                     }, completion: { finished in
                         if finished {
-                            self.passwordTextField.hidden = true
+                            self.passwordTextField.isHidden = true
                         }
                 })
                 
-                self.discriptionLabel.hidden = false
+                self.discriptionLabel.isHidden = false
                 self.bindFuntionType = .confirm
             }
         }
@@ -129,21 +129,21 @@ class BindEmailViewController: UIViewController {
     
     
     
-    @IBAction func dismissVC(sender: UIButton) {
-        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func dismissVC(_ sender: UIButton) {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     /**
      <#Description#>
      */
-    @IBAction func dismissKeyboard(sender: UIControl) {
-        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
+    @IBAction func dismissKeyboard(_ sender: UIControl) {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
     
     
-    @IBAction func onConfirmButton(sender: CustomButton) {
-        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
+    @IBAction func onConfirmButton(_ sender: CustomButton) {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         
         if self.modeType == .bind {
             if self.bindFuntionType == .confirm {
@@ -186,7 +186,7 @@ class BindEmailViewController: UIViewController {
                     
                     let _email = self.emailTextField.text!
                     let _password = ("n*A\(self.passwordTextField.text!)").md5
-                    let shell = (("\(_password)\(SAUid())n*A").lowercaseString).md5
+                    let shell = (("\(_password)\(SAUid())n*A").lowercased()).md5
                     
                     self.confirmButton.startAnimating()
                     
@@ -210,7 +210,7 @@ class BindEmailViewController: UIViewController {
                                 
                                 self.showTipText("邮箱绑定成功")
                                 self.delegate?.bindEmail?(email: self.emailTextField.text!)
-                                self.dismissViewControllerAnimated(true, completion: nil)
+                                self.dismiss(animated: true, completion: nil)
                             }
                         }
                     })
@@ -240,8 +240,8 @@ class BindEmailViewController: UIViewController {
                         if json["error"] != 0 {
                             self.showTipText("密码不对...")
                         } else {
-                            self.passwordTextField.hidden = true
-                            self.emailTextField.hidden = false
+                            self.passwordTextField.isHidden = true
+                            self.emailTextField.isHidden = false
                             self.passwordTextField.text = ""
                             self.discriptionLabel.text = "设置邮箱和密码后\n你可以用新的邮箱来登录念"
                             
@@ -259,9 +259,9 @@ class BindEmailViewController: UIViewController {
 
 extension BindEmailViewController: UITextFieldDelegate {
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 
-        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, forEvent: nil)
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         
         return true
     }
@@ -272,25 +272,25 @@ extension BindEmailViewController: UITextFieldDelegate {
 extension BindEmailViewController {
 
     func handleBindEmail() {
-        self.discriptionLabel.hidden = true
+        self.discriptionLabel.isHidden = true
         
         self.passwordTextField.layer.cornerRadius = 22
         self.passwordTextField.layer.masksToBounds = true
-        self.passwordTextField.leftViewMode = .Always
+        self.passwordTextField.leftViewMode = .always
         
-        self.passwordTextField.hidden = false
+        self.passwordTextField.isHidden = false
         
         self.bindFuntionType = .finish
         
         self.view.layoutIfNeeded()
         
-        UIView.animateWithDuration(0.4) { () -> Void in
+        UIView.animate(withDuration: 0.4, animations: { () -> Void in
             self.emailTextFieldToTop.constant = 68
             self.pwdTextFieldTopToEmail.constant = 8
             self.buttonTopToEmail.constant = 76
             
             self.view.layoutIfNeeded()
-        }
+        }) 
     }
 
 

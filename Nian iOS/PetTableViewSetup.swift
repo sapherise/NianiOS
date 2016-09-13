@@ -8,80 +8,100 @@
 
 import Foundation
 import UIKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 extension PetViewController: NIAlertDelegate {
     func setupTable() {
-        tableView = UITableView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64))
+        tableView = UITableView(frame: CGRect(x: 0, y: 64, width: globalWidth, height: globalHeight - 64))
         tableView.delegate = self
         tableView.dataSource = self
         self.view.addSubview(tableView)
         
         tableViewPet = UITableView()
-        tableViewPet.transform = CGAffineTransformMakeRotation(CGFloat(-M_PI/2))
-        tableViewPet.frame = CGRectMake(0, 0, globalWidth, 320)
-        tableViewPet.separatorStyle = .None
+        tableViewPet.transform = CGAffineTransform(rotationAngle: CGFloat(-M_PI/2))
+        tableViewPet.frame = CGRect(x: 0, y: 0, width: globalWidth, height: 320)
+        tableViewPet.separatorStyle = .none
         tableViewPet.delegate = self
         tableViewPet.dataSource = self
         
-        if let viewLevel = (NSBundle.mainBundle().loadNibNamed("Level", owner: self, options: nil) as NSArray).objectAtIndex(0) as? LevelView {
+        if let viewLevel = (Bundle.main.loadNibNamed("Level", owner: self, options: nil))?.first as? LevelView {
             viewLevel.setup()
             tableView.tableFooterView = viewLevel
         }
         
         tableViewPet.showsVerticalScrollIndicator = false
-        tableViewPet.registerNib(UINib(nibName: "PetCell", bundle: nil), forCellReuseIdentifier: "PetCell")
+        tableViewPet.register(UINib(nibName: "PetCell", bundle: nil), forCellReuseIdentifier: "PetCell")
         
-        let viewHeader = UIView(frame: CGRectMake(0, 0, 200, (globalWidth - NORMAL_WIDTH)/2))
-        viewHeader.userInteractionEnabled = true
+        let viewHeader = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: (globalWidth - NORMAL_WIDTH)/2))
+        viewHeader.isUserInteractionEnabled = true
         viewHeader.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(PetViewController.showPetInfo)))
         
-        let viewFooter = UIView(frame: CGRectMake(0, 0, 200, (globalWidth - NORMAL_WIDTH)/2))
-        viewFooter.userInteractionEnabled = true
+        let viewFooter = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: (globalWidth - NORMAL_WIDTH)/2))
+        viewFooter.isUserInteractionEnabled = true
         viewFooter.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(PetViewController.showPetInfo)))
         tableViewPet.tableHeaderView = viewHeader
         tableViewPet.tableFooterView = viewFooter
         
         
-        imageView = UIImageView(frame: CGRectMake(globalWidth/2 - 60, 96, 120, 120))
+        imageView = UIImageView(frame: CGRect(x: globalWidth/2 - 60, y: 96, width: 120, height: 120))
         tableView.addSubview(imageView)
-        imageView.contentMode = UIViewContentMode.ScaleAspectFit
+        imageView.contentMode = UIViewContentMode.scaleAspectFit
         
-        self.btnUpgrade = NIButton(string: "升级", frame:  CGRectMake((globalWidth - 100)/2, 252, 100, 36))
+        self.btnUpgrade = NIButton(string: "升级", frame:  CGRect(x: (globalWidth - 100)/2, y: 252, width: 100, height: 36))
         self.btnUpgrade.bgColor = BgColor.blue
-        self.btnUpgrade.addTarget(self, action: #selector(PetViewController.toUpgrade), forControlEvents: UIControlEvents.TouchUpInside)
+        self.btnUpgrade.addTarget(self, action: #selector(PetViewController.toUpgrade), for: UIControlEvents.touchUpInside)
         tableView.addSubview(self.btnUpgrade)
         
-        labelName = UILabel(frame: CGRectMake(globalWidth/2 - 160, 32, 320, 24))
-        labelName.textAlignment = NSTextAlignment.Center
+        labelName = UILabel(frame: CGRect(x: globalWidth/2 - 160, y: 32, width: 320, height: 24))
+        labelName.textAlignment = NSTextAlignment.center
         labelName.textColor = UIColor.colorWithHex("#333333")
-        labelName.font = UIFont.boldSystemFontOfSize(18)
+        labelName.font = UIFont.boldSystemFont(ofSize: 18)
         tableView.addSubview(labelName)
         
-        labelLevel = UILabel(frame: CGRectMake(globalWidth/2 - 160, 56, 320, 24))
-        labelLevel.textAlignment = NSTextAlignment.Center
+        labelLevel = UILabel(frame: CGRect(x: globalWidth/2 - 160, y: 56, width: 320, height: 24))
+        labelLevel.textAlignment = NSTextAlignment.center
         labelLevel.textColor = UIColor.colorWithHex("#B3B3B3")
         labelLevel.font = UIFont(name: "HelveticaNeue-Light", size: 12)
         tableView.addSubview(labelLevel)
         
         
-        labelLeft = UILabel(frame: CGRectMake(20, 258, 100, 36))
-        labelLeft.textAlignment = NSTextAlignment.Left
+        labelLeft = UILabel(frame: CGRect(x: 20, y: 258, width: 100, height: 36))
+        labelLeft.textAlignment = NSTextAlignment.left
         labelLeft.textColor = UIColor.colorWithHex("#B3B3B3")
         labelLeft.font = UIFont(name: "HelveticaNeue-Light", size: 12)
-        labelLeft.userInteractionEnabled = true
+        labelLeft.isUserInteractionEnabled = true
         tableView.addSubview(labelLeft)
         
-        labelRight = UILabel(frame: CGRectMake(globalWidth - 100 - 20, 258, 100, 36))
-        labelRight.textAlignment = NSTextAlignment.Right
+        labelRight = UILabel(frame: CGRect(x: globalWidth - 100 - 20, y: 258, width: 100, height: 36))
+        labelRight.textAlignment = NSTextAlignment.right
         labelRight.textColor = UIColor.colorWithHex("#B3B3B3")
         labelRight.font = UIFont(name: "HelveticaNeue-Light", size: 12)
-        labelRight.userInteractionEnabled = true
+        labelRight.isUserInteractionEnabled = true
         tableView.addSubview(labelRight)
         
         getPlankton()
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView == tableViewPet {
             let _y = tableViewPet.contentOffset.y
             current = max(min(Int(floor((_y+36)/72)), dataArray.count - 1), 0)
@@ -151,7 +171,7 @@ extension PetViewController: NIAlertDelegate {
                         Api.getPlanktonIncrease() { json in }
                     }
                 } else {
-                    Cookies.set(data, forKey: "plankton")
+                    Cookies.set(data as AnyObject?, forKey: "plankton")
                     self.labelRight.text = "浮游：\(data)"
                 }
             }
@@ -180,7 +200,7 @@ extension PetViewController: NIAlertDelegate {
                 upgradeView!.delegate = self
                 upgradeView!.tag = id
                 upgradeView!.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "升级", "要花费 \(coin) 念币使\n\(name)升级吗？", ["嗯！", "不要"]],
-                    forKeys: ["img", "title", "content", "buttonArray"])
+                    forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
                 upgradeView!.showWithAnimation(.flip)
             }
         }

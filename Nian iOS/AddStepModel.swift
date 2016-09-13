@@ -19,13 +19,13 @@ class AddStepModel: NSObject {
      - parameter callback: <#callback description#>
      */
     
-    class func postAddStep(content content: String, stepType: Int, images: NSArray, dreamId: String, callback: NetworkClosure) {
+    class func postAddStep(content: String, stepType: Int, images: NSArray, dreamId: String, callback: NetworkClosure) {
         let _uid = CurrentUser.sharedCurrentUser.uid!
         let _shell = CurrentUser.sharedCurrentUser.shell!
         
         
-        let jsonString = try! NSJSONSerialization.dataWithJSONObject(images, options: NSJSONWritingOptions.PrettyPrinted)
-        let imagesString = NSString(data: jsonString, encoding: NSUTF8StringEncoding)!
+        let jsonString = try! JSONSerialization.data(withJSONObject: images, options: JSONSerialization.WritingOptions.prettyPrinted)
+        let imagesString = NSString(data: jsonString, encoding: String.Encoding.utf8.rawValue)!
         
         NianNetworkClient.sharedNianNetworkClient.post(
             "multidream/\(dreamId)/update?uid=\(_uid)&shell=\(_shell)",
@@ -33,12 +33,12 @@ class AddStepModel: NSObject {
             callback: callback)
     }
     
-    class func postEditStep(content content: String, stepType: Int, images: NSArray, sid: String, callback: NetworkClosure) {
+    class func postEditStep(content: String, stepType: Int, images: NSArray, sid: String, callback: NetworkClosure) {
         let _uid = CurrentUser.sharedCurrentUser.uid!
         let _shell = CurrentUser.sharedCurrentUser.shell!
     
-        let jsonString = try! NSJSONSerialization.dataWithJSONObject(images, options: NSJSONWritingOptions.PrettyPrinted)
-        let imagesString = NSString(data: jsonString, encoding: NSUTF8StringEncoding)!
+        let jsonString = try! JSONSerialization.data(withJSONObject: images, options: JSONSerialization.WritingOptions.prettyPrinted)
+        let imagesString = NSString(data: jsonString, encoding: String.Encoding.utf8.rawValue)!
     
         NianNetworkClient.sharedNianNetworkClient.post(
             "v2/step/\(sid)/edit?uid=\(_uid)&shell=\(_shell)",

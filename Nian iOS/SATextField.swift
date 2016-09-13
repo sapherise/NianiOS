@@ -16,7 +16,7 @@ protocol delegateInput {
     var tableView: UITableView! { get set }
     
     /* 按下 Send 后的操作 */
-    func send(replyContent: String, type: String)
+    func send(_ replyContent: String, type: String)
 }
 
 class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, delegateEmoji {
@@ -70,7 +70,7 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
     var imageHead: UIImageView!
     
     override init(frame: CGRect) {
-        super.init(frame: CGRectMake(0, globalHeight - heightCell, globalWidth, 56))
+        super.init(frame: CGRect(x: 0, y: globalHeight - heightCell, width: globalWidth, height: 56))
         self.backgroundColor = UIColor.BackgroundColor()
     }
 
@@ -86,9 +86,9 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
         }
         
         inputKeyboard = UITextView()
-        inputKeyboard.frame = CGRectMake(padding * 2 + widthImageHead, 0, widthInput, 0)
-        inputKeyboard.font = UIFont.systemFontOfSize(12)
-        inputKeyboard.returnKeyType = UIReturnKeyType.Send
+        inputKeyboard.frame = CGRect(x: padding * 2 + widthImageHead, y: 0, width: widthInput, height: 0)
+        inputKeyboard.font = UIFont.systemFont(ofSize: 12)
+        inputKeyboard.returnKeyType = UIReturnKeyType.send
         inputKeyboard.delegate = self
         inputKeyboard.layoutManager.allowsNonContiguousLayout = false
         inputKeyboard.scrollsToTop = false
@@ -96,49 +96,49 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
         inputKeyboard.setY((heightCell - heightInputOneLine)/2)
         
         /* 输入框左侧的头像 */
-        imageHead = UIImageView(frame: CGRectMake(padding, (heightCell - heightImageHead)/2, widthImageHead, heightImageHead))
+        imageHead = UIImageView(frame: CGRect(x: padding, y: (heightCell - heightImageHead)/2, width: widthImageHead, height: heightImageHead))
         imageHead.setHead(SAUid())
         imageHead.layer.cornerRadius = 16
         imageHead.layer.masksToBounds = true
         
         /* placeHolder */
-        labelPlaceHolder = UILabel(frame: CGRectMake(5, 0, inputKeyboard.width(), heightInputOneLine))
+        labelPlaceHolder = UILabel(frame: CGRect(x: 5, y: 0, width: inputKeyboard.width(), height: heightInputOneLine))
         labelPlaceHolder.text = "回应一下！"
         labelPlaceHolder.textColor = UIColor.secAuxiliaryColor()
-        labelPlaceHolder.font = UIFont.systemFontOfSize(12)
+        labelPlaceHolder.font = UIFont.systemFont(ofSize: 12)
         
         self.addSubview(inputKeyboard)
         self.addSubview(imageHead)
         inputKeyboard.addSubview(labelPlaceHolder)
         
         /* 表情输入 */
-        imageEmoji = UIImageView(frame: CGRectMake(globalWidth - widthEmoji - padding, (heightCell - widthEmoji) / 2, widthEmoji, widthEmoji))
+        imageEmoji = UIImageView(frame: CGRect(x: globalWidth - widthEmoji - padding, y: (heightCell - widthEmoji) / 2, width: widthEmoji, height: widthEmoji))
         imageEmoji.image = UIImage(named: "keyemoji")
         self.addSubview(imageEmoji)
         
         /* 发送图片 */
         if inputType == inputTypeEnum.letter {
-            imageUpload = UIImageView(frame: CGRectMake(globalWidth - widthEmoji - padding - widthUpload, (heightCell - widthEmoji) / 2, widthEmoji, widthEmoji))
+            imageUpload = UIImageView(frame: CGRect(x: globalWidth - widthEmoji - padding - widthUpload, y: (heightCell - widthEmoji) / 2, width: widthEmoji, height: widthEmoji))
             imageUpload?.image = UIImage(named: "keyimage")
-            imageUpload?.userInteractionEnabled = true
+            imageUpload?.isUserInteractionEnabled = true
             self.addSubview(imageUpload!)
         }
         
         /* 分割线 */
-        let viewLine = UIView(frame: CGRectMake(0, 0, globalWidth, globalHalf))
+        let viewLine = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: globalHalf))
         viewLine.backgroundColor = UIColor.LineColor()
         self.addSubview(viewLine)
         
         /* 绑定事件 */
         self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(InputView.onTap)))
-        self.userInteractionEnabled = true
+        self.isUserInteractionEnabled = true
         imageEmoji.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(InputView.onEmoji)))
-        imageEmoji.userInteractionEnabled = true
+        imageEmoji.isUserInteractionEnabled = true
         
         /* 表情键盘构建 */
-        viewEmoji = UIView(frame: CGRectMake(0, globalHeight, globalWidth, heightEmoji))
+        viewEmoji = UIView(frame: CGRect(x: 0, y: globalHeight, width: globalWidth, height: heightEmoji))
         viewEmoji.backgroundColor = UIColor.BackgroundColor()
-        viewEmoji.hidden = true
+        viewEmoji.isHidden = true
         
         /* 默认是 iPhone 6 */
         var paddingH: CGFloat = 20
@@ -159,16 +159,16 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
         flowLayout.minimumLineSpacing = 0
         flowLayout.itemSize = CGSize(width: w, height: w)
         flowLayout.sectionInset = UIEdgeInsets(top: paddingV, left: paddingH, bottom: paddingV, right: paddingH)
-        collectionView = UICollectionView(frame: CGRectMake(0, 0, globalWidth, heightEmoji - 44), collectionViewLayout: flowLayout)
+        collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: heightEmoji - 44), collectionViewLayout: flowLayout)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = UIColor.BackgroundColor()
-        collectionView.registerNib(UINib(nibName: "EmojiCollectionCell", bundle: nil), forCellWithReuseIdentifier: "EmojiCollectionCell")
+        collectionView.register(UINib(nibName: "EmojiCollectionCell", bundle: nil), forCellWithReuseIdentifier: "EmojiCollectionCell")
         collectionView.alwaysBounceHorizontal = true
         viewEmoji.addSubview(collectionView)
         
         /* 当表情未购买时的说明 */
-        viewCollectionHolder = UIView(frame: CGRectMake(0, 0, globalWidth, heightEmoji - 44))
+        viewCollectionHolder = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: heightEmoji - 44))
         viewCollectionHolder.backgroundColor = UIColor.BackgroundColor()
         viewEmoji.addSubview(viewCollectionHolder)
         
@@ -179,72 +179,72 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
         let wBtn: CGFloat = 96
         let hBtn: CGFloat = 36
         
-        imageCollectionHolder = UIImageView(frame: CGRectMake(p, p, wImage, wImage))
+        imageCollectionHolder = UIImageView(frame: CGRect(x: p, y: p, width: wImage, height: wImage))
         imageCollectionHolder.backgroundColor = UIColor.HighlightColor()
         imageCollectionHolder.layer.masksToBounds = true
         imageCollectionHolder.layer.cornerRadius = 8
         viewCollectionHolder.addSubview(imageCollectionHolder)
         
-        titleCollectionHolder = UILabel(frame: CGRectMake(wImage + 2 * p, p, globalWidth - wImage - 3 * p, hTitle))
+        titleCollectionHolder = UILabel(frame: CGRect(x: wImage + 2 * p, y: p, width: globalWidth - wImage - 3 * p, height: hTitle))
         titleCollectionHolder.text = "标题"
         titleCollectionHolder.textColor = UIColor.MainColor()
         viewCollectionHolder.addSubview(titleCollectionHolder)
         
-        contentCollectionHolder = UILabel(frame: CGRectMake(wImage + 2 * p, p * 2 + hTitle, globalWidth - wImage - 3 * p, heightEmoji - 44 - p * 3 - hBtn))
+        contentCollectionHolder = UILabel(frame: CGRect(x: wImage + 2 * p, y: p * 2 + hTitle, width: globalWidth - wImage - 3 * p, height: heightEmoji - 44 - p * 3 - hBtn))
         contentCollectionHolder.text = "正文"
         contentCollectionHolder.textColor = UIColor.MainColor()
         contentCollectionHolder.numberOfLines = 0
         contentCollectionHolder.textColor = UIColor.AuxiliaryColor()
-        contentCollectionHolder.font = UIFont.systemFontOfSize(14)
+        contentCollectionHolder.font = UIFont.systemFont(ofSize: 14)
         viewCollectionHolder.addSubview(contentCollectionHolder)
         
-        btnCollectionHolder = UIButton(frame: CGRectMake(globalWidth - wBtn - p, heightEmoji - 44 - p - hBtn, wBtn, hBtn))
+        btnCollectionHolder = UIButton(frame: CGRect(x: globalWidth - wBtn - p, y: heightEmoji - 44 - p - hBtn, width: wBtn, height: hBtn))
         btnCollectionHolder.backgroundColor = UIColor.HighlightColor()
         btnCollectionHolder.layer.cornerRadius = hBtn / 2
         btnCollectionHolder.layer.masksToBounds = true
-        btnCollectionHolder.titleLabel?.font = UIFont.systemFontOfSize(14)
-        btnCollectionHolder.setTitleColor(UIColor.BackgroundColor(), forState: UIControlState())
-        btnCollectionHolder.setTitle("购买", forState: UIControlState())
-        btnCollectionHolder.addTarget(self, action: #selector(InputView.onProduct), forControlEvents: UIControlEvents.TouchUpInside)
+        btnCollectionHolder.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        btnCollectionHolder.setTitleColor(UIColor.BackgroundColor(), for: UIControlState())
+        btnCollectionHolder.setTitle("购买", for: UIControlState())
+        btnCollectionHolder.addTarget(self, action: #selector(InputView.onProduct), for: UIControlEvents.touchUpInside)
         viewCollectionHolder.addSubview(btnCollectionHolder)
         
-        let v1 = UIView(frame: CGRectMake(0, 0, globalWidth, globalHalf))
+        let v1 = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: globalHalf))
         v1.backgroundColor = UIColor.LineColor()
         viewEmoji.addSubview(v1)
         
-        let v2 = UIView(frame: CGRectMake(0, heightEmoji - 44 - globalHalf, globalWidth, globalHalf))
+        let v2 = UIView(frame: CGRect(x: 0, y: heightEmoji - 44 - globalHalf, width: globalWidth, height: globalHalf))
         v2.backgroundColor = UIColor.LineColor()
         viewEmoji.addSubview(v2)
         
         /* 可滚动的表情选择 */
         tableView = UITableView()
-        tableView.transform = CGAffineTransformMakeRotation(CGFloat(-M_PI/2))
-        tableView.frame = CGRectMake(0, heightEmoji - 44, globalWidth - 44, 44)
+        tableView.transform = CGAffineTransform(rotationAngle: CGFloat(-M_PI/2))
+        tableView.frame = CGRect(x: 0, y: heightEmoji - 44, width: globalWidth - 44, height: 44)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.separatorStyle = .None
-        tableView.registerNib(UINib(nibName: "EmojiCell", bundle: nil), forCellReuseIdentifier: "EmojiCell")
+        tableView.separatorStyle = .none
+        tableView.register(UINib(nibName: "EmojiCell", bundle: nil), forCellReuseIdentifier: "EmojiCell")
         viewEmoji.addSubview(tableView)
         
         /* 前往表情商店 */
-        let imageStore = UIImageView(frame: CGRectMake(globalWidth - 44, heightEmoji - 44, 44, 44))
+        let imageStore = UIImageView(frame: CGRect(x: globalWidth - 44, y: heightEmoji - 44, width: 44, height: 44))
         imageStore.image = UIImage(named: "keysettings")
         imageStore.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(InputView.onStore)))
-        imageStore.userInteractionEnabled = true
+        imageStore.isUserInteractionEnabled = true
         viewEmoji.addSubview(imageStore)
         
-        let v3 = UIView(frame: CGRectMake(globalWidth - 44, heightEmoji - 44, globalHalf, 44))
+        let v3 = UIView(frame: CGRect(x: globalWidth - 44, y: heightEmoji - 44, width: globalHalf, height: 44))
         v3.backgroundColor = UIColor.LineColor()
         viewEmoji.addSubview(v3)
         
         /*  查看表情动图的视图 */
         viewEmojiHolder = FLAnimatedImageView()
         viewEmojiHolder.backgroundColor = UIColor(white: 1, alpha: 0.9)
-        viewEmojiHolder.layer.borderColor = UIColor.LineColor().CGColor
+        viewEmojiHolder.layer.borderColor = UIColor.LineColor().cgColor
         viewEmojiHolder.layer.borderWidth = 0.5
         viewEmojiHolder.layer.cornerRadius = 4
         viewEmojiHolder.layer.masksToBounds = true
-        viewEmojiHolder.hidden = true
+        viewEmojiHolder.isHidden = true
         viewEmoji.addSubview(viewEmojiHolder)
         
         tableView.scrollsToTop = false
@@ -266,7 +266,7 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
         
         /* 移除表情键盘 */
         if let v = viewEmoji {
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
+            UIView.animate(withDuration: 0.3, animations: { () -> Void in
                 v.setY(globalHeight)
                 }, completion: { (Bool) -> Void in
                     v.removeFromSuperview()
@@ -283,17 +283,17 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
             delegate?.Locking = true
             self.delegate?.keyboardHeight = heightEmoji
             inputKeyboard.resignFirstResponder()
-            viewEmoji.hidden = false
+            viewEmoji.isHidden = false
             /* 设置表情的界面 */
             self.findRootViewController()?.view.addSubview(viewEmoji)
             load()
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
+            UIView.animate(withDuration: 0.3, animations: { () -> Void in
 //                self.delegate?.resize()
                 self.resizeTableView()
                 self.viewEmoji.setY(globalHeight - self.heightEmoji)
-                }) { (Bool) -> Void in
+                }, completion: { (Bool) -> Void in
                     self.delegate?.Locking = false
-            }
+            }) 
             
         } else {
             /* 如果是表情键盘，弹出自带键盘 */
@@ -303,14 +303,14 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
     
     /* 根据内容来调整输入框高度 */
     func resize() -> CGFloat {
-        let size = CGSizeMake(inputKeyboard.contentSize.width, CGFloat.max)
+        let size = CGSize(width: inputKeyboard.contentSize.width, height: CGFloat.greatestFiniteMagnitude)
         let h = min(inputKeyboard.sizeThatFits(size).height, heightInputMax)
         self.inputKeyboard.frame.size.height = h
         return h
     }
     
     /* 根据输入框高度来调整整个视图 */
-    func resizeView(heightInput: CGFloat) -> CGFloat {
+    func resizeView(_ heightInput: CGFloat) -> CGFloat {
         let h = heightInput + heightCell - heightInputOneLine
         let heightOrigin = self.height()
         if h != heightOrigin {
@@ -318,7 +318,7 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
             self.imageEmoji.setY(heightOrigin - self.imageEmoji.height() - (self.heightCell - self.imageEmoji.height()) / 2)
             self.imageUpload?.setY(heightOrigin - self.imageEmoji.height() - (self.heightCell - self.imageEmoji.height()) / 2)
             self.setY(globalHeight - heightOrigin - delegate!.keyboardHeight)
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
+            UIView.animate(withDuration: 0.3, animations: { () -> Void in
                 self.imageHead.setY(h - self.imageHead.height() - (self.heightCell - self.imageHead.height()) / 2)
                 self.imageEmoji.setY(h - self.imageEmoji.height() - (self.heightCell - self.imageEmoji.height()) / 2)
                 self.imageUpload?.setY(h - self.imageEmoji.height() - (self.heightCell - self.imageEmoji.height()) / 2)
@@ -338,7 +338,7 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
                     let e = NSMutableDictionary(dictionary: emoji)
                     let isClicked = i == current ? "1" : "0"
                     e.setValue(isClicked, forKey: "isClicked")
-                    dataArray.addObject(e)
+                    dataArray.add(e)
                 }
                 i += 1
             }
@@ -353,7 +353,7 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
             Api.getEmoji() { json in
                 if json != nil {
                     self.dataArray.removeAllObjects()
-                    let items = json!.objectForKey("data") as! NSArray
+                    let items = json!.object(forKey: "data") as! NSArray
                     var i = 0
                     for _item in items {
                         if let item = _item as? NSDictionary {
@@ -362,7 +362,7 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
                                 let e = NSMutableDictionary(dictionary: item)
                                 let isClicked = i == self.current ? "1" : "0"
                                 e.setValue(isClicked, forKey: "isClicked")
-                                self.dataArray.addObject(e)
+                                self.dataArray.add(e)
                             }
                         }
                         i += 1
@@ -398,7 +398,7 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
         if dataArray.count > current {
             let vc = Product()
             let data = dataArray[current] as! NSDictionary
-            vc.type = Product.ProductType.Emoji
+            vc.type = Product.ProductType.emoji
             vc.data = data
             vc.delegate = self
             self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)

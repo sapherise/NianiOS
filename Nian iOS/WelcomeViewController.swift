@@ -34,20 +34,20 @@ class WelcomeViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.logInButton.layer.cornerRadius = 22.0
         self.logInButton.layer.borderWidth = 0.5
-        self.logInButton.layer.borderColor = UIColor.colorWithHex("#333333").CGColor
+        self.logInButton.layer.borderColor = UIColor.colorWithHex("#333333").cgColor
         self.logInButton.layer.masksToBounds = true
         
         if !WXApi.isWXAppInstalled() {
-            wechatButton.hidden = true
-            qqButton.hidden = true
-            let button = UIButton(frame: CGRectMake(0, 0, 44, 44))
-            button.frame.origin = CGPointMake(100, globalHeight - 24 - 44)
-            button.setImage(UIImage(named: "signin_qq"), forState: UIControlState())
-            button.titleLabel?.textAlignment = NSTextAlignment.Center
-            button.titleLabel?.font = UIFont.systemFontOfSize(10)
-            button.setTitle("QQ", forState: UIControlState())
-            button.setTitleColor(UIColor.blackColor(), forState: UIControlState())
-            button.addTarget(self, action: #selector(WelcomeViewController.qq), forControlEvents: UIControlEvents.TouchUpInside)
+            wechatButton.isHidden = true
+            qqButton.isHidden = true
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+            button.frame.origin = CGPoint(x: 100, y: globalHeight - 24 - 44)
+            button.setImage(UIImage(named: "signin_qq"), for: UIControlState())
+            button.titleLabel?.textAlignment = NSTextAlignment.center
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 10)
+            button.setTitle("QQ", for: UIControlState())
+            button.setTitleColor(UIColor.black, for: UIControlState())
+            button.addTarget(self, action: #selector(WelcomeViewController.qq), for: UIControlEvents.touchUpInside)
             self.view.addSubview(button)
             
             let imageSize = button.imageView?.frame.size
@@ -61,59 +61,59 @@ class WelcomeViewController: UIViewController {
         }
         
         // 先隐藏欢迎界面
-        self.view.hidden = true
+        self.view.isHidden = true
         
         if let _uid = CurrentUser.sharedCurrentUser.uid {      //如果登录了
             let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-            uidKey.setObject(_uid, forKey: kSecAttrAccount)
+            uidKey?.setObject(_uid, forKey: kSecAttrAccount)
             
             /* 普通启动 */
             launch(1)
             numExplore = 1
             
             delay(1, closure: { () -> () in
-                self.view.hidden = false
+                self.view.isHidden = false
             })
         } else {  // 没有登录
             /* 留在当前页面 */
-            self.view.hidden = false
+            self.view.isHidden = false
         }
         
     }
     
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(WelcomeViewController.handleLogInViaWeibo(_:)), name: "weibo", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(WelcomeViewController.handleLogInViaWechat(_:)), name: "Wechat", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(WelcomeViewController.handleLogInViaWeibo(_:)), name: NSNotification.Name(rawValue: "weibo"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(WelcomeViewController.handleLogInViaWechat(_:)), name: NSNotification.Name(rawValue: "Wechat"), object: nil)
         
     }
     
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "Weibo", object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "Wechat", object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "Weibo"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "Wechat"), object: nil)
     }
 
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
 
         // toLORVC : to LogOrRegViewController
         if segue.identifier == "toLORVC" {
             /*   */
-            let logOrRegViewController = segue.destinationViewController as! LogOrRegViewController
+            let logOrRegViewController = segue.destination as! LogOrRegViewController
             logOrRegViewController.functionalType = FunctionType.confirm
         }
         
         if segue.identifier == "toConfirm3rdLogIn" {
-            let nicknameViewController = segue.destinationViewController as! NicknameViewController
+            let nicknameViewController = segue.destination as! NicknameViewController
             nicknameViewController.originalType = self.thirdPartyType
             nicknameViewController.id = self.thirdPartyID
             nicknameViewController.nameFrom3rd = self.thirdPartyName
@@ -129,12 +129,12 @@ class WelcomeViewController: UIViewController {
     /**
     
     */
-    @IBAction func logInViaWechat(sender: UIButton) {
+    @IBAction func logInViaWechat(_ sender: UIButton) {
         if WXApi.isWXAppInstalled() {
             let req = SendAuthReq()
             req.scope = "snsapi_userinfo"
             
-            WXApi.sendReq(req)
+            WXApi.send(req)
         } else {
             self.showTipText("未安装微信...")
         }
@@ -143,7 +143,7 @@ class WelcomeViewController: UIViewController {
     /**
     
     */
-    @IBAction func logInViaQQ(sender: UIButton) {
+    @IBAction func logInViaQQ(_ sender: UIButton) {
         qq()
     }
     
@@ -180,12 +180,12 @@ class WelcomeViewController: UIViewController {
     /**
     
     */
-    @IBAction func logInViaWeibo(sender: UIButton) {
+    @IBAction func logInViaWeibo(_ sender: UIButton) {
         let request = WBAuthorizeRequest()
         request.redirectURI = "https://api.weibo.com/oauth2/default.html"
         request.scope = "all"
         request.userInfo = ["SSO_From": "WelcomeViewController"]
-        WeiboSDK.sendRequest(request)
+        WeiboSDK.send(request)
     }
     
 
@@ -241,7 +241,7 @@ extension WelcomeViewController: TencentLoginDelegate, TencentSessionDelegate {
     * 登录失败后的回调
     * param cancelled 代表用户是否主动退出登录
     */
-    func tencentDidNotLogin(cancelled: Bool) {
+    func tencentDidNotLogin(_ cancelled: Bool) {
         
     }
 
@@ -261,7 +261,7 @@ extension WelcomeViewController {
      
      :param: noti <#noti description#>
      */
-    func handleLogInViaWeibo(noti: NSNotification) {
+    func handleLogInViaWeibo(_ noti: Notification) {
         guard let notiObject = noti.object else {
             return
         }
@@ -306,7 +306,7 @@ extension WelcomeViewController {
      
      :param: noti <#noti description#>
      */
-    func handleLogInViaWechat(noti: NSNotification) {
+    func handleLogInViaWechat(_ noti: Notification) {
         guard let notiObject = noti.object else {
             return
         }
@@ -341,7 +341,7 @@ extension WelcomeViewController {
     }
     
     
-    func logInVia3rdHelper(id: String, nameFrom3rd: String, type: String) {
+    func logInVia3rdHelper(_ id: String, nameFrom3rd: String, type: String) {
         self.viewLoadingShow()
         
         
@@ -364,7 +364,7 @@ extension WelcomeViewController {
                     self.thirdPartyID = id
                     self.thirdPartyType = type
                     self.thirdPartyName = nameFrom3rd
-                    self.performSegueWithIdentifier("toConfirm3rdLogIn", sender: nil)
+                    self.performSegue(withIdentifier: "toConfirm3rdLogIn", sender: nil)
                 } else {
                     LogOrRegModel.logInVia3rd(id, type: type) {
                         (task, responseObject, error) in

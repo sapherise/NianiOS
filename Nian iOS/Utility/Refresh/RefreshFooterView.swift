@@ -9,7 +9,7 @@
 import UIKit
 class RefreshFooterView: RefreshBaseView {
     class func footer()->RefreshFooterView{
-        let footer:RefreshFooterView  = RefreshFooterView(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, 64))
+        let footer:RefreshFooterView  = RefreshFooterView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 64))
         return footer
     }
     
@@ -23,21 +23,21 @@ class RefreshFooterView: RefreshBaseView {
         let statusHeight:CGFloat = self.frame.size.height
         let statusWidth:CGFloat = self.frame.size.width
         //状态标签
-        self.statusLabel.frame = CGRectMake(statusX, statusY - 10.0, statusWidth, statusHeight)
+        self.statusLabel.frame = CGRect(x: statusX, y: statusY - 10.0, width: statusWidth, height: statusHeight)
         
-        self.statusLabel.backgroundColor =  UIColor.clearColor()
+        self.statusLabel.backgroundColor =  UIColor.clear
         
         //指示器
-        self.activityView.center = CGPointMake(self.frame.size.width * 0.5, self.frame.size.height * 0.5 - 10.0)
+        self.activityView.center = CGPoint(x: self.frame.size.width * 0.5, y: self.frame.size.height * 0.5 - 10.0)
     }
     
-    override func willMoveToSuperview(newSuperview: UIView!) {
-        super.willMoveToSuperview(newSuperview)
+    override func willMove(toSuperview newSuperview: UIView!) {
+        super.willMove(toSuperview: newSuperview)
         if (self.superview != nil){
      //      self.superview.removeObserver(self, forKeyPath: RefreshContentSize, context: nil)
         }
         if (newSuperview != nil)  {
-            newSuperview.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.New, context: nil)
+            newSuperview.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.new, context: nil)
             // 重新调整frame
            adjustFrameWithContentSize()
         }
@@ -53,14 +53,14 @@ class RefreshFooterView: RefreshBaseView {
     }
  
     //监听UIScrollView的属性
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-                if (!self.userInteractionEnabled || self.hidden){
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+                if (!self.isUserInteractionEnabled || self.isHidden){
                     return
                 }
-                if RefreshContentSize.isEqualToString(keyPath!){
+                if RefreshContentSize.isEqual(to: keyPath!){
                     adjustFrameWithContentSize()
-                }else if RefreshContentOffset.isEqualToString(keyPath!) {
-                    if self.State == RefreshState.Refreshing{
+                }else if RefreshContentOffset.isEqual(to: keyPath!) {
+                    if self.State == RefreshState.refreshing{
                         return
                     }
                     adjustStateWithContentOffset()
@@ -75,15 +75,15 @@ class RefreshFooterView: RefreshBaseView {
         if currentOffsetY <= happenOffsetY {
             return
         }
-        if self.scrollView.dragging {
+        if self.scrollView.isDragging {
             let normal2pullingOffsetY =  happenOffsetY + self.frame.size.height
-            if self.State == RefreshState.Normal && currentOffsetY > normal2pullingOffsetY {
-                self.State = RefreshState.Pulling;
-            } else if (self.State == RefreshState.Pulling && currentOffsetY <= normal2pullingOffsetY) {
-                self.State = RefreshState.Normal;
+            if self.State == RefreshState.normal && currentOffsetY > normal2pullingOffsetY {
+                self.State = RefreshState.pulling;
+            } else if (self.State == RefreshState.pulling && currentOffsetY <= normal2pullingOffsetY) {
+                self.State = RefreshState.normal;
             }
-        } else if (self.State == RefreshState.Pulling) {
-            self.State = RefreshState.Refreshing
+        } else if (self.State == RefreshState.pulling) {
+            self.State = RefreshState.refreshing
         }
     }
 
@@ -99,29 +99,29 @@ class RefreshFooterView: RefreshBaseView {
     }
     didSet{
         switch State{
-        case .Normal:
+        case .normal:
             self.statusLabel.text = RefreshFooterPullToRefresh as String;
-            if (RefreshState.Refreshing == oldState) {
-                UIView.animateWithDuration(RefreshSlowAnimationDuration, animations: {
+            if (RefreshState.refreshing == oldState) {
+                UIView.animate(withDuration: RefreshSlowAnimationDuration, animations: {
                     self.scrollView.contentInset.bottom = self.scrollViewOriginalInset.bottom
                     })
             }
             let deltaH:CGFloat = self.heightForContentBreakView()
             let currentCount:Int = self.totalDataCountInScrollView()
-            if (RefreshState.Refreshing == oldState && deltaH > 0  && currentCount != self.lastRefreshCount) {
+            if (RefreshState.refreshing == oldState && deltaH > 0  && currentCount != self.lastRefreshCount) {
                 var offset:CGPoint = self.scrollView.contentOffset;
                 offset.y = self.scrollView.contentOffset.y
                 self.scrollView.contentOffset = offset;
             }
             
             break
-        case .Pulling:
+        case .pulling:
             self.statusLabel.text = RefreshFooterReleaseToRefresh as String
             break
-        case .Refreshing:
+        case .refreshing:
             self.statusLabel.text = RefreshFooterRefreshing as String;
             self.lastRefreshCount = self.totalDataCountInScrollView();
-            UIView.animateWithDuration(RefreshSlowAnimationDuration, animations: {
+            UIView.animate(withDuration: RefreshSlowAnimationDuration, animations: {
                 var bottom:CGFloat = self.frame.size.height + self.scrollViewOriginalInset.bottom
                  let deltaH:CGFloat = self.heightForContentBreakView()
                 if deltaH < 0 {
@@ -149,13 +149,13 @@ class RefreshFooterView: RefreshBaseView {
             let tableView:UITableView = self.scrollView as! UITableView
            
             for i in 0 ..< tableView.numberOfSections {
-                totalCount = totalCount + tableView.numberOfRowsInSection(i)
+                totalCount = totalCount + tableView.numberOfRows(inSection: i)
             }
         } else if self.scrollView is UICollectionView{
           let collectionView:UICollectionView = self.scrollView as! UICollectionView
             //            for (var i:Int = 0 ; i <  collectionView.numberOfSections() ; i += 1){
-            for i in 0 ..< collectionView.numberOfSections() {
-                totalCount = totalCount + collectionView.numberOfItemsInSection(i)
+            for i in 0 ..< collectionView.numberOfSections {
+                totalCount = totalCount + collectionView.numberOfItems(inSection: i)
             }
         }
         return totalCount
@@ -179,7 +179,7 @@ class RefreshFooterView: RefreshBaseView {
     }
     
     
-     func addState(state:RefreshState){
+     func addState(_ state:RefreshState){
         self.State = state
     }
     

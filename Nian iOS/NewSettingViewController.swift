@@ -11,11 +11,11 @@ import QuartzCore
 
 @objc protocol NewSettingDelegate {
     
-    optional func setting(name name: String?, cover: UIImage?, avatar: UIImage?)
+    @objc optional func setting(name: String?, cover: UIImage?, avatar: UIImage?)
 }
 
 protocol LockDelegate {
-    func setLockState(isOn: Bool)
+    func setLockState(_ isOn: Bool)
 }
 
 
@@ -92,7 +92,7 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate, LockDe
     var coverImagePicker: UIImagePickerController?
     var avatarImagePicker: UIImagePickerController?
     
-    let userDefaults = NSUserDefaults.standardUserDefaults()
+    let userDefaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,21 +100,21 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate, LockDe
         // Do any additional setup after loading the view.
         self._setTitle("设置")
         
-        self.scrollView.contentSize = CGSizeMake(self.view.frame.width, 1075)
+        self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: 1075)
         
         self.settingSeperateHeight()
         
-        self.settingCoverBlurView.backgroundColor = UIColor.clearColor()
-        self.settingAvatarBlurView.backgroundColor = UIColor.clearColor()
-        self.settingAvatarBlurView.translucentTintColor = UIColor.clearColor()
-        self.settingCoverBlurView.translucentTintColor = UIColor.clearColor()
-        self.settingCoverBlurView.translucentStyle = .Black
-        self.settingAvatarBlurView.translucentStyle = .Black
+        self.settingCoverBlurView.backgroundColor = UIColor.clear
+        self.settingAvatarBlurView.backgroundColor = UIColor.clear
+        self.settingAvatarBlurView.translucentTintColor = UIColor.clear
+        self.settingCoverBlurView.translucentTintColor = UIColor.clear
+        self.settingCoverBlurView.translucentStyle = .black
+        self.settingAvatarBlurView.translucentStyle = .black
         
         self.settingModel = SettingModel()
         
         /* 隐藏 “清理缓存” 的 spinner */
-        self.cacheActivityIndicator.hidden = true
+        self.cacheActivityIndicator.isHidden = true
         
         //设置背景
         self.coverImageView.image = self.coverImage
@@ -128,7 +128,7 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate, LockDe
         self.ImageContainerView.layer.masksToBounds = true
         
         // 移动网络下是否下载图片
-        if let saveMode = userDefaults.objectForKey("saveMode") as? String {
+        if let saveMode = userDefaults.object(forKey: "saveMode") as? String {
             if saveMode == "on" {
                 self.picOnCellarSwitch.setOn(true, animated: true)
             } else {
@@ -139,7 +139,7 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate, LockDe
         }
         
         // 是否只能通过昵称来找到
-        if let privateMode = userDefaults.objectForKey("privateMode") as? String {
+        if let privateMode = userDefaults.object(forKey: "privateMode") as? String {
             if privateMode == "1" {
                 self.findViaNameSwitch.setOn(true, animated: true)
             } else {
@@ -150,7 +150,7 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate, LockDe
         }
         
         // 是否保存进展卡片                    /* 这里是 modeCard */
-        if let cardMode = userDefaults.objectForKey("modeCard") as? String {
+        if let cardMode = userDefaults.object(forKey: "modeCard") as? String {
             if cardMode == "on" {
                 self.saveCardSwitch.setOn(true, animated: true)
             } else {
@@ -161,12 +161,12 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate, LockDe
         }
         
         // 是否每日更新提醒
-        if let pushMode = userDefaults.objectForKey("pushMode") as? String {
+        if let pushMode = userDefaults.object(forKey: "pushMode") as? String {
             if pushMode == "on" {
                 self.dailyRemindSwitch.setOn(true, animated: true)
             } else {
                 self.dailyRemindSwitch.setOn(false, animated: true)
-                UIApplication.sharedApplication().cancelAllLocalNotifications()
+                UIApplication.shared.cancelAllLocalNotifications()
             }
         } else {
             self.dailyRemindSwitch.setOn(false, animated: true)
@@ -178,12 +178,12 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate, LockDe
         setLockState(lockState)
         
         // 获得并显示版本号
-        let versionString = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as! String
+        let versionString = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
         self.versionLabel.text = "\(versionString)"
         
         beginLoading()
         
-        dailyModeSwitch.hidden = true
+        dailyModeSwitch.isHidden = true
         
         SettingModel.getUserInfoAndSetting {
             (task, responseObject, error) in
@@ -207,27 +207,27 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate, LockDe
                         self.settingModel?.dailyMode = "1"
                         self.dailyModeSwitch.setOn(true, animated: false)
                     }
-                    self.dailyModeSwitch.hidden = false
+                    self.dailyModeSwitch.isHidden = false
                     
-                    self.userDefaults.setObject(json["data"]["user"]["name"].stringValue, forKey: "user")
+                    self.userDefaults.set(json["data"]["user"]["name"].stringValue, forKey: "user")
                     self.userDefaults.synchronize()
                 } // if json["error"] != 0
             } // if let _error = error
         }  // SettingModel.getUserInfoAndSetting
         
         // 设定彩蛋
-        logo.userInteractionEnabled = true
+        logo.isUserInteractionEnabled = true
         logo.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(NewSettingViewController.onEgg(_:))))
     } // view didLoad
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if Cookies.get("pushMode") as? String != "on" {
             self.dailyRemindSwitch.setOn(false, animated: true)
         }
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         let _name = self.userDict?["name"] as? String
@@ -244,8 +244,8 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate, LockDe
         
     }
     
-    func onEgg(sender: UILongPressGestureRecognizer) {
-        if sender.state == UIGestureRecognizerState.Began {
+    func onEgg(_ sender: UILongPressGestureRecognizer) {
+        if sender.state == UIGestureRecognizerState.began {
             self.showTipText("念 爱 你")
         }
     }
@@ -266,9 +266,9 @@ extension NewSettingViewController{
     /**
      是否日更模式
      */
-    @IBAction func dailyModeChanged(sender: UISwitch) {
+    @IBAction func dailyModeChanged(_ sender: UISwitch) {
       
-        let _daily: String = sender.on ? "1" : "0"
+        let _daily: String = sender.isOn ? "1" : "0"
         
         SettingModel.updateUserInfo(["daily": "\(_daily)"]) {
             (task, responseObject, error) -> Void in
@@ -276,7 +276,7 @@ extension NewSettingViewController{
             if let _ = error {
                 
             } else {
-                self.userDefaults.setObject(_daily, forKey: "dailyMode")
+                self.userDefaults.set(_daily, forKey: "dailyMode")
                 self.userDefaults.synchronize()
             }
         }
@@ -286,12 +286,12 @@ extension NewSettingViewController{
     /**
      移动网络是否下载图片
      */
-    @IBAction func downloadPictureViaCellerOrNot(sender: UISwitch) {
-        if sender.on {
-            self.userDefaults.setObject("on", forKey: "saveMode")
+    @IBAction func downloadPictureViaCellerOrNot(_ sender: UISwitch) {
+        if sender.isOn {
+            self.userDefaults.set("on", forKey: "saveMode")
             self.userDefaults.synchronize()
         } else {
-            self.userDefaults.setObject("off", forKey: "saveMode")
+            self.userDefaults.set("off", forKey: "saveMode")
             self.userDefaults.synchronize()
         }
     }
@@ -299,12 +299,12 @@ extension NewSettingViewController{
     /**
      是否保存进展卡片
      */
-    @IBAction func saveStepCardOrNot(sender: UISwitch) {
-        if sender.on {
-            self.userDefaults.setObject("on", forKey: "modeCard")
+    @IBAction func saveStepCardOrNot(_ sender: UISwitch) {
+        if sender.isOn {
+            self.userDefaults.set("on", forKey: "modeCard")
             self.userDefaults.synchronize()
         } else {
-            self.userDefaults.setObject("off", forKey: "modeCard")
+            self.userDefaults.set("off", forKey: "modeCard")
             self.userDefaults.synchronize()
         }
         
@@ -313,15 +313,15 @@ extension NewSettingViewController{
     /**
      是否每日更新提醒
      */
-    @IBAction func remindOnDailyUpdate(sender: UISwitch) {
-        if sender.on {
+    @IBAction func remindOnDailyUpdate(_ sender: UISwitch) {
+        if sender.isOn {
             delay(0.3, closure: {
                 let CareVC = CareViewController()
                 self.navigationController!.pushViewController(CareVC, animated: true)
             })
         } else {
-            self.userDefaults.setObject("off", forKey: "pushMode")
-            UIApplication.sharedApplication().cancelAllLocalNotifications()
+            self.userDefaults.set("off", forKey: "pushMode")
+            UIApplication.shared.cancelAllLocalNotifications()
         }
         
         self.userDefaults.synchronize()
@@ -330,24 +330,24 @@ extension NewSettingViewController{
     /**
      是否只能通过昵称找到
      */
-    @IBAction func findMeOnlyViaName(sender: UISwitch) {
+    @IBAction func findMeOnlyViaName(_ sender: UISwitch) {
      
-        let _private = sender.on ? "1" : "0"
+        let _private = sender.isOn ? "1" : "0"
         
         SettingModel.updateUserInfo(["private": "\(_private)"]) {
             (task, responseObject, error) -> Void in
             if let _ = error {
                 
             } else {
-                self.userDefaults.setObject(_private, forKey: "privateMode")
+                self.userDefaults.set(_private, forKey: "privateMode")
                 self.userDefaults.synchronize()
             }
         }
         
     }
     
-    @IBAction func lockNian(sender: UISwitch) {
-        if sender.on {
+    @IBAction func lockNian(_ sender: UISwitch) {
+        if sender.isOn {
             let vc = Lock()
             vc.type = lockType.on
             vc.delegate = self
@@ -362,7 +362,7 @@ extension NewSettingViewController{
         }
     }
     
-    func setLockState(isOn: Bool) {
+    func setLockState(_ isOn: Bool) {
         lockSwitch.setOn(isOn, animated: true)
     }
 }
@@ -373,14 +373,14 @@ extension NewSettingViewController {
     /**
     设置封面图片， --- @warning: 应该叫做 setCoverImage 的，但是和之前不知道哪里有冲突
      */
-    @IBAction func setCover(sender: UITapGestureRecognizer) {
+    @IBAction func setCover(_ sender: UITapGestureRecognizer) {
         actionSheet = UIActionSheet(title: "设定封面", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        actionSheet!.addButtonWithTitle("相册")
-        actionSheet!.addButtonWithTitle("拍照")
-        actionSheet!.addButtonWithTitle("恢复默认封面")
-        actionSheet!.addButtonWithTitle("取消")
+        actionSheet!.addButton(withTitle: "相册")
+        actionSheet!.addButton(withTitle: "拍照")
+        actionSheet!.addButton(withTitle: "恢复默认封面")
+        actionSheet!.addButton(withTitle: "取消")
         actionSheet!.cancelButtonIndex = 3
-        actionSheet!.showInView(self.view)
+        actionSheet!.show(in: self.view)
 //        let alertController = PSTAlertController.actionSheetWithTitle("设定封面")
 //        
 //        alertController.addAction(PSTAlertAction(title: "相册", style: .Default, handler: { (action) in
@@ -418,21 +418,21 @@ extension NewSettingViewController {
         
     }
     
-    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
         if actionSheet == self.actionSheet {
             if buttonIndex == 0 {
                 self.coverImagePicker = UIImagePickerController()
                 self.coverImagePicker!.delegate = self
                 self.coverImagePicker!.allowsEditing = true
-                self.coverImagePicker!.sourceType = .PhotoLibrary
-                self.presentViewController(self.coverImagePicker!, animated: true, completion: nil)
+                self.coverImagePicker!.sourceType = .photoLibrary
+                self.present(self.coverImagePicker!, animated: true, completion: nil)
             } else if buttonIndex == 1 {
                 self.coverImagePicker = UIImagePickerController()
                 self.coverImagePicker!.delegate = self
                 self.coverImagePicker!.allowsEditing = true
-                if UIImagePickerController.isSourceTypeAvailable(.Camera){
-                    self.coverImagePicker!.sourceType = .Camera
-                    self.presentViewController(self.coverImagePicker!, animated: true, completion: nil)
+                if UIImagePickerController.isSourceTypeAvailable(.camera){
+                    self.coverImagePicker!.sourceType = .camera
+                    self.present(self.coverImagePicker!, animated: true, completion: nil)
                 }
             } else if buttonIndex == 2 {
                 SettingModel.changeCoverImage(coverURL: "background.png", callback: {
@@ -447,17 +447,17 @@ extension NewSettingViewController {
                 self.avatarImagePicker = UIImagePickerController()
                 self.avatarImagePicker!.delegate = self
                 self.avatarImagePicker!.allowsEditing = true
-                self.avatarImagePicker!.sourceType = .PhotoLibrary
+                self.avatarImagePicker!.sourceType = .photoLibrary
                 
-                self.presentViewController(self.avatarImagePicker!, animated: true, completion: nil)
+                self.present(self.avatarImagePicker!, animated: true, completion: nil)
             } else if buttonIndex == 1 {
                 
                 self.avatarImagePicker = UIImagePickerController()
                 self.avatarImagePicker!.delegate = self
                 self.avatarImagePicker!.allowsEditing = true
-                if UIImagePickerController.isSourceTypeAvailable(.Camera){
-                    self.avatarImagePicker!.sourceType = .Camera
-                    self.presentViewController(self.avatarImagePicker!, animated: true, completion: nil)
+                if UIImagePickerController.isSourceTypeAvailable(.camera){
+                    self.avatarImagePicker!.sourceType = .camera
+                    self.present(self.avatarImagePicker!, animated: true, completion: nil)
                 }
             }
         } else if actionSheet == self.actionSheetLogout {
@@ -467,14 +467,14 @@ extension NewSettingViewController {
         }
     }
     
-    @IBAction func setAvatar(sender: UITapGestureRecognizer) {
+    @IBAction func setAvatar(_ sender: UITapGestureRecognizer) {
         
         actionSheetHead = UIActionSheet(title: "设定头像", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        actionSheetHead!.addButtonWithTitle("相册")
-        actionSheetHead!.addButtonWithTitle("拍照")
-        actionSheetHead!.addButtonWithTitle("取消")
+        actionSheetHead!.addButton(withTitle: "相册")
+        actionSheetHead!.addButton(withTitle: "拍照")
+        actionSheetHead!.addButton(withTitle: "取消")
         actionSheetHead!.cancelButtonIndex = 2
-        actionSheetHead!.showInView(self.view)
+        actionSheetHead!.show(in: self.view)
         
 //        let alertController = PSTAlertController.actionSheetWithTitle("设定头像")
 //        
@@ -507,7 +507,7 @@ extension NewSettingViewController {
     /**
      编辑个人资料(进入下一页)
      */
-    @IBAction func editMyProfile(sender: UITapGestureRecognizer) {
+    @IBAction func editMyProfile(_ sender: UITapGestureRecognizer) {
         let editProfileVC = EditProfileViewController(nibName: "EditProfileView", bundle: nil)
         if self.userDict != nil {
             editProfileVC.profileDict = ["name": self.userDict?["name"] as! String,
@@ -524,7 +524,7 @@ extension NewSettingViewController {
     /**
      账号绑定和设置（进入下一页）
      */
-    @IBAction func setAccountBind(sender: UITapGestureRecognizer) {
+    @IBAction func setAccountBind(_ sender: UITapGestureRecognizer) {
         let accountBindVC = AccountBindViewController(nibName: "AccountBindView", bundle: nil)
         accountBindVC.delegate = self
         if let _email = self.userDict!["email"] as? String {
@@ -539,26 +539,26 @@ extension NewSettingViewController {
     /**
      修改邮箱后，调用该函数来修改 userDict
      */
-    func updateUserDict(email: String) {
-        self.userDict!["email"] = email
+    func updateUserDict(_ email: String) {
+        self.userDict!["email"] = email as AnyObject?
     }
     
     /**
      清理缓存
      */
-    @IBAction func cleanCache(sender: UITapGestureRecognizer) {
-        self.cacheActivityIndicator.hidden = false
+    @IBAction func cleanCache(_ sender: UITapGestureRecognizer) {
+        self.cacheActivityIndicator.isHidden = false
         self.cacheActivityIndicator.startAnimating()
         go {
-            let searchPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true) as NSArray
-            let cachePath: NSString = searchPath.objectAtIndex(0) as! NSString
-            let files = NSFileManager.defaultManager().subpathsAtPath(cachePath as String)
+            let searchPath = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.cachesDirectory, FileManager.SearchPathDomainMask.userDomainMask, true) as NSArray
+            let cachePath: NSString = searchPath.object(at: 0) as! NSString
+            let files = FileManager.default.subpaths(atPath: cachePath as String)
             for p in files! as NSArray {
-                let path = cachePath.stringByAppendingPathComponent("\(p)")
-                if NSFileManager.defaultManager().fileExistsAtPath(path) {
+                let path = cachePath.appendingPathComponent("\(p)")
+                if FileManager.default.fileExists(atPath: path) {
                     if "\(p)" != "\(SAUid()).jpg!dream" {
                         do {
-                            try NSFileManager.defaultManager().removeItemAtPath(path)
+                            try FileManager.default.removeItem(atPath: path)
                         } catch _ {
                         }
                     }
@@ -566,7 +566,7 @@ extension NewSettingViewController {
             }
             back {
                 self.cacheActivityIndicator.stopAnimating()
-                self.cacheActivityIndicator.hidden = true
+                self.cacheActivityIndicator.isHidden = true
                 self.showTipText("缓存清理好了")
             }
         }
@@ -575,7 +575,7 @@ extension NewSettingViewController {
     /**
      念是什么
      */
-    @IBAction func introduceNian(sender: UITapGestureRecognizer) {
+    @IBAction func introduceNian(_ sender: UITapGestureRecognizer) {
         let helpViewController = HelpViewController()
         self.navigationController?.pushViewController(helpViewController, animated: true)
     }
@@ -583,28 +583,28 @@ extension NewSettingViewController {
     /**
      引导用户去 app store 给予好评
      */
-    @IBAction func fiveStarOnAppStore(sender: UITapGestureRecognizer) {
-        UIApplication.sharedApplication().openURL(NSURL(string: "itms-apps://itunes.apple.com/cn/app/id929448912")!)
+    @IBAction func fiveStarOnAppStore(_ sender: UITapGestureRecognizer) {
+        UIApplication.shared.openURL(URL(string: "itms-apps://itunes.apple.com/cn/app/id929448912")!)
     }
     
     /**
      登出
      */
-    @IBAction func logout(sender: UITapGestureRecognizer) {
+    @IBAction func logout(_ sender: UITapGestureRecognizer) {
         
         actionSheetLogout = UIActionSheet(title: "欢迎下次再来玩", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
-        actionSheetLogout!.addButtonWithTitle("拜拜")
-        actionSheetLogout!.addButtonWithTitle("取消")
+        actionSheetLogout!.addButton(withTitle: "拜拜")
+        actionSheetLogout!.addButton(withTitle: "取消")
         actionSheetLogout!.cancelButtonIndex = 1
-        actionSheetLogout!.showInView(self.view)
+        actionSheetLogout!.show(in: self.view)
     }
 }
 
 
 extension NewSettingViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        self.dismiss(animated: true, completion: nil)
         
         if picker == self.coverImagePicker {
             self.uploadImage(image, type: "cover")
@@ -615,19 +615,19 @@ extension NewSettingViewController: UIImagePickerControllerDelegate, UINavigatio
         }
     }
     
-    func uploadImage(image: UIImage, type: String) {
+    func uploadImage(_ image: UIImage, type: String) {
         
         if type == "cover" {
             beginLoading()
             
             let uy = UpYun()
             uy.successBlocker = ({ (data: AnyObject!) in
-                var uploadURL = data.objectForKey("url") as! String
+                var uploadURL = data.object(forKey: "url") as! String
                 uploadURL = SAReplace(uploadURL, before: "/cover/", after: "") as String
                 
                 let coverImageURL = "http://img.nian.so/cover/\(uploadURL)!cover"
-                let userDefaults = NSUserDefaults.standardUserDefaults()
-                userDefaults.setObject(uploadURL, forKey: "coverUrl")
+                let userDefaults = UserDefaults.standard
+                userDefaults.set(uploadURL, forKey: "coverUrl")
                 userDefaults.synchronize()
                 
                 SettingModel.changeCoverImage(coverURL: uploadURL, callback: {
@@ -682,10 +682,10 @@ extension NewSettingViewController: EditProfileDelegate {
     /**
      更新界面和用户信息
      */
-    func editProfile(profileDict profileDict: Dictionary<String, String>) {
+    func editProfile(profileDict: Dictionary<String, String>) {
         
         for (key, value) in profileDict {
-            self.userDict?.updateValue(value, forKey: key)
+            self.userDict?.updateValue(value as AnyObject, forKey: key)
         }
     }
     

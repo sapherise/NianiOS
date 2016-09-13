@@ -9,13 +9,16 @@
 import UIKit
 import Foundation
 extension NSDictionary {
-    func stringAttributeForKey(key:String)->String {
-        if let obj: AnyObject = self[key] {
-            if obj.isKindOfClass(NSNumber) {
-                let num = obj as! NSNumber
-                return num.stringValue
+    func stringAttributeForKey(_ key:String)->String {
+      //  if let obj: AnyObject = self[key] {
+        // todo
+        if true {
+          //  if obj.isKind(of: NSNumber()) {
+            if true {
+             //   let num = obj as! NSNumber
+               // return num.stringValue
             }
-            return "\(obj)"
+            //return "\(obj)"
         }
         return ""
     }

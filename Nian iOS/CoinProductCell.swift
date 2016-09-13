@@ -25,7 +25,7 @@ class CoinProductCell: UITableViewCell {
     let heightCell: CGFloat = 72
     
     func setup() {
-        self.selectionStyle = .None
+        self.selectionStyle = .none
         self.setWidth(globalWidth)
         viewLine.setHeight(globalHalf)
         viewLine.setY(heightCell - globalHalf - globalHalf/2)
@@ -44,7 +44,7 @@ class CoinProductCell: UITableViewCell {
         labelContent.textColor = UIColor.secAuxiliaryColor()
         
         if num == 0 {
-            let v = UIView(frame: CGRectMake(0, 0, globalWidth, globalHalf))
+            let v = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: globalHalf))
             v.backgroundColor = UIColor.LineColor()
             v.setY(globalHalf/2)
             self.contentView.addSubview(v)

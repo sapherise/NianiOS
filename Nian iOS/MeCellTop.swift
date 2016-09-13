@@ -19,7 +19,7 @@ class MeCellTop: UITableViewCell{
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.selectionStyle = .None
+        self.selectionStyle = .none
         self.viewHolder.setX(globalWidth/2-160)
     }
 }

@@ -18,11 +18,11 @@ struct RegexHelper {
     var matches = [NSTextCheckingResult]()
     
     init(_ pattern: String) throws {
-        try regex = NSRegularExpression(pattern: pattern, options: .CaseInsensitive)
+        try regex = NSRegularExpression(pattern: pattern, options: .caseInsensitive)
     }
     
-    mutating func match(input: String) -> Bool {
-        matches = regex.matchesInString(input, options: [], range: NSMakeRange(0, input.characters.count))
+    mutating func match(_ input: String) -> Bool {
+        matches = regex.matches(in: input, options: [], range: NSMakeRange(0, input.characters.count))
         
         return matches.count > 0
     }

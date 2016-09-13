@@ -9,13 +9,24 @@
 import Foundation
 import UIKit
 import SpriteKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 protocol AddDreamDelegate {
-    func addDreamCallback(id: String, img: String, title: String)
+    func addDreamCallback(_ id: String, img: String, title: String)
 }
 
 protocol DeleteDreamDelegate {
-    func deleteDreamCallback(id: String)
+    func deleteDreamCallback(_ id: String)
 }
 
 class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate, LXReorderableCollectionViewDataSource, LXReorderableCollectionViewDelegateFlowLayout, NIAlertDelegate, AddDreamDelegate, DeleteDreamDelegate, ShareDelegate {
@@ -58,9 +69,9 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func setupViews(){
-        let frameSquare = CGRectMake(0, 0, globalWidth, 320)
-        self.view.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
-        self.scrollView.frame = CGRectMake(0, 0, globalWidth, globalHeight - 49)
+        let frameSquare = CGRect(x: 0, y: 0, width: globalWidth, height: 320)
+        self.view.frame = CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight - 49)
+        self.scrollView.frame = CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight - 49)
         self.scrollView.contentSize.height = globalHeight - 49 > 640 ? globalHeight - 49 : 640
         self.scrollView.alwaysBounceVertical = true
         self.extendedLayoutIncludesOpaqueBars = true
@@ -80,10 +91,10 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.levelButton.frame.origin.x = globalWidth/2-104+108
         
         self.activity.setX(globalWidth - 24 - 40)
-        self.activity.transform = CGAffineTransformMakeScale(0.8, 0.8)
-        self.activity.hidden = true
+        self.activity.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        self.activity.isHidden = true
         self.dynamicSummary.setX(globalWidth - 44)
-        self.dynamicSummary.addTarget(self, action: #selector(NianViewController.toActivitiesSummary(_:)), forControlEvents: .TouchUpInside)
+        self.dynamicSummary.addTarget(self, action: #selector(NianViewController.toActivitiesSummary(_:)), for: .touchUpInside)
         
         self.UserHead.layer.cornerRadius = 30
         self.UserHead.layer.masksToBounds = true
@@ -92,28 +103,28 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.collectionView.dataSource = self
         self.labelTableRight.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(NianViewController.addDreamButton)))
         
-        self.navView = UIImageView(frame: CGRectMake(0, 0, globalWidth, 64))
+        self.navView = UIImageView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: 64))
         self.navView.backgroundColor = UIColor.NavColor()
-        self.navView.hidden = true
+        self.navView.isHidden = true
         self.navView.clipsToBounds = true
-        self.navView.userInteractionEnabled = true
+        self.navView.isUserInteractionEnabled = true
         self.view.addSubview(self.navView)
         
-        viewHeader = UIView(frame: CGRectMake(0, 375, globalWidth, 200))
+        viewHeader = UIView(frame: CGRect(x: 0, y: 375, width: globalWidth, height: 200))
         let viewQuestionHeader = viewEmpty(globalWidth, content: "先随便写个记本吧\n比如日记、英语、画画...")
         viewQuestionHeader.setY(0)
         let btnGoHeader = UIButton()
         btnGoHeader.setButtonNice("  嗯！")
         btnGoHeader.setX(globalWidth/2-50)
         btnGoHeader.setY(viewQuestionHeader.bottom())
-        btnGoHeader.addTarget(self, action: #selector(NianViewController.addDreamButton), forControlEvents: UIControlEvents.TouchUpInside)
+        btnGoHeader.addTarget(self, action: #selector(NianViewController.addDreamButton), for: UIControlEvents.touchUpInside)
         viewHeader.addSubview(viewQuestionHeader)
         viewHeader.addSubview(btnGoHeader)
-        viewHeader.hidden = true
+        viewHeader.isHidden = true
         self.scrollView.addSubview(viewHeader)
         
         let nib = UINib(nibName: "NianCell", bundle: nil)
-        self.collectionView.registerNib(nib, forCellWithReuseIdentifier: "NianCell")
+        self.collectionView.register(nib, forCellWithReuseIdentifier: "NianCell")
         
         let safename = Cookies.get("user") as? String
         let cacheCoverUrl = Cookies.get("coverUrl") as? String
@@ -127,12 +138,12 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.imageBG.setCover(cacheCoverUrl!)
         } else {
             self.imageBG.image = UIImage(named: "bg")
-            self.imageBG.contentMode = UIViewContentMode.ScaleAspectFill
+            self.imageBG.contentMode = UIViewContentMode.scaleAspectFill
         }
         
         self.setupUserTop()
-        self.coinButton.addTarget(self, action: #selector(NianViewController.coinClick), forControlEvents: UIControlEvents.TouchUpInside)
-        self.levelButton.addTarget(self, action: #selector(NianViewController.levelClick), forControlEvents: UIControlEvents.TouchUpInside)
+        self.coinButton.addTarget(self, action: #selector(NianViewController.coinClick), for: UIControlEvents.touchUpInside)
+        self.levelButton.addTarget(self, action: #selector(NianViewController.levelClick), for: UIControlEvents.touchUpInside)
         self.UserStep.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(NianViewController.stepClick)))
         self.UserName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(NianViewController.stepClick)))
         self.UserHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(NianViewController.headClick)))
@@ -140,11 +151,11 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         imageSettings.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(NianViewController.EggShell(_:))))
         self.viewHolderHead.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
         self.imageBadge.setX(globalWidth/2 + 60/2 - 14)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NianViewController.QuickActionsEgg), name: "QuickActionsEgg", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(NianViewController.QuickActionsEgg), name: NSNotification.Name(rawValue: "QuickActionsEgg"), object: nil)
     }
     
-    func EggShell(sender: UILongPressGestureRecognizer) {
-        if sender.state == UIGestureRecognizerState.Began {
+    func EggShell(_ sender: UILongPressGestureRecognizer) {
+        if sender.state == UIGestureRecognizerState.began {
             showEgg()
         }
     }
@@ -158,41 +169,41 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func showEgg() {
         let eggShell = NIAlert()
         eggShell.delegate = self
-        eggShell.dict = NSMutableDictionary(objects: [UserHead, " 彩蛋！", "你在念的第一瞬间\n\(self.birthday)", ["太开心"]], forKeys: ["img", "title", "content", "buttonArray"])
+        eggShell.dict = NSMutableDictionary(objects: [UserHead, " 彩蛋！", "你在念的第一瞬间\n\(self.birthday)", ["太开心"]], forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
         eggShell.showWithAnimation(.flip)
         if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
-            let skView = SKView(frame: CGRectMake(0, 0, 272, 108))
+            let skView = SKView(frame: CGRect(x: 0, y: 0, width: 272, height: 108))
             if #available(iOS 8.0, *) {
                 skView.allowsTransparency = true
             }
             eggShell._containerView!.addSubview(skView)
-            scene.scaleMode = SKSceneScaleMode.AspectFit
+            scene.scaleMode = SKSceneScaleMode.aspectFit
             skView.presentScene(scene)
             scene.setupViews()
-            eggShell._containerView?.sendSubviewToBack(skView)
+            eggShell._containerView?.sendSubview(toBack: skView)
         }
     }
     
-    func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
+    func niAlert(_ niAlert: NIAlert, didselectAtIndex: Int) {
         niAlert.dismissWithAnimation(.normal)
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView == self.scrollView {
             let height = scrollView.contentOffset.y
             self.heightScroll = height
             if self.viewHolder != nil {
                 if height > 0 {
                     if height > globalWidth {
-                        self.imageBG.hidden = true
+                        self.imageBG.isHidden = true
                     }else{
-                        self.imageBG.frame = CGRectMake(0, height, globalWidth, 320 - height)
-                        self.imageBG.hidden = false
+                        self.imageBG.frame = CGRect(x: 0, y: height, width: globalWidth, height: 320 - height)
+                        self.imageBG.isHidden = false
                     }
                 }else{
                     self.viewHolder!.setY(height)
                     self.viewMenu.setY(height + 320)
-                    self.imageBG.frame = CGRectMake(height/10, height, globalWidth-height/5, 320)
+                    self.imageBG.frame = CGRect(x: height/10, y: height, width: globalWidth-height/5, height: 320)
                 }
                 scrollHidden(self.viewHolderHead, scrollY: 68)
                 scrollHidden(self.imageBadge, scrollY: 68)
@@ -204,27 +215,27 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 scrollHidden(self.dynamicSummary, scrollY: 50)
                 scrollHidden(self.activity, scrollY: 50)
                 if height >= 320 - 64 {
-                    self.navView.hidden = false
+                    self.navView.isHidden = false
                 }else{
-                    self.navView.hidden = true
+                    self.navView.isHidden = true
                 }
             }
         }
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        let visiblePaths = self.collectionView!.indexPathsForVisibleItems() as Array
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let visiblePaths = self.collectionView!.indexPathsForVisibleItems as Array
         
         for item in visiblePaths {
             let indexPath = item 
-            let cell = self.collectionView!.cellForItemAtIndexPath(indexPath) as! NianCell
+            let cell = self.collectionView!.cellForItem(at: indexPath) as! NianCell
             if cell.imageCover.image == nil {
             
             }
         }
     }
     
-    func scrollHidden(theView:UIView, scrollY:CGFloat){
+    func scrollHidden(_ theView:UIView, scrollY:CGFloat){
         if ( self.heightScroll > scrollY - 50 && self.heightScroll <= scrollY ) {
             theView.alpha = ( scrollY - self.heightScroll ) / 50
         }else if self.heightScroll > scrollY {
@@ -234,19 +245,19 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
     
-    func setupUserTop(willRefreshCover: Bool = true){
+    func setupUserTop(_ willRefreshCover: Bool = true){
         let safeuid = SAUid()
         if let uid = Int(safeuid) {
             Api.getUserTop(uid){ json in
                 if json != nil {
-                    let error = json!.objectForKey("error") as? NSNumber
+                    let error = json!.object(forKey: "error") as? NSNumber
                     if error == 0 {
-                        let _data = json!.objectForKey("data") as! NSDictionary
-                        let data = _data.objectForKey("user") as! NSDictionary
+                        let _data = json!.object(forKey: "data") as! NSDictionary
+                        let data = _data.object(forKey: "user") as! NSDictionary
                         let name = data.stringAttributeForKey("name")
                         let coin = data.stringAttributeForKey("coin")
                         let dream = data.stringAttributeForKey("dream")
@@ -259,8 +270,8 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                         let member = data.stringAttributeForKey("member")
                         Cookies.set(member, forKey: "member")
                         let deadLine = data.stringAttributeForKey("deadline")
-                        self.coinButton.setTitle("念币 \(coin)", forState: UIControlState())
-                        self.levelButton.setTitle("宠物 \(petCount)", forState: UIControlState())
+                        self.coinButton.setTitle("念币 \(coin)", for: UIControlState())
+                        self.levelButton.setTitle("宠物 \(petCount)", for: UIControlState())
                         self.UserName.text = "\(name)"
                         self.UserHead.setHead(safeuid)
                         self.imageBadge.setType(vip)
@@ -273,7 +284,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                             if coverURL == "" {
                                 self.imageBG.image = UIImage(named: "bg")
                                 self.navView.image = UIImage(named: "bg")
-                                self.navView.contentMode = UIViewContentMode.ScaleAspectFill
+                                self.navView.contentMode = UIViewContentMode.scaleAspectFill
                             } else {
                                 self.navView.setCover(AllCoverURL)
                                 self.imageBG.setCover(AllCoverURL)
@@ -292,8 +303,8 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     /* 添加记本后，首页上相应地产生变化
     */
-    func addDreamCallback(id: String, img: String, title: String) {
-        let data = NSDictionary(objects: [id, img, title], forKeys: ["id", "image", "title"])
+    func addDreamCallback(_ id: String, img: String, title: String) {
+        let data = NSDictionary(objects: [id, img, title], forKeys: ["id" as NSCopying, "image" as NSCopying, "title" as NSCopying])
         for _d in dataArray {
             if let d = _d as? NSDictionary {
                 let _id = d.stringAttributeForKey("id")
@@ -302,20 +313,20 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                 }
             }
         }
-        dataArray.insertObject(data, atIndex: dataArray.count)
+        dataArray.insert(data, at: dataArray.count)
         Cookies.set(dataArray, forKey: "NianDreams")
         reloadFromDataArray()
     }
     
     /* 删除记本后，首页上相应地产生变化
     */
-    func deleteDreamCallback(id: String) {
+    func deleteDreamCallback(_ id: String) {
         if dataArray.count > 0 {
             for i in 0...(dataArray.count - 1) {
                 let data = dataArray[i] as! NSDictionary
                 let _id = data.stringAttributeForKey("id")
                 if _id == id {
-                    dataArray.removeObjectAtIndex(i)
+                    dataArray.removeObject(at: i)
                     reloadFromDataArray()
                     Cookies.set(dataArray, forKey: "NianDreams")
                     break
@@ -330,7 +341,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.navigationController!.pushViewController(vc, animated: true)
     }
     
-    func onDreamLabelClick(sender:UIGestureRecognizer){
+    func onDreamLabelClick(_ sender:UIGestureRecognizer){
         let tag = sender.view!.tag
         self.onDreamClick("\(tag)")
     }
@@ -355,20 +366,20 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navShow()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navHide()
         if let coin = Cookies.get("coin") as? String {
-            coinButton.setTitle("念币 \(coin)", forState: UIControlState())
+            coinButton.setTitle("念币 \(coin)", for: UIControlState())
         }
     }
     
@@ -386,13 +397,13 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     /**
      进入汇总页
      */
-    func toActivitiesSummary(sender: UIButton) {
+    func toActivitiesSummary(_ sender: UIButton) {
         let storyBoard = UIStoryboard(name: "ActivitiesSummary", bundle: nil)
-        let vc = storyBoard.instantiateViewControllerWithIdentifier("ActivitiesViewController")
+        let vc = storyBoard.instantiateViewController(withIdentifier: "ActivitiesViewController")
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func onDreamClick(ID:String){
+    func onDreamClick(_ ID:String){
         if ID != "0" && ID != "" {
             let vc = DreamViewController()
             vc.Id = ID
@@ -401,7 +412,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
     }
     
-    func onDreamLikeClick(sender:UIGestureRecognizer){
+    func onDreamLikeClick(_ sender:UIGestureRecognizer){
         let tag = sender.view!.tag
         let LikeVC = LikeViewController()
         LikeVC.Id = "\(tag)"
@@ -415,7 +426,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         if NianDreams != nil {
             let mutableArrayLocal = NSMutableArray()
             for data: AnyObject in NianDreams! {
-                mutableArrayLocal.addObject(data)
+                mutableArrayLocal.add(data)
             }
             self.dataArray = mutableArrayLocal
             reloadFromDataArray()
@@ -425,17 +436,17 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func load(){
         loadFromLocal()
         
-        activity.hidden = false
+        activity.isHidden = false
         activity.startAnimating()
         
         // 从服务器加载记本数据
         Api.getNian() { json in
             if json != nil {
-                self.activity.hidden = true
-                let error = json!.objectForKey("error") as! NSNumber
+                self.activity.isHidden = true
+                let error = json!.object(forKey: "error") as! NSNumber
                 if error == 0 {
-                    let d = json!.objectForKey("data") as! NSDictionary
-                    let arr = d.objectForKey("dreams") as! NSArray
+                    let d = json!.object(forKey: "data") as! NSDictionary
+                    let arr = d.object(forKey: "dreams") as! NSArray
                     
                     let mutableArray = NSMutableArray()
                     
@@ -444,7 +455,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                     
                     // 创建远程记本数组，以及记本的编号数组
                     for data: AnyObject  in arr {
-                        mutableArray.addObject(data)
+                        mutableArray.add(data)
                         let d = data as! NSDictionary
                         if let id = Int(d.stringAttributeForKey("id")) {
                             idArrayRemote.append(id)
@@ -478,7 +489,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                                 if let data = _data as? NSDictionary {
                                     let newId = data.stringAttributeForKey("id")
                                     if newId == "\(id)" {
-                                        newArr.addObject(data)
+                                        newArr.add(data)
                                         break
                                     }
                                 }
@@ -496,33 +507,33 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func reloadFromDataArray() {
         self.collectionView.reloadData()
         let height = ceil(CGFloat(self.dataArray.count) / 3) * 125
-        self.collectionView.frame = CGRectMake(globalWidth/2 - 140, 320 + 55, 280, height)
+        self.collectionView.frame = CGRect(x: globalWidth/2 - 140, y: 320 + 55, width: 280, height: height)
         let heightContentSize = globalHeight - 49 > 640 ? globalHeight - 49 : 640
         self.scrollView.contentSize.height = heightContentSize > height + 375 + 45 ? heightContentSize : height + 375 + 45
         self.collectionView.contentSize.height = height
         if self.dataArray.count == 0 {
-            self.viewHeader.hidden = false
+            self.viewHeader.isHidden = false
         }else{
-            self.viewHeader.hidden = true
+            self.viewHeader.isHidden = true
         }
     }
     
-    func onShare(avc: UIActivityViewController) {
-        self.presentViewController(avc, animated: true, completion: nil)
+    func onShare(_ avc: UIActivityViewController) {
+        self.present(avc, animated: true, completion: nil)
     }
     
-    func saegg(coin: String, totalCoin: String) {
+    func saegg(_ coin: String, totalCoin: String) {
         /* 如果念币小于 3 */
         if Int(totalCoin) <  3 {
             let ni = NIAlert()
             ni.delegate = self
-            ni.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]], forKeys: ["img", "title", "content", "buttonArray"])
+            ni.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "你获得了念币奖励", ["好"]], forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
             ni.showWithAnimation(.flip)
         } else {
             /* 如果念币多于 3，就出现宠物 */
             let v = SAEgg()
             v.delegateShare = self
-            v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", ["嗯！", "不要"]], forKeys: ["img", "title", "content", "buttonArray"])
+            v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "获得 \(coin) 念币", "要以 3 念币抽一次\n宠物吗？", ["嗯！", "不要"]], forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
             v.showWithAnimation(.flip)
         }
         
@@ -531,7 +542,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
 
 
 extension NianViewController: NewSettingDelegate {
-    func setting(name name: String?, cover: UIImage?, avatar: UIImage?) {
+    func setting(name: String?, cover: UIImage?, avatar: UIImage?) {
         if let _name = name {
             self.UserName.text = _name
         }

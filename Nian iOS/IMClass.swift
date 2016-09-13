@@ -12,7 +12,7 @@ class IMClass: AnyObject {
     /* 连接 IM 服务器 */
     class func IMConnect() {
         if let token = Cookies.get("token") as? String {
-            RCIMClient.sharedRCIMClient().connectWithToken(token, success: { (string) -> Void in
+            RCIMClient.shared().connect(withToken: token, success: { (string) -> Void in
                 /* 登录成功 */
                 }, error: { (err) -> Void in
                     /* 登录失败 */
@@ -25,7 +25,7 @@ class IMClass: AnyObject {
                     if let j = json as? NSDictionary {
                         let token = j.stringAttributeForKey("data")
                         Cookies.set(token, forKey: "token")
-                        RCIMClient.sharedRCIMClient().connectWithToken(token, success: { (string) -> Void in
+                        RCIMClient.shared().connect(withToken: token, success: { (string) -> Void in
                             /* 登录成功 */
                             }, error: { (err) -> Void in
                                 /* 登录失败 */
@@ -39,11 +39,11 @@ class IMClass: AnyObject {
     }
     
     /* 将 RCMessage 解析为梦境支持的字典 */
-    func messageToDictionay(message: RCMessage) -> NSDictionary {
+    func messageToDictionay(_ message: RCMessage) -> NSDictionary {
         if let text = message.content as? RCTextMessage {
             let time = ("\(message.sentTime / 1000)" as NSString).doubleValue
             let lastdate = V.absoluteTime(time)
-            let extra = text.extra.componentsSeparatedByString(":")
+            let extra = text.extra.components(separatedBy: ":")
             let messageid = "\(message.messageId)"
             let senderUserid = message.senderUserId
             
@@ -53,7 +53,7 @@ class IMClass: AnyObject {
         } else if let text = message.content as? RCImageMessage {
             let time = ("\(message.sentTime / 1000)" as NSString).doubleValue
             let lastdate = V.absoluteTime(time)
-            let extra = text.extra.componentsSeparatedByString(":")
+            let extra = text.extra.components(separatedBy: ":")
             let messageid = "\(message.messageId)"
             let senderUserid = message.senderUserId
             

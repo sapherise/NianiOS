@@ -12,19 +12,19 @@ import SpriteKit
 class GameScene: SKScene {
     func setupViews() {
         let star = StarEmitter.emitternode()
-        star.particlePosition = CGPointMake(self.frame.width/2, 0)
+        star.particlePosition = CGPoint(x: self.frame.width/2, y: 0)
         self.addChild(star)
     }
 }
 
 extension SKNode {
-    class func unarchiveFromFile(file : String) -> SKNode? {
-        if let path = NSBundle.mainBundle().pathForResource(file, ofType: "sks") {
-            let sceneData = try! NSData(contentsOfFile: path, options: .DataReadingMappedIfSafe)
-            let archiver = NSKeyedUnarchiver(forReadingWithData: sceneData)
+    class func unarchiveFromFile(_ file : String) -> SKNode? {
+        if let path = Bundle.main.path(forResource: file, ofType: "sks") {
+            let sceneData = try! Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+            let archiver = NSKeyedUnarchiver(forReadingWith: sceneData)
             
             archiver.setClass(self.classForKeyedUnarchiver(), forClassName: "SKScene")
-            let scene = archiver.decodeObjectForKey(NSKeyedArchiveRootObjectKey) as! GameScene
+            let scene = archiver.decodeObject(forKey: NSKeyedArchiveRootObjectKey) as! GameScene
             archiver.finishDecoding()
             return scene
         } else {
@@ -35,7 +35,7 @@ extension SKNode {
 
 class StarEmitter: SKEmitterNode {
     class func emitternode() -> SKEmitterNode {
-        let untypedEmitter : AnyObject = NSKeyedUnarchiver.unarchiveObjectWithFile(NSBundle.mainBundle().pathForResource("star", ofType: "sks")!)!;
+        let untypedEmitter : AnyObject = NSKeyedUnarchiver.unarchiveObject(withFile: Bundle.main.path(forResource: "star", ofType: "sks")!)! as AnyObject;
         return untypedEmitter as! SKEmitterNode
     }
 }

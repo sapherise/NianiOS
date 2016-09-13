@@ -12,7 +12,7 @@ import AssetsLibrary
 
 //MARK:唯类协议
 protocol LSYAlbumCatalogDelegate:class {
-    func AlbumDidFinishPick(assets:NSArray)->Void
+    func AlbumDidFinishPick(_ assets:NSArray)->Void
 }
 @objc class LSYAlbumCatalog:SAViewController {
     let kAlbumCatalogCellIdentifer:String = "albumCatalogCellIdentifer"
@@ -29,7 +29,7 @@ protocol LSYAlbumCatalogDelegate:class {
     }
     weak var delegate: LSYAlbumCatalogDelegate!
     var dataArray:NSMutableArray!
-    private var albumTabView:UITableView!{
+    fileprivate var albumTabView:UITableView!{
         didSet{
             albumTabView.delegate = self
             albumTabView.dataSource = self
@@ -38,10 +38,10 @@ protocol LSYAlbumCatalogDelegate:class {
             self.view.addSubview(albumTabView)
         }
     }
-    private func setup(){
+    fileprivate func setup(){
         _setTitle("所有照片")
         self.dataArray = NSMutableArray()
-        self.albumTabView = UITableView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64))
+        self.albumTabView = UITableView(frame: CGRect(x: 0, y: 64, width: globalWidth, height: globalHeight - 64))
     }
     
     override func viewDidLoad() {

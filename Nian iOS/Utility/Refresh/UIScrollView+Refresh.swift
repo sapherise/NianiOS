@@ -10,12 +10,12 @@ import UIKit
 
 extension UIScrollView {
     
-    func addHeaderWithCallback( callback:(() -> Void)!) {
+    func addHeaderWithCallback( _ callback:(() -> Void)!) {
         let header:RefreshHeaderView = RefreshHeaderView.footer()
         header.setWidth(self.width())
         self.addSubview(header)
         header.beginRefreshingCallback = callback
-        header.addState(RefreshState.Normal)
+        header.addState(RefreshState.normal)
     }
     
     func removeHeader() {
@@ -38,7 +38,7 @@ extension UIScrollView {
     }
     
     
-    func headerEndRefreshing(animated: Bool = true) {
+    func headerEndRefreshing(_ animated: Bool = true) {
         for object : AnyObject in self.subviews{
             if object is RefreshHeaderView{
                 (object as! RefreshHeaderView).endRefreshing(animated)
@@ -47,11 +47,11 @@ extension UIScrollView {
         
     }
     
-    func setHeaderHidden(hidden:Bool) {
+    func setHeaderHidden(_ hidden:Bool) {
         for object : AnyObject in self.subviews{
             if object is RefreshHeaderView{
                 let view:UIView  = object as! UIView
-                view.hidden = hidden
+                view.isHidden = hidden
             }
         }
         
@@ -61,18 +61,18 @@ extension UIScrollView {
         for object : AnyObject in self.subviews{
             if object is RefreshHeaderView{
                 let view:UIView  = object as! UIView
-                return view.hidden
+                return view.isHidden
             }
         }
         return true
     }
     
-    func addFooterWithCallback( callback:(() -> Void)!) {
+    func addFooterWithCallback( _ callback:(() -> Void)!) {
         let footer:RefreshFooterView = RefreshFooterView.footer()
         footer.setWidth(self.width())
         self.addSubview(footer)
         footer.beginRefreshingCallback = callback
-        footer.addState(RefreshState.Normal)
+        footer.addState(RefreshState.normal)
     }
     
     
@@ -97,7 +97,7 @@ extension UIScrollView {
     }
     
     
-    func footerEndRefreshing(animated: Bool = true)
+    func footerEndRefreshing(_ animated: Bool = true)
     {
         for object : AnyObject in self.subviews{
             if object is RefreshFooterView{
@@ -107,12 +107,12 @@ extension UIScrollView {
         
     }
     
-    func setFooterHidden(hidden:Bool)
+    func setFooterHidden(_ hidden:Bool)
     {
         for object : AnyObject in self.subviews{
             if object is RefreshFooterView{
                 let view:UIView  = object as! UIView
-                view.hidden = hidden
+                view.isHidden = hidden
             }
         }
         
@@ -122,7 +122,7 @@ extension UIScrollView {
         for object : AnyObject in self.subviews{
             if object is RefreshFooterView{
                 let view:UIView  = object as! UIView
-                return view.hidden
+                return view.isHidden
             }
         }
         return true

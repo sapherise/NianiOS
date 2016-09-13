@@ -13,26 +13,26 @@ import AssetsLibrary
 //MARK:UITableViewDataSource,UITableViewDelegate
 extension LSYAlbumCatalog:UITableViewDataSource,UITableViewDelegate{
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1;
     }
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         return self.dataArray.count
     }
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: LSYAlbumCatalogCell! = tableView.dequeueReusableCellWithIdentifier(self.kAlbumCatalogCellIdentifer) as? LSYAlbumCatalogCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell: LSYAlbumCatalogCell! = tableView.dequeueReusableCell(withIdentifier: self.kAlbumCatalogCellIdentifer) as? LSYAlbumCatalogCell
         if cell == nil {
-            cell = LSYAlbumCatalogCell(style: UITableViewCellStyle.Value1, reuseIdentifier: self.kAlbumCatalogCellIdentifer)
-            cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+            cell = LSYAlbumCatalogCell(style: UITableViewCellStyle.value1, reuseIdentifier: self.kAlbumCatalogCellIdentifer)
+            cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
         }
-        cell.group = self.dataArray[indexPath.row] as? ALAssetsGroup
+        cell.group = self.dataArray[(indexPath as NSIndexPath).row] as? ALAssetsGroup
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let albumPicker: LSYAlbumPicker! = LSYAlbumPicker()
-        albumPicker.group = self.dataArray[indexPath.row] as! ALAssetsGroup
+        albumPicker.group = self.dataArray[(indexPath as NSIndexPath).row] as! ALAssetsGroup
         albumPicker.delegate = self
         albumPicker.maxminumNumber = self.maximumNumberOfSelectionPhoto
         self.navigationController?.pushViewController(albumPicker, animated: true)
@@ -41,7 +41,7 @@ extension LSYAlbumCatalog:UITableViewDataSource,UITableViewDelegate{
 //MARK:LSYAlbumPickerDelegate
 extension LSYAlbumCatalog:LSYAlbumPickerDelegate
 {
-    func AlbumPickerDidFinishPick(assets: NSArray) {
+    func AlbumPickerDidFinishPick(_ assets: NSArray) {
         if self.delegate != nil {
             self.delegate.AlbumDidFinishPick(assets)
         }
@@ -50,16 +50,16 @@ extension LSYAlbumCatalog:LSYAlbumPickerDelegate
 //MARK:- LSYAlbumPicker
 //MARK:UICollectionViewDelegate,UICollectionViewDataSource
 extension LSYAlbumPicker:UICollectionViewDelegate,UICollectionViewDataSource{
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.albumAssets.count
     }
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell: LSYAlbumPickerCell! = collectionView.dequeueReusableCellWithReuseIdentifier(albumPickerCellIdentifer, forIndexPath: indexPath) as? LSYAlbumPickerCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: LSYAlbumPickerCell! = collectionView.dequeueReusableCell(withReuseIdentifier: albumPickerCellIdentifer, for: indexPath) as? LSYAlbumPickerCell
         
-        let model: LSYAlbumModel! = self.albumAssets[indexPath.row] as? LSYAlbumModel
+        let model: LSYAlbumModel! = self.albumAssets[(indexPath as NSIndexPath).row] as? LSYAlbumModel
         model.indexPath = indexPath
         cell.model = model
         cell.padding = padding
@@ -67,30 +67,30 @@ extension LSYAlbumPicker:UICollectionViewDelegate,UICollectionViewDataSource{
         cell.setupIsSelect()
         return cell
     }
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let model: LSYAlbumModel! = self.albumAssets[indexPath.row] as? LSYAlbumModel
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let model: LSYAlbumModel! = self.albumAssets[(indexPath as NSIndexPath).row] as? LSYAlbumModel
         model.isSelect = !model.isSelect
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! LSYAlbumPickerCell
+        let cell = collectionView.cellForItem(at: indexPath) as! LSYAlbumPickerCell
         cell.setupIsSelect()
-        selectedArray.append(indexPath.row)
+        selectedArray.append((indexPath as NSIndexPath).row)
     }
-    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
-        let model: LSYAlbumModel! = self.albumAssets[indexPath.row] as? LSYAlbumModel
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let model: LSYAlbumModel! = self.albumAssets[(indexPath as NSIndexPath).row] as? LSYAlbumModel
         model.isSelect = !model.isSelect
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! LSYAlbumPickerCell
+        let cell = collectionView.cellForItem(at: indexPath) as! LSYAlbumPickerCell
         cell.setupIsSelect()
         if selectedArray.count > 0 {
             for i in 0...(selectedArray.count - 1) {
-                if selectedArray[i] == indexPath.row {
-                    selectedArray.removeAtIndex(i)
+                if selectedArray[i] == (indexPath as NSIndexPath).row {
+                    selectedArray.remove(at: i)
                     break
                 }
             }
         }
 //        collectionView.reloadData()
     }
-    func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if !(self.maxminumNumber > collectionView.indexPathsForSelectedItems()!.count){
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        if !(self.maxminumNumber > collectionView.indexPathsForSelectedItems!.count){
             self.showTipText("最多只能 9 张...", delayTime: 1)
             return false
         }

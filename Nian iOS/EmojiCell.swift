@@ -16,7 +16,7 @@ class EmojiCell: UITableViewCell {
     var isClicked = false
     
     func setup() {
-        self.selectionStyle = .None
+        self.selectionStyle = .none
         let code = data.stringAttributeForKey("code")
         let isClicked = data.stringAttributeForKey("isClicked")
         imageHead.setImageIgnore("http://img.nian.so/emoji/\(code)/thumb.png")

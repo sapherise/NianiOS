@@ -24,17 +24,17 @@ class ExploreNewHotCell: UITableViewCell {
     @IBOutlet var labelFollow: UILabel!
     
     var data :NSDictionary!
-    var indexPath: NSIndexPath?
+    var indexPath: IndexPath?
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.selectionStyle = .None
+        self.selectionStyle = .none
         self.setWidth(globalWidth)
         self.labelTag.setX(globalWidth - labelFollow.width() - 16)
         self.viewLine.setWidth(globalWidth - 32)
         self.viewHolder.setX(globalWidth/2-160)
         viewLine.setHeight(globalHalf)
-        labelFollow.hidden = true
+        labelFollow.isHidden = true
     }
     
     func _layoutSubviews() {
@@ -45,15 +45,15 @@ class ExploreNewHotCell: UITableViewCell {
             let content = self.data.stringAttributeForKey("content")
             let steps = self.data.stringAttributeForKey("steps")
             
-            if let row = indexPath?.row {
+            if let row = (indexPath as NSIndexPath?)?.row {
                 self.labelTag.text = "#\(row + 1)"
             }
             
             self.labelTag.setRadius(4, isTop: false)
             self.labelFollow.setRadius(4, isTop: false)
             
-            let heightTitle = data.objectForKey("heightTitle") as! CGFloat
-            let heightContent = data.objectForKey("heightContent") as! CGFloat
+            let heightTitle = data.object(forKey: "heightTitle") as! CGFloat
+            let heightContent = data.object(forKey: "heightContent") as! CGFloat
             
             self.labelTitle.text = title
             self.labelContent.text = content
@@ -76,7 +76,7 @@ class ExploreNewHotCell: UITableViewCell {
                 self.imageHead.setImage("http://img.nian.so/dream/\(img)!dream")
             } else {
                 self.imageHead.image = UIImage(named: "drop")
-                self.imageHead.contentMode = .Center
+                self.imageHead.contentMode = .center
                 self.imageHead.backgroundColor = UIColor.GreyColor1()
             }
             self.viewLine.setY(self.viewLeft.bottom() + 32)
@@ -86,12 +86,12 @@ class ExploreNewHotCell: UITableViewCell {
     }
     
     func onFollow() {
-        labelFollow.hidden = true
+        labelFollow.isHidden = true
         let id = data.stringAttributeForKey("id")
         Api.getFollowDream(id) { json in }
     }
     
-    class func cellHeight(data: NSDictionary) -> NSArray {
+    class func cellHeight(_ data: NSDictionary) -> NSArray {
         let content = data.stringAttributeForKey("content").decode()
         let title = data.stringAttributeForKey("title").decode()
         let hTitle = title.stringHeightBoldWith(18, width: 248)

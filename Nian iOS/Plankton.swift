@@ -29,13 +29,13 @@ class Plankton: SAViewController, UICollectionViewDelegate, UICollectionViewData
         flowLayout.itemSize = CGSize(width: width, height: width)
         flowLayout.sectionInset = UIEdgeInsets(top: paddingView, left: paddingView, bottom: paddingView, right: paddingView)
         
-        collectionView = UICollectionView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64), collectionViewLayout: flowLayout)
+        collectionView = UICollectionView(frame: CGRect(x: 0, y: 64, width: globalWidth, height: globalHeight - 64), collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.backgroundColor = UIColor.whiteColor()
+        collectionView.backgroundColor = UIColor.white
         collectionView.delegate = self
         collectionView.dataSource = self
         self.view.addSubview(collectionView)
-        self.collectionView.registerNib(UINib(nibName: "PlanktonCell", bundle: nil), forCellWithReuseIdentifier: "PlanktonCell")
+        self.collectionView.register(UINib(nibName: "PlanktonCell", bundle: nil), forCellWithReuseIdentifier: "PlanktonCell")
         if let _total = Cookies.get("plankton") as? String {
             let _t = Int(_total)
             if _t != nil {
@@ -48,28 +48,28 @@ class Plankton: SAViewController, UICollectionViewDelegate, UICollectionViewData
         }
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let c = collectionView.dequeueReusableCellWithReuseIdentifier("PlanktonCell", forIndexPath: indexPath) as! PlanktonCell
-        c.imageView.image = UIImage(named: "pet\(indexPath.row + 1)")
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let c = collectionView.dequeueReusableCell(withReuseIdentifier: "PlanktonCell", for: indexPath) as! PlanktonCell
+        c.imageView.image = UIImage(named: "pet\((indexPath as NSIndexPath).row + 1)")
         return c
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return total
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         nialert = NIAlert()
         nialert.delegate = self
-        nialert.dict = NSMutableDictionary(objects: [UIImage(named: "pet\(indexPath.row + 1)")!, "浮游生物", contentArray[indexPath.row], [" 好"]], forKeys: ["img", "title", "content", "buttonArray"])
+        nialert.dict = NSMutableDictionary(objects: [UIImage(named: "pet\((indexPath as NSIndexPath).row + 1)")!, "浮游生物", contentArray[(indexPath as NSIndexPath).row], [" 好"]], forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
         nialert.showWithAnimation(.flip)
     }
     
-    func niAlert(niAlert: NIAlert, tapBackground: Bool) {
+    func niAlert(_ niAlert: NIAlert, tapBackground: Bool) {
         nialert.dismissWithAnimation(.normal)
     }
     
-    func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
+    func niAlert(_ niAlert: NIAlert, didselectAtIndex: Int) {
         nialert.dismissWithAnimation(.normal)
     }
 }

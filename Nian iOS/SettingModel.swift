@@ -28,37 +28,40 @@ class SettingModel: NSObject {
     /**
      获得用户的设置，如是否日更，和账号的一些信息，如手机号、性别等。
      */
-    class func getUserInfoAndSetting(callback: NetworkClosure) {
-        NianNetworkClient.sharedNianNetworkClient.get(
-            "user/\(CurrentUser.sharedCurrentUser.uid!)?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
-                                                callback: callback)
-    }
+    // todo
+//    class func getUserInfoAndSetting(_ callback: @escaping NetworkClosure) {
+//        NianNetworkClient.sharedNianNetworkClient.get(
+//            "user/\(CurrentUser.sharedCurrentUser.uid!)?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
+//                                                callback: callback)
+//    }
     
     /**
      获得用户第三方账号绑定情况
      */
-    class func getUserAllOauth(callback: NetworkClosure) {
-        NianNetworkClient.sharedNianNetworkClient.get(
-            "oauth/all?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
-                                                callback: callback)
-    }
+    // todo
+//    class func getUserAllOauth(_ callback: @escaping NetworkClosure) {
+//        NianNetworkClient.sharedNianNetworkClient.get(
+//            "oauth/all?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
+//                                                callback: callback)
+//    }
     
     /**
      绑定第三方账号
      */
-    class func bindThirdAccount(id: String, nameFrom3rd: String, type: String, callback: NetworkClosure) {
-        NianNetworkClient.sharedNianNetworkClient.post("oauth/auth/binding?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
-                                                content: ["nickname": "\(nameFrom3rd)", "auth_id": "\(id)", "type": "\(type)"],
-                                                callback: callback)
-        
-        
-        
-    }
+    // todo
+//    class func bindThirdAccount(_ id: String, nameFrom3rd: String, type: String, callback: NetworkClosure) {
+//        NianNetworkClient.sharedNianNetworkClient.post("oauth/auth/binding?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
+//                                                content: ["nickname": "\(nameFrom3rd)", "auth_id": "\(id)", "type": "\(type)"],
+//                                                callback: callback)
+//        
+//        
+//        
+//    }
     
     /**
      解除第三方账号绑定
      */
-    class func relieveThirdAccount(type: String, callback: NetworkClosure) {
+    class func relieveThirdAccount(_ type: String, callback: @escaping NetworkClosure) {
         NianNetworkClient.sharedNianNetworkClient.get(
             "oauth/remove?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)&&type=\(type)",
                                                 callback: callback)
@@ -67,29 +70,31 @@ class SettingModel: NSObject {
     /**
      更改封面
      */
-    class func changeCoverImage(coverURL coverURL: String, callback: NetworkClosure) {
-        NianNetworkClient.sharedNianNetworkClient.post(
-            "user/\(CurrentUser.sharedCurrentUser.uid!)/cover/edit?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
-                                                content: ["cover": coverURL],
-                                                callback: callback)
-    }
+    // todo
+//    class func changeCoverImage(coverURL: String, callback: NetworkClosure) {
+//        NianNetworkClient.sharedNianNetworkClient.post(
+//            "user/\(CurrentUser.sharedCurrentUser.uid!)/cover/edit?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
+//                                                content: ["cover": coverURL],
+//                                                callback: callback)
+//    }
     
     /**
      已登录用户绑定邮箱
      */
-    class func bindEmail(email: String, password: String, callback: NetworkClosure) {
-        NianNetworkClient.sharedNianNetworkClient.post(
-            "/oauth/email/binding?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
-            content: ["email": email, "password": password],
-            callback: callback)
-        
-        
-    }
+    // todo
+//    class func bindEmail(_ email: String, password: String, callback: NetworkClosure) {
+//        NianNetworkClient.sharedNianNetworkClient.post(
+//            "/oauth/email/binding?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
+//            content: ["email": email, "password": password],
+//            callback: callback)
+//        
+//        
+//    }
     
     /**
      更新账号信息和设置 
      */
-    class func updateUserInfo(settingInfo: Dictionary<String, String>, callback: NetworkClosure) {
+    class func updateUserInfo(_ settingInfo: Dictionary<String, String>, callback: @escaping NetworkClosure) {
 //<<<<<<< HEAD
 //        NianNetworkClient.sharedNianNetworkClient.put(
 //            "user/\(CurrentUser.sharedCurrentUser.uid!)?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
@@ -98,7 +103,7 @@ class SettingModel: NSObject {
         NianNetworkClient.sharedNianNetworkClient.post(
             "user/\(CurrentUser.sharedCurrentUser.uid!)/edit?uid=\(CurrentUser.sharedCurrentUser.uid!)&&shell=\(CurrentUser.sharedCurrentUser.shell!)",
 //>>>>>>> 72ec8c7377531596c27e76bc416a5ef32d175025
-            content: settingInfo,
+            content: settingInfo as AnyObject,
             callback: callback)
     
     }

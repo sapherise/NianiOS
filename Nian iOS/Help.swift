@@ -13,7 +13,7 @@ class HelpViewController: UIViewController {
     var navView:UIView!
     
     func setupViews(){
-        self.navView = UIView(frame: CGRectMake(0, 0, globalWidth, 64))
+        self.navView = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: 64))
         self.navView.backgroundColor = UIColor.NavColor()
         self.view.addSubview(self.navView)
         self.view.backgroundColor = BGColor
@@ -37,101 +37,101 @@ class HelpViewController: UIViewController {
         let contentstring6 = "管理员不爱喝咖啡。"
         
         
-        let scrollView = UIScrollView(frame: CGRectMake(0, 64, globalWidth, globalHeight - 64))
-        scrollView.contentSize = CGSizeMake(globalWidth, 1050)
+        let scrollView = UIScrollView(frame: CGRect(x: 0, y: 64, width: globalWidth, height: globalHeight - 64))
+        scrollView.contentSize = CGSize(width: globalWidth, height: 1050)
         
-        let title1 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
+        let title1 = UILabel(frame: CGRect(x: 40, y: 40, width: globalWidth - 80, height: 0))
         title1.text = titlestring1
         title1.numberOfLines = 0
-        title1.font = UIFont.systemFontOfSize(14)
+        title1.font = UIFont.systemFont(ofSize: 14)
         title1.textColor = UIColor.HighlightColor()
         title1.setHeight(titlestring1.stringHeightWith(14, width: globalWidth - 80))
         
-        let content1 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
+        let content1 = UILabel(frame: CGRect(x: 40, y: 40, width: globalWidth - 80, height: 0))
         content1.text = contentstring1
         content1.numberOfLines = 0
-        content1.font = UIFont.systemFontOfSize(14)
-        content1.textColor = UIColor.blackColor()
+        content1.font = UIFont.systemFont(ofSize: 14)
+        content1.textColor = UIColor.black
         content1.setHeight(contentstring1.stringHeightWith(14, width: globalWidth - 80))
         content1.setY(title1.bottom()+10)
         
-        let title2 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
+        let title2 = UILabel(frame: CGRect(x: 40, y: 40, width: globalWidth - 80, height: 0))
         title2.text = titlestring2
         title2.numberOfLines = 0
-        title2.font = UIFont.systemFontOfSize(14)
+        title2.font = UIFont.systemFont(ofSize: 14)
         title2.textColor = UIColor.HighlightColor()
         title2.setHeight(titlestring2.stringHeightWith(14, width: globalWidth - 80))
         title2.setY(content1.bottom()+20)
         
-        let content2 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
+        let content2 = UILabel(frame: CGRect(x: 40, y: 40, width: globalWidth - 80, height: 0))
         content2.text = contentstring2
         content2.numberOfLines = 0
-        content2.font = UIFont.systemFontOfSize(14)
-        content2.textColor = UIColor.blackColor()
+        content2.font = UIFont.systemFont(ofSize: 14)
+        content2.textColor = UIColor.black
         content2.setHeight(contentstring2.stringHeightWith(14, width: globalWidth - 80))
         content2.setY(title2.bottom()+10)
         
-        let title3 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
+        let title3 = UILabel(frame: CGRect(x: 40, y: 40, width: globalWidth - 80, height: 0))
         title3.text = titlestring3
         title3.numberOfLines = 0
-        title3.font = UIFont.systemFontOfSize(14)
+        title3.font = UIFont.systemFont(ofSize: 14)
         title3.textColor = UIColor.HighlightColor()
         title3.setHeight(titlestring3.stringHeightWith(14, width: globalWidth - 80))
         title3.setY(content2.bottom()+20)
         
-        let content3 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
+        let content3 = UILabel(frame: CGRect(x: 40, y: 40, width: globalWidth - 80, height: 0))
         content3.text = contentstring3
         content3.numberOfLines = 0
-        content3.font = UIFont.systemFontOfSize(14)
-        content3.textColor = UIColor.blackColor()
+        content3.font = UIFont.systemFont(ofSize: 14)
+        content3.textColor = UIColor.black
         content3.setHeight(contentstring3.stringHeightWith(14, width: globalWidth - 80))
         content3.setY(title3.bottom()+10)
         
-        let title4 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
+        let title4 = UILabel(frame: CGRect(x: 40, y: 40, width: globalWidth - 80, height: 0))
         title4.text = titlestring4
         title4.numberOfLines = 0
-        title4.font = UIFont.systemFontOfSize(14)
+        title4.font = UIFont.systemFont(ofSize: 14)
         title4.textColor = UIColor.HighlightColor()
         title4.setHeight(titlestring4.stringHeightWith(14, width: globalWidth - 80))
         title4.setY(content3.bottom()+20)
         
-        let content4 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
+        let content4 = UILabel(frame: CGRect(x: 40, y: 40, width: globalWidth - 80, height: 0))
         content4.text = contentstring4
         content4.numberOfLines = 0
-        content4.font = UIFont.systemFontOfSize(14)
-        content4.textColor = UIColor.blackColor()
+        content4.font = UIFont.systemFont(ofSize: 14)
+        content4.textColor = UIColor.black
         content4.setHeight(contentstring4.stringHeightWith(14, width: globalWidth - 80))
         content4.setY(title4.bottom()+10)
         
-        let title5 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
+        let title5 = UILabel(frame: CGRect(x: 40, y: 40, width: globalWidth - 80, height: 0))
         title5.text = titlestring5
         title5.numberOfLines = 0
-        title5.font = UIFont.systemFontOfSize(14)
+        title5.font = UIFont.systemFont(ofSize: 14)
         title5.textColor = UIColor.HighlightColor()
         title5.setHeight(titlestring5.stringHeightWith(14, width: globalWidth - 80))
         title5.setY(content4.bottom()+20)
         
-        let content5 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
+        let content5 = UILabel(frame: CGRect(x: 40, y: 40, width: globalWidth - 80, height: 0))
         content5.text = contentstring5
         content5.numberOfLines = 0
-        content5.font = UIFont.systemFontOfSize(14)
-        content5.textColor = UIColor.blackColor()
+        content5.font = UIFont.systemFont(ofSize: 14)
+        content5.textColor = UIColor.black
         content5.setHeight(contentstring5.stringHeightWith(14, width: globalWidth - 80))
         content5.setY(title5.bottom()+10)
         
-        let title6 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
+        let title6 = UILabel(frame: CGRect(x: 40, y: 40, width: globalWidth - 80, height: 0))
         title6.text = titlestring6
         title6.numberOfLines = 0
-        title6.font = UIFont.systemFontOfSize(14)
+        title6.font = UIFont.systemFont(ofSize: 14)
         title6.textColor = UIColor.HighlightColor()
         title6.setHeight(titlestring6.stringHeightWith(14, width: globalWidth - 80))
         title6.setY(content5.bottom()+20)
         
-        let content6 = UILabel(frame: CGRectMake(40, 40, globalWidth - 80, 0))
+        let content6 = UILabel(frame: CGRect(x: 40, y: 40, width: globalWidth - 80, height: 0))
         content6.text = contentstring6
         content6.numberOfLines = 0
-        content6.font = UIFont.systemFontOfSize(14)
-        content6.textColor = UIColor.blackColor()
+        content6.font = UIFont.systemFont(ofSize: 14)
+        content6.textColor = UIColor.black
         content6.setHeight(contentstring6.stringHeightWith(14, width: globalWidth - 80))
         content6.setY(title6.bottom()+10)
         
@@ -151,10 +151,10 @@ class HelpViewController: UIViewController {
         self.view.addSubview(scrollView)
         
         
-        let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
-        titleLabel.textColor = UIColor.whiteColor()
+        let titleLabel:UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 40))
+        titleLabel.textColor = UIColor.white
         titleLabel.text = "攻略"
-        titleLabel.textAlignment = NSTextAlignment.Center
+        titleLabel.textAlignment = NSTextAlignment.center
         self.navigationItem.titleView = titleLabel
         
         self.viewBack()

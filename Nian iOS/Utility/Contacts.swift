@@ -34,13 +34,13 @@ class ContactsHelper {
     func determineStatus() -> Bool {
         let status = ABAddressBookGetAuthorizationStatus()
         switch status {
-        case .Authorized:
+        case .authorized:
             return self.createAddressBook()
-        case .NotDetermined:
+        case .notDetermined:
             var ok = false
             ABAddressBookRequestAccessWithCompletion(nil) {
                 (granted:Bool, err:CFError!) in
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     if granted {
                         ok = self.createAddressBook()
                     }
@@ -51,10 +51,10 @@ class ContactsHelper {
             }
             self.adbk = nil
             return false
-        case .Restricted:
+        case .restricted:
             self.adbk = nil
             return false
-        case .Denied:
+        case .denied:
             self.adbk = nil
             return false
         }
@@ -64,14 +64,14 @@ class ContactsHelper {
         var list = [String]()
         let people = ABAddressBookCopyArrayOfAllPeople(adbk).takeRetainedValue() as NSArray
         for person in people {
-            let phone: ABMultiValueRef = ABRecordCopyValue(person, kABPersonPhoneProperty)?.takeRetainedValue() as ABMultiValueRef? ?? ""
+            let phone: ABMultiValue = ABRecordCopyValue(person as ABRecord!, kABPersonPhoneProperty)?.takeRetainedValue() as ABMultiValue? ?? "" as ABMultiValue
             var phoneNumber: NSString? = ABMultiValueCopyValueAtIndex(phone, 0)?.takeRetainedValue() as? NSString
             if phoneNumber != nil {
-                phoneNumber = phoneNumber?.stringByReplacingOccurrencesOfString("-", withString: "")
-                phoneNumber = phoneNumber?.stringByReplacingOccurrencesOfString(" ", withString: "")
-                phoneNumber = phoneNumber?.stringByReplacingOccurrencesOfString("*", withString: "")
-                phoneNumber = phoneNumber?.stringByReplacingOccurrencesOfString("+86", withString: "")
-                phoneNumber = phoneNumber?.stringByReplacingOccurrencesOfString("+", withString: "")
+                phoneNumber = phoneNumber?.replacingOccurrences(of: "-", with: "") as NSString?
+                phoneNumber = phoneNumber?.replacingOccurrences(of: " ", with: "") as NSString?
+                phoneNumber = phoneNumber?.replacingOccurrences(of: "*", with: "") as NSString?
+                phoneNumber = phoneNumber?.replacingOccurrences(of: "+86", with: "") as NSString?
+                phoneNumber = phoneNumber?.replacingOccurrences(of: "+", with: "") as NSString?
                 list.append(phoneNumber! as String)
             }
         }

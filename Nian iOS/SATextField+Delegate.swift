@@ -11,7 +11,7 @@ import UIKit
 
 extension InputView {
     /* 提交回应 */
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             let content = textView.text
             if content == "" {
@@ -27,49 +27,49 @@ extension InputView {
     }
     
     /* 改变文本时，调整整个视图 */
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         let h = resize()
         resizeView(h)
         if textView.text == "" {
-            labelPlaceHolder.hidden = false
+            labelPlaceHolder.isHidden = false
         } else {
-            labelPlaceHolder.hidden = true
+            labelPlaceHolder.isHidden = true
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let c: EmojiCell! = tableView.dequeueReusableCellWithIdentifier("EmojiCell", forIndexPath: indexPath) as? EmojiCell
-        c.data = dataArray[indexPath.row] as! NSDictionary
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let c: EmojiCell! = tableView.dequeueReusableCell(withIdentifier: "EmojiCell", for: indexPath) as? EmojiCell
+        c.data = dataArray[(indexPath as NSIndexPath).row] as! NSDictionary
         c.setup()
-        c.contentView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2))
+        c.contentView.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI/2))
         return c
     }
     
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataArray.count
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if dataArray.count > 0 {
             for i in 0...(dataArray.count - 1) {
-                current = indexPath.row
+                current = (indexPath as NSIndexPath).row
                 let data = dataArray[i] as! NSDictionary
                 let d = NSMutableDictionary(dictionary: data)
-                let isClicked = i == indexPath.row ? "1" : "0"
+                let isClicked = i == (indexPath as NSIndexPath).row ? "1" : "0"
                 d.setValue(isClicked, forKey: "isClicked")
-                dataArray.replaceObjectAtIndex(i, withObject: d)
+                dataArray.replaceObject(at: i, with: d)
             }
             tableView.reloadData()
             collectionView.reloadData()
         }
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if dataArray.count > current {
             let data = dataArray[current] as! NSDictionary
             let owned = data.stringAttributeForKey("owned")
@@ -82,23 +82,23 @@ extension InputView {
                 titleCollectionHolder.text = name
                 contentCollectionHolder.text = description
                 contentCollectionHolder.setHeight(h)
-                viewCollectionHolder.hidden = false
+                viewCollectionHolder.isHidden = false
             } else {
-                viewCollectionHolder.hidden = true
+                viewCollectionHolder.isHidden = true
             }
             return 8
         }
-        viewCollectionHolder.hidden = true
+        viewCollectionHolder.isHidden = true
         return 0
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let c: EmojiCollectionCell! = collectionView.dequeueReusableCellWithReuseIdentifier("EmojiCollectionCell", forIndexPath: indexPath) as? EmojiCollectionCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let c: EmojiCollectionCell! = collectionView.dequeueReusableCell(withReuseIdentifier: "EmojiCollectionCell", for: indexPath) as? EmojiCollectionCell
         if dataArray.count > current {
             let data = dataArray[current] as! NSDictionary
             let code = data.stringAttributeForKey("code")
-            c.path = "http://img.nian.so/emoji/\(code)/\(indexPath.row + 1).gif!dream"
-            c.num = indexPath.row
+            c.path = "http://img.nian.so/emoji/\(code)/\((indexPath as NSIndexPath).row + 1).gif!dream"
+            c.num = (indexPath as NSIndexPath).row
             c.imageHead.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(InputView.onEmojiLongPress(_:))))
             c.imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(InputView.onEmojiTap(_:))))
             c.setup()
@@ -107,9 +107,9 @@ extension InputView {
     }
     
     /* 表情长按预览 */
-    func onEmojiLongPress(sender: UIGestureRecognizer) {
+    func onEmojiLongPress(_ sender: UIGestureRecognizer) {
         if let view = sender.view {
-            let point = view.convertPoint(view.frame.origin, fromView: self.viewEmoji)
+            let point = view.convert(view.frame.origin, from: self.viewEmoji)
             let x = -point.x
             let y = -point.y
             
@@ -121,17 +121,17 @@ extension InputView {
             let data = dataArray[current] as! NSDictionary
             let code = data.stringAttributeForKey("code")
             let url = "http://img.nian.so/emoji/\(code)/\(view.tag + 1).gif"
-            viewEmojiHolder.qs_setGifImageWithURL(NSURL(string: url)!, progress: nil, completed: nil)
-            viewEmojiHolder.frame = CGRectMake(xNew, yNew, w, w)
-            viewEmojiHolder.hidden = sender.state == UIGestureRecognizerState.Ended
-            if sender.state == UIGestureRecognizerState.Ended {
+            viewEmojiHolder.qs_setGifImageWithURL(URL(string: url)!, progress: nil, completed: nil)
+            viewEmojiHolder.frame = CGRect(x: xNew, y: yNew, width: w, height: w)
+            viewEmojiHolder.isHidden = sender.state == UIGestureRecognizerState.ended
+            if sender.state == UIGestureRecognizerState.ended {
                 viewEmojiHolder.animatedImage = nil
             }
         }
     }
     
     /* 表情单击 */
-    func onEmojiTap(sender: UIGestureRecognizer) {
+    func onEmojiTap(_ sender: UIGestureRecognizer) {
         if let tag = sender.view?.tag {
             let data = dataArray[current] as! NSDictionary
             let code = data.stringAttributeForKey("code")

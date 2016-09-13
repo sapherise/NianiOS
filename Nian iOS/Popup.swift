@@ -27,11 +27,11 @@ class Popup: UIView {
         self.viewBackGround.setHeight(globalHeight)
         self.viewHolder.setX(globalWidth/2 - 135)
         self.viewBackGround.translucentAlpha = 1
-        self.viewBackGround.translucentStyle = UIBarStyle.Default
-        self.viewBackGround.translucentTintColor = UIColor.clearColor()
+        self.viewBackGround.translucentStyle = UIBarStyle.default
+        self.viewBackGround.translucentTintColor = UIColor.clear
         self.btnMain.backgroundColor = UIColor.HighlightColor()
-        self.btnMain.hidden = true
-        self.btnSub.hidden = true
+        self.btnMain.isHidden = true
+        self.btnSub.isHidden = true
     }
     
     override func layoutSubviews() {
@@ -41,21 +41,21 @@ class Popup: UIView {
         self.labelContent.text = textContent
         let h = textContent.stringHeightWith(13, width: 230)
         self.labelContent.setHeight(h)
-        self.btnMain.setTitle(textBtnMain, forState: UIControlState())
+        self.btnMain.setTitle(textBtnMain, for: UIControlState())
         self.btnMain.setY(self.labelContent.bottom() + 20)
         var w = textBtnSub.stringWidthWith(14, height: 36)
-        if SAstrlen(textBtnMain) > SAstrlen(textBtnSub) {
+        if SAstrlen(textBtnMain as NSString) > SAstrlen(textBtnSub as NSString) {
             w = textBtnMain.stringWidthWith(14, height: 36)
         }
         self.btnMain.setWidth(w+60)
         self.btnSub.setWidth(w+60)
         self.btnMain.setX((210-w)/2)
         self.btnSub.setX((210-w)/2)
-        self.btnMain.hidden = false
+        self.btnMain.isHidden = false
         if self.textBtnSub != "" {
             self.btnSub.setY(self.btnMain.bottom() + 6)
-            self.btnSub.setTitle(textBtnSub, forState: UIControlState())
-            self.btnSub.hidden = false
+            self.btnSub.setTitle(textBtnSub, for: UIControlState())
+            self.btnSub.isHidden = false
         }
         let heightHolder = self.textBtnSub != "" ? h + heightImage + 180 : h + heightImage + 180 - 42
         self.viewHolder.setHeight(heightHolder)

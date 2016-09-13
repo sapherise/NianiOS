@@ -12,7 +12,7 @@ extension HomeViewController: NIAlertDelegate {
     func SANews() {
         Api.getNews() { json in
             if json != nil {
-                let data = json!.objectForKey("news") as! NSDictionary
+                let data = json!.object(forKey: "news") as! NSDictionary
                 let title = data.stringAttributeForKey("title")
                 if title != "" {
                     // 新闻
@@ -24,19 +24,19 @@ extension HomeViewController: NIAlertDelegate {
                         self.ni = NIAlert()
                         self.ni!.delegate = self
                         self.ni!.dict = NSMutableDictionary(objects: [UIImage(named: "pet_egg2")!, title, content, [button]],
-                            forKeys: ["img", "title", "content", "buttonArray"])
+                            forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
                         self.ni!.showWithAnimation(.flip)
-                        Cookies.set("1", forKey: "SANews.\(version)")
+                        Cookies.set("1" as AnyObject?, forKey: "SANews.\(version)")
                     }
                 } else {
-                    let numberVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as! String
+                    let numberVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
                     
                     let data = Cookies.get("rewards") as? NSDictionary
                     
                     // 如果未加入过奖励系统
                     if data == nil {
                         // 创建该版本的奖励系统
-                        let d = NSDictionary(objects: [numberVersion, "0"], forKeys: ["version", "hasGotRewards"])
+                        let d = NSDictionary(objects: [numberVersion, "0"], forKeys: ["version" as NSCopying, "hasGotRewards" as NSCopying])
                         Cookies.set(d, forKey: "rewards")
                     } else {
                         // 已加入过奖励系统
@@ -44,7 +44,7 @@ extension HomeViewController: NIAlertDelegate {
                         if version != numberVersion {
                             // 如果奖励系统版本号是早期版本
                             // 设定该版本的奖励
-                            let d = NSDictionary(objects: [numberVersion, "0"], forKeys: ["version", "hasGotRewards"])
+                            let d = NSDictionary(objects: [numberVersion, "0"], forKeys: ["version" as NSCopying, "hasGotRewards" as NSCopying])
                             Cookies.set(d, forKey: "rewards")
                         } else {
                             // 是当前版本
@@ -59,7 +59,7 @@ extension HomeViewController: NIAlertDelegate {
                                 */
                                 Api.getRewardsActivity(numberActivity) { json in
                                     if json != nil {
-                                        let hasActivity = json!.objectForKey("hasActivity") as? String
+                                        let hasActivity = json!.object(forKey: "hasActivity") as? String
                                         // 如果存在
                                         if hasActivity == "1" {
                                             // 奖励 3 念币
@@ -67,7 +67,7 @@ extension HomeViewController: NIAlertDelegate {
                                                 self.niAppStore = NIAlert()
                                                 self.niAppStore?.delegate = self
                                                 self.niAppStore?.shouldTapBackgroundToDismiss = false
-                                                self.niAppStore?.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "新版奖励！", "因为下载了新版的念\n念奖励了你 3 念币！", ["好"]], forKeys: ["img", "title", "content", "buttonArray"])
+                                                self.niAppStore?.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "新版奖励！", "因为下载了新版的念\n念奖励了你 3 念币！", ["好"]], forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
                                                 self.niAppStore?.showWithAnimation(.flip)
                                                 let mutableDic = NSMutableDictionary(dictionary: data!)
                                                 mutableDic.setValue("1", forKey: "hasGotRewards")
@@ -84,14 +84,14 @@ extension HomeViewController: NIAlertDelegate {
         }
     }
     
-    func niAlert(niAlert: NIAlert, didselectAtIndex: Int) {
+    func niAlert(_ niAlert: NIAlert, didselectAtIndex: Int) {
         if niAlert == ni {
             niAlert.dismissWithAnimation(.normal)
         } else if niAlert == niAppStore {
             niAppStoreStar = NIAlert()
             niAppStoreStar?.delegate = self
             niAppStoreStar?.shouldTapBackgroundToDismiss = false
-            self.niAppStoreStar?.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "喜欢念吗", "要不要去 App Store 给念打分？", [" 嗯！", " 不！"]], forKeys: ["img", "title", "content", "buttonArray"])
+            self.niAppStoreStar?.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "喜欢念吗", "要不要去 App Store 给念打分？", [" 嗯！", " 不！"]], forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
             niAppStore?.dismissWithAnimationSwtich(niAppStoreStar!)
         } else if niAlert == niAppStoreStar {
             if didselectAtIndex == 0 {
@@ -120,5 +120,5 @@ extension HomeViewController: NIAlertDelegate {
 }
 
 func openAppStore() {
-    UIApplication.sharedApplication().openURL(NSURL(string: "itms-apps://itunes.apple.com/cn/app/id929448912")!)
+    UIApplication.shared.openURL(URL(string: "itms-apps://itunes.apple.com/cn/app/id929448912")!)
 }

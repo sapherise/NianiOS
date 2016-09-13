@@ -49,11 +49,11 @@ class PetViewController: SAViewController, ShareDelegate {
         let v = SAEgg()
         v.delegateShare = self
         v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "抽蛋", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],
-                                     forKeys: ["img", "title", "content", "buttonArray"])
+                                     forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
         v.showWithAnimation(.flip)
     }
     
-    func onShare(avc: UIActivityViewController) {
-        self.presentViewController(avc, animated: true, completion: nil)
+    func onShare(_ avc: UIActivityViewController) {
+        self.present(avc, animated: true, completion: nil)
     }
 }
