@@ -629,8 +629,9 @@ extension UIViewController {
     }
     
     func keyboardEndObserve() {
-        NotificationCenter.default.removeObserver(NSNotification.Name.UIKeyboardWillShow)
-        NotificationCenter.default.removeObserver(NSNotification.Name.UIKeyboardWillHide)
+        // todo
+//        NotificationCenter.default.removeObserver(NSNotification.Name.UIKeyboardWillShow)
+//        NotificationCenter.default.removeObserver(NSNotification.Name.UIKeyboardWillHide)
     }
     
     func onURL(_ sender: Notification){

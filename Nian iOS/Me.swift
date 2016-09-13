@@ -228,8 +228,8 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }
         if let v = sender.view {
             let views:NSArray = v.subviews as NSArray
-            for view:AnyObject in views {
-                if NSStringFromClass(view.classForCoder) == "UILabel"  {
+            for view in views {
+                if NSStringFromClass((view as AnyObject).classForCoder) == "UILabel"  {
                     let l = view as! UILabel
                     if l.frame.origin.y == 25 {
                         l.text = "0"

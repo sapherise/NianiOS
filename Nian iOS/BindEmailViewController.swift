@@ -152,25 +152,25 @@ class BindEmailViewController: UIViewController {
                         
                         self.confirmButton.startAnimating()
                         
-                        LogOrRegModel.checkEmailValidation(email: _text, callback: {
-                            (task, responseObject, error) in
-                            
-                            self.confirmButton.stopAnimating()
-                            
-                            if let _ = error {
-                                self.showTipText("网络有点问题，等一会儿再试")
-                            } else {
-                                let json = JSON(responseObject!)
-                                
-                                if json["data"] == "0" {
-                                    self.handleBindEmail()
-                                } else if json["data"] == "1" {
-                                    self.showTipText("邮箱已被注册...")
-                                    self.bindFuntionType = .confirm
-                                }
-                            }
-                        })
-
+//                        LogOrRegModel.checkEmailValidation(email: _text, callback: {
+//                            (task, responseObject, error) in
+//                            
+//                            self.confirmButton.stopAnimating()
+//                            
+//                            if let _ = error {
+//                                self.showTipText("网络有点问题，等一会儿再试")
+//                            } else {
+//                                let json = JSON(responseObject!)
+//                                
+//                                if json["data"] == "0" {
+//                                    self.handleBindEmail()
+//                                } else if json["data"] == "1" {
+//                                    self.showTipText("邮箱已被注册...")
+//                                    self.bindFuntionType = .confirm
+//                                }
+//                            }
+//                        })
+                        // todo
                     } else {
                         self.showTipText("不是地球上的邮箱...")
                     }
@@ -190,30 +190,31 @@ class BindEmailViewController: UIViewController {
                     
                     self.confirmButton.startAnimating()
                     
-                    SettingModel.bindEmail(_email, password: _password, callback: {
-                        (task, responseObject, error) in
-                        
-                        self.confirmButton.stopAnimating()
-                        
-                        if let _ = error {
-                            self.showTipText("网络有点问题，等一会儿再试")
-                        } else {
-                            let json = JSON(responseObject!)
-                            
-                            if json["error"] != 0 {
-                                
-                            } else {
-                                // 更新 shell
-                                
-                                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-                                uidKey.setObject(shell, forKey: kSecValueData)
-                                
-                                self.showTipText("邮箱绑定成功")
-                                self.delegate?.bindEmail?(email: self.emailTextField.text!)
-                                self.dismiss(animated: true, completion: nil)
-                            }
-                        }
-                    })
+//                    SettingModel.bindEmail(_email, password: _password, callback: {
+//                        (task, responseObject, error) in
+//                        
+//                        self.confirmButton.stopAnimating()
+//                        
+//                        if let _ = error {
+//                            self.showTipText("网络有点问题，等一会儿再试")
+//                        } else {
+//                            let json = JSON(responseObject!)
+//                            
+//                            if json["error"] != 0 {
+//                                
+//                            } else {
+//                                // 更新 shell
+//                                
+//                                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+//                                uidKey.setObject(shell, forKey: kSecValueData)
+//                                
+//                                self.showTipText("邮箱绑定成功")
+//                                self.delegate?.bindEmail?(email: self.emailTextField.text!)
+//                                self.dismiss(animated: true, completion: nil)
+//                            }
+//                        }
+//                    })
+                    // todo
                 }
             }
         } else if self.modeType == .modify {
@@ -226,30 +227,30 @@ class BindEmailViewController: UIViewController {
                 let _password = "n*A\(self.passwordTextField.text!)"
                 self.confirmButton.startAnimating()
                 
-                LogOrRegModel.logIn(email: self.previousEmail!, password: _password.md5, callback: {
-                    (task, responseObject, error) -> Void in
-                    
-                    self.confirmButton.stopAnimating()
-                    self.bindFuntionType = .confirm
-                    
-                    if let _ = error {
-                        self.showTipText("网络有点问题，只加载了本地设置")
-                    } else {
-                        let json = JSON(responseObject!)
-                        
-                        if json["error"] != 0 {
-                            self.showTipText("密码不对...")
-                        } else {
-                            self.passwordTextField.isHidden = true
-                            self.emailTextField.isHidden = false
-                            self.passwordTextField.text = ""
-                            self.discriptionLabel.text = "设置邮箱和密码后\n你可以用新的邮箱来登录念"
-                            
-                            self.modeType = .bind
-                        }
-                    }
-                })
-                
+//                LogOrRegModel.logIn(email: self.previousEmail!, password: _password.md5, callback: {
+//                    (task, responseObject, error) -> Void in
+//                    
+//                    self.confirmButton.stopAnimating()
+//                    self.bindFuntionType = .confirm
+//                    
+//                    if let _ = error {
+//                        self.showTipText("网络有点问题，只加载了本地设置")
+//                    } else {
+//                        let json = JSON(responseObject!)
+//                        
+//                        if json["error"] != 0 {
+//                            self.showTipText("密码不对...")
+//                        } else {
+//                            self.passwordTextField.isHidden = true
+//                            self.emailTextField.isHidden = false
+//                            self.passwordTextField.text = ""
+//                            self.discriptionLabel.text = "设置邮箱和密码后\n你可以用新的邮箱来登录念"
+//                            
+//                            self.modeType = .bind
+//                        }
+//                    }
+//                })
+                    // todo
             }
         }
     }

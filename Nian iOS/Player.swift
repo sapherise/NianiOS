@@ -94,7 +94,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
         self.navView.isHidden = true
         self.navView.clipsToBounds = true
         self.view.addSubview(self.navView)
-        self.topCell = (Bundle.main.loadNibNamed("PlayerCellTop", owner: self, options: nil) as NSArray).object(at: 0) as! PlayerCellTop
+        self.topCell = (Bundle.main.loadNibNamed("PlayerCellTop", owner: self, options: nil))?.first as! PlayerCellTop
         self.topCell.frame = CGRect(x: 0, y: -64, width: globalWidth, height: 364)
         self.setupPlayerTop(Int(self.Id)!)
         let nib3 = UINib(nibName:"StepCell", bundle: nil)
@@ -254,7 +254,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                 if isClear {
                     self.dataArray.removeAllObjects()
                 }
-                for data: AnyObject in arr {
+                for data in arr {
                     self.dataArray.add(data)
                 }
                 self.tableViewDream.reloadData()
@@ -283,12 +283,12 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
         Api.getUserActive(Id, page: self.pageStep) { json in
             if json != nil {
                 self.tableViewStep.tableFooterView = UIView()
-                let data: AnyObject? = json!.object(forKey: "data")
-                let arr = data!.object(forKey: "steps") as! NSArray
+                let data = json!.object(forKey: "data")
+                let arr = (data! as AnyObject).object(forKey: "steps") as! NSArray
                 if isClear {
                     self.dataArrayStep.removeAllObjects()
                 }
-                for data: AnyObject in arr {
+                for data in arr {
                     let d = VVeboCell.SACellDataRecode(data as! NSDictionary)
                     self.dataArrayStep.add(d)
                 }

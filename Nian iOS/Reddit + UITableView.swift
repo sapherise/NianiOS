@@ -132,11 +132,12 @@ extension RedditViewController {
             }
             Api.getExploreNewHot("\(pageHot)", callback: { json in
                 if json != nil {
-                    let arr = json!.object("data") as! NSArray
+//                    let arr = json!.object("data") as! NSArray
+                    let arr = json!.object(forKey: "data")  as! NSArray
                     if clear {
                         self.dataArrayHot.removeAllObjects()
                     }
-                    for data: AnyObject in arr {
+                    for data in arr {
                         let dBefore = data as! NSDictionary
                         let d = NSMutableDictionary(dictionary: data as! NSDictionary)
                         let content = dBefore.stringAttributeForKey("content").decode()
@@ -153,7 +154,7 @@ extension RedditViewController {
                         d["heightTitle"] = hTitle
                         d["content"] = content
                         d["title"] = title
-                        self.dataArrayHot.addObject(d)
+                        self.dataArrayHot.add(d)
                     }
                     self.tableViewHot.headerEndRefreshing()
                     self.tableViewHot.footerEndRefreshing()
@@ -248,7 +249,7 @@ extension RedditViewController {
     func updateData(_ index: Int, key: String, value: String, section: Int) {
         let d = dataArrayHot
         let t = tableViewHot
-        SAUpdate(d, index: index, key: key, value: value as AnyObject, tableView: t)
+        SAUpdate(d, index: index, key: key, value: value as AnyObject, tableView: t!)
     }
     
     func updateTable() {

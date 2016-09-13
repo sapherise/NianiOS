@@ -53,10 +53,10 @@ class NianNetworkClient: AFHTTPSessionManager {
         return  self.get(baseURLString + string,
                     parameters: nil,
                     success: { (task: URLSessionDataTask?, id: Any?) in
-                        callback(task, id, nil)
+                        callback(task!, id as AnyObject?, nil)
                     },
-                    failure: { (task: URLSessionDataTask?, error) in
-                        callback(task: task, responseObject: nil, error: error)
+                    failure: { (task: URLSessionDataTask?, error: Error?) in
+                        callback(task!, nil, error as NSError?)
                 })
     }
     
@@ -71,10 +71,10 @@ class NianNetworkClient: AFHTTPSessionManager {
         return  self.post(baseURLString + string,
                     parameters: content,
                     success: { (task: URLSessionDataTask?, id: Any?) in
-                        callback(task, id, nil)
+                        callback(task!, id as AnyObject?, nil)
                     },
-                    failure: { (task, error) in
-                        callback(task: task, responseObject: nil, error: error)
+                    failure: { (task: URLSessionDataTask?, error: Error?) in
+                        callback(task!, nil, error as NSError?)
                 })
     }
     
@@ -91,9 +91,9 @@ class NianNetworkClient: AFHTTPSessionManager {
         return self.put(baseURLString + string,
                     parameters: content,
                     success: { (task: URLSessionDataTask?, id: Any?) -> Void in
-                        callback(task, id, nil)
-                    }, failure: { (task, error) -> Void in
-                        callback(task: task, responseObject: nil, error: error)
+                        callback(task!, id as AnyObject?, nil)
+            }, failure: { (task: URLSessionDataTask?, error: Error?) -> Void in
+                        callback(task!, nil, error as NSError?)
                 })
     }
     

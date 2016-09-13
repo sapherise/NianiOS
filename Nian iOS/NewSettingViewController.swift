@@ -185,35 +185,36 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate, LockDe
         
         dailyModeSwitch.isHidden = true
         
-        SettingModel.getUserInfoAndSetting {
-            (task, responseObject, error) in
-            
-            self.endLoading()
-            
-            if let _ = error { // AFNetworking 返回的错误
-                self.showTipText("网络有点问题，只加载了本地设置")
-            } else {
-                let json = JSON(responseObject!)
-                
-                if json["error"] != 0 {   // 服务器返回的错误代码
-                    self.showTipText("网络有点问题，等下再试")
-                } else {
-                    self.userDict = json["data"]["user"].dictionaryObject!
+//        SettingModel.getUserInfoAndSetting {
+//            (task, responseObject, error) in
+//            
+//            self.endLoading()
+//            
+//            if let _ = error { // AFNetworking 返回的错误
+//                self.showTipText("网络有点问题，只加载了本地设置")
+//            } else {
+//                let json = JSON(responseObject!)
+//                
+//                if json["error"] != 0 {   // 服务器返回的错误代码
+//                    self.showTipText("网络有点问题，等下再试")
+//                } else {
+//                    self.userDict = json["data"]["user"].dictionaryObject!
+////                    
+//                    if json["data"]["user"]["isMonthly"].stringValue == "1" {
+//                        self.settingModel?.dailyMode = "0"
+//                        self.dailyModeSwitch.setOn(false, animated: false)
+//                    } else {
+//                        self.settingModel?.dailyMode = "1"
+//                        self.dailyModeSwitch.setOn(true, animated: false)
+//                    }
+//                    self.dailyModeSwitch.isHidden = false
 //                    
-                    if json["data"]["user"]["isMonthly"].stringValue == "1" {
-                        self.settingModel?.dailyMode = "0"
-                        self.dailyModeSwitch.setOn(false, animated: false)
-                    } else {
-                        self.settingModel?.dailyMode = "1"
-                        self.dailyModeSwitch.setOn(true, animated: false)
-                    }
-                    self.dailyModeSwitch.isHidden = false
-                    
-                    self.userDefaults.set(json["data"]["user"]["name"].stringValue, forKey: "user")
-                    self.userDefaults.synchronize()
-                } // if json["error"] != 0
-            } // if let _error = error
-        }  // SettingModel.getUserInfoAndSetting
+//                    self.userDefaults.set(json["data"]["user"]["name"].stringValue, forKey: "user")
+//                    self.userDefaults.synchronize()
+//                } // if json["error"] != 0
+//            } // if let _error = error
+//        }  // SettingModel.getUserInfoAndSetting
+        // todo
         
         // 设定彩蛋
         logo.isUserInteractionEnabled = true
@@ -435,11 +436,12 @@ extension NewSettingViewController {
                     self.present(self.coverImagePicker!, animated: true, completion: nil)
                 }
             } else if buttonIndex == 2 {
-                SettingModel.changeCoverImage(coverURL: "background.png", callback: {
-                    (task, responseObject, error) in
-                    self.coverImageView.image = UIImage(named: "bg")
-                    self.coverImageModified = true
-                })
+                // todo
+//                SettingModel.changeCoverImage(coverURL: "background.png", callback: {
+//                    (task, responseObject, error) in
+//                    self.coverImageView.image = UIImage(named: "bg")
+//                    self.coverImageModified = true
+//                })
             }
         } else if actionSheet == self.actionSheetHead {
             if buttonIndex == 0 {
@@ -658,18 +660,19 @@ extension NewSettingViewController: UIImagePickerControllerDelegate, UINavigatio
             beginLoading()
             
             let uy = UpYun()
-            uy.successBlocker = ({ (data: AnyObject!) in
-                self.endLoading()
-                
-                self.avatarImageView.image = image
-                self.avatarImageModified = true
-                
-                setCacheImage("http://img.nian.so/head/\(CurrentUser.sharedCurrentUser.uid!).jpg!dream", img: image, width: 150)
-            })
-            uy.failBlocker = ({ (error: NSError!) in
-                self.endLoading()
-                self.showTipText("上传失败了...再试试")
-            })
+//            uy.successBlocker = ({ (data: AnyObject!) in
+//                self.endLoading()
+//                
+//                self.avatarImageView.image = image
+//                self.avatarImageModified = true
+//                
+//                setCacheImage("http://img.nian.so/head/\(CurrentUser.sharedCurrentUser.uid!).jpg!dream", img: image, width: 150)
+//            })
+//            uy.failBlocker = ({ (error: NSError!) in
+//                self.endLoading()
+//                self.showTipText("上传失败了...再试试")
+//            })
+            // todo
             
             let _tmpString = "/head/" + "\(CurrentUser.sharedCurrentUser.uid!)" + ".jpg"
             

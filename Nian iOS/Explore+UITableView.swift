@@ -70,8 +70,8 @@ extension ExploreViewController {
                 } else {
                     globalVVeboReload = false
                 }
-                let data: AnyObject? = json!.object(forKey: "data")
-                let items = data!.object(forKey: "items") as! NSArray
+                let data = json!.object(forKey: "data")
+                let items = (data! as AnyObject).object(forKey: "items") as! NSArray
                 if items.count != 0 {
                     for item in items {
                         let data = VVeboCell.SACellDataRecode(item as! NSDictionary)
@@ -108,8 +108,8 @@ extension ExploreViewController {
             json in
             if json != nil {
                 globalTabhasLoaded[1] = true
-                let data: AnyObject? = json!.object(forKey: "data")
-                let items = data!.object(forKey: "items") as! NSArray
+                let data = json!.object(forKey: "data")
+                let items = (data! as AnyObject).object(forKey: "items") as! NSArray
                 if items.count != 0 {
                     if clear {
                         globalVVeboReload = true
