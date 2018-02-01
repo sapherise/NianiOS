@@ -176,7 +176,7 @@ class Lock: SAViewController, UITextViewDelegate {
                 if let password = Cookies.get("Lock") as? String {
                     if content as String == password {
                         setBack(true)
-                        self.navigationController?.popToRootViewController(animated: true)
+                        _ = self.navigationController?.popToRootViewController(animated: true)
                     } else {
                         wrong()
                     }
@@ -191,7 +191,7 @@ class Lock: SAViewController, UITextViewDelegate {
                     if textView.text! == passwordTmp {
                         /* 两次输入的密码都一样，保存并返回 */
                         setBack(true)
-                        self.navigationController?.popViewController(animated: true)
+                        _ = self.navigationController?.popViewController(animated: true)
                         delegate?.setLockState(true)
                         Cookies.set(passwordTmp as AnyObject?, forKey: "Lock")
                         self.showTipText("应用密码设好了")
@@ -203,7 +203,7 @@ class Lock: SAViewController, UITextViewDelegate {
                 if let password = Cookies.get("Lock") as? String {
                     if content as String == password {
                         setBack(true)
-                        self.navigationController?.popViewController(animated: true)
+                        _ = self.navigationController?.popViewController(animated: true)
                         delegate?.setLockState(false)
                         Cookies.remove("Lock")
                         self.showTipText("应用密码关掉了")

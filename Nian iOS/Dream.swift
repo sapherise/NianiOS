@@ -127,45 +127,54 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         }
         Api.getDreamStep(Id, page: page, sort: sort) { json in
             if json != nil {
-                if json!.object(forKey: "error") as! NSNumber != 0 {
-                    let status = json!.object(forKey: "status") as! NSNumber
-                    self.navigationItem.rightBarButtonItems = []
-                    if status == 404 {
-                        self.SATableView.addGhost("这个记本\n不见了")
-                    } else if status == 403 {
-                        self.SATableView.addGhost("你发现了\n一个私密的记本\n里面记着什么？")
-                    } else {
-                        self.showTipText("遇到了一个奇怪的错误，代码是 \(status)")
+                if SAValue(json, "error") != "0" {
+                    if let j = json as? NSDictionary {
+                        let status = j.stringAttributeForKey("status")
+                        self.navigationItem.rightBarButtonItems = []
+                        if status == "404" {
+                            self.SATableView.addGhost("这个记本\n不见了")
+                        } else if status == "403" {
+                            self.SATableView.addGhost("你发现了\n一个私密的记本\n里面记着什么？")
+                        } else {
+                            self.showTipText("遇到了一个奇怪的错误，代码是 \(status)")
+                        }
                     }
                 } else {
-                    let data = json!.object(forKey: "data")
-                    if clear {
-                        self.dataArrayTop = self.DataDecode((data! as AnyObject).object(forKey: "dream") as! NSDictionary)
-                        self.dataArray.removeAllObjects()
-                        globalVVeboReload = true
-                        let btnMore = UIBarButtonItem(title: "  ", style: .plain, target: self, action: #selector(DreamViewController.setupNavBtn))
-                        btnMore.image = UIImage(named: "more")
-                        self.navigationItem.rightBarButtonItems = [btnMore]
-                        
-                        /* 导航栏填充背景 */
-//                        let cover = self.dataArrayTop.stringAttributeForKey("cover")
-//                        self.navView.setImage("http://img.nian.so/cover/\(cover)!cover")
-                        
-                        /* 第一页加载成功后，才建立上拉加载 */
-                        self.setupRefresh()
-                    } else {
-                        globalVVeboReload = false
-                    }
-                    let steps = (data! as AnyObject).object(forKey: "steps") as! NSArray
-                    for d in steps {
-                        let data = VVeboCell.SACellDataRecode(d as! NSDictionary)
-                        self.dataArray.add(data)
-                    }
-                    self.currentDataArray = self.dataArray
-                    self.SATableView.reloadData()
-                    self.SATableView.headerEndRefreshing()
-                    self.SATableView.footerEndRefreshing()
-                    self.page += 1
+                    if let j = json as? NSDictionary {
+                        if let data = j.object(forKey: "data") as? NSDictionary {
+                            if clear {
+                                if let _dream = data.object(forKey: "dream") as? NSDictionary {
+                                    let dream = self.DataDecode(_dream)
+                                    self.dataArrayTop = dream
+                                }
+                                self.dataArray.removeAllObjects()
+                                globalVVeboReload = true
+                                let btnMore = UIBarButtonItem(title: "  ", style: .plain, target: self, action: #selector(DreamViewController.setupNavBtn))
+                                btnMore.image = UIImage(named: "more")
+                                self.navigationItem.rightBarButtonItems = [btnMore]
+                                
+                                /* 导航栏填充背景 */
+                                //                        let cover = self.dataArrayTop.stringAttributeForKey("cover")
+                                //                        self.navView.setImage("http://img.nian.so/cover/\(cover)!cover")
+                                
+                                /* 第一页加载成功后，才建立上拉加载 */
+                                self.setupRefresh()
+                            } else {
+                                globalVVeboReload = false
+                            }
+                            if let steps = data.object(forKey: "steps") as? NSArray {
+                                for d in steps {
+                                    let data = VVeboCell.SACellDataRecode(d as! NSDictionary)
+                                    self.dataArray.add(data)
+                                }
+                                self.currentDataArray = self.dataArray
+                                self.SATableView.reloadData()
+                                self.SATableView.headerEndRefreshing()
+                                self.SATableView.footerEndRefreshing()
+                                self.page += 1
+                            }
+                        }
+                    } 
                 }
             }
         }
@@ -180,7 +189,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         
         let acEdit = SAActivity()
         acEdit.saActivityTitle = "编辑"
-        acEdit.saActivityType = "编辑"
+        acEdit.saActivityType = UIActivityType(rawValue: "编辑")
         acEdit.saActivityImage = UIImage(named: "av_edit")
         acEdit.saActivityFunction = {
             self.editMyDream()
@@ -190,20 +199,24 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         acDone.saActivityTitle = percent == "0" ? "完成" : "未完成"
         let percentNew = percent == "0" ? "1" : "0"
         let imageNew = percent == "0" ? "av_finish" : "av_nofinish"
-        acDone.saActivityType = "完成"
+        acDone.saActivityType = UIActivityType(rawValue: "完成")
         acDone.saActivityImage = UIImage(named: imageNew)
         acDone.saActivityFunction = {
             let mutableData = NSMutableDictionary(dictionary: self.dataArrayTop)
             mutableData.setValue(percentNew, forKey: "percent")
             self.dataArrayTop = mutableData
             self.SATableView.reloadData()
-            Api.postCompleteDream(self.Id, percent: percentNew) { string in
+            if percent == "0" {
+                Api.getDreamComplete(self.Id) { json in }
+            } else {
+                Api.getDreamInComplete(self.Id) { json in }
             }
+            
         }
         
         let acDelete = SAActivity()
         acDelete.saActivityTitle = "删除"
-        acDelete.saActivityType = "删除"
+        acDelete.saActivityType = UIActivityType(rawValue: "删除")
         acDelete.saActivityImage = UIImage(named: "av_delete")
         acDelete.saActivityFunction = {
             self.deleteDreamSheet = UIActionSheet(title: "再见啦，记本 #\(self.Id)", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
@@ -216,19 +229,25 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         let acLike = SAActivity()
         acLike.saActivityTitle = isLiked == "0" ? "赞" : "取消赞"
         let isLikedNew = isLiked == "0" ? "1" : "0"
-        acLike.saActivityType = "赞"
+        acLike.saActivityType = UIActivityType(rawValue: "赞")
         acLike.saActivityImage = UIImage(named: "av_like")
         acLike.saActivityFunction = {
             let mutableData = NSMutableDictionary(dictionary: self.dataArrayTop)
             mutableData.setValue(isLikedNew, forKey: "isliked")
             self.dataArrayTop = mutableData
             self.SATableView.reloadData()
-            Api.postLikeDream(self.Id, like: isLikedNew) { string in }
+            if isLiked == "0" {
+                Api.getDreamLike(self.Id) { json in
+                }
+            } else {
+                Api.getDreamUnLike(self.Id) { json in
+                }
+            }
         }
         
         let acReport = SAActivity()
         acReport.saActivityTitle = "举报"
-        acReport.saActivityType = "举报"
+        acReport.saActivityType = UIActivityType(rawValue: "举报")
         acReport.saActivityImage = UIImage(named: "av_report")
         acReport.saActivityFunction = {
             self.showTipText("举报好了！")
@@ -236,7 +255,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         
         let acQuit = SAActivity()
         acQuit.saActivityTitle = "离开"
-        acQuit.saActivityType = "离开"
+        acQuit.saActivityType = UIActivityType(rawValue: "离开")
         acQuit.saActivityImage = UIImage(named: "av_quit")
         acQuit.saActivityFunction = {
             self.quitSheet = UIActionSheet(title: "再见啦，记本 #\(self.Id)", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
@@ -248,7 +267,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         
         let acTime = SAActivity()
         acTime.saActivityTitle = "颠倒排序"
-        acTime.saActivityType = "颠倒排序"
+        acTime.saActivityType = UIActivityType(rawValue: "颠倒排序")
         acTime.saActivityImage = UIImage(named: "av_time")
         acTime.saActivityFunction = {
             let vc = DreamViewController()
@@ -356,7 +375,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
                 Api.getDeleteDream(self.Id, callback: { json in
                     self.navigationItem.rightBarButtonItems = []
                     self.delegateDelete?.deleteDreamCallback(self.Id)
-                    self.navigationController?.popViewController(animated: true)
+                    _ = self.navigationController?.popViewController(animated: true)
                 })
             }
         } else if actionSheet == quitSheet {
@@ -381,10 +400,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
                             }
                         }
                     }
-                    //
-                    
-                    
-                    self.navigationController?.popViewController(animated: true)
+                    _ = self.navigationController?.popViewController(animated: true)
                 }
             }
         }
@@ -412,13 +428,13 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         self.navigationController?.pushViewController(editdreamVC, animated: true)
     }
     
-    func editDream(_ editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTags: Array<String>, editPermission: Int) {
+    func editDream(_ editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTags: NSArray, editPermission: Int) {
         let mutableData = NSMutableDictionary(dictionary: dataArrayTop)
         mutableData.setValue(editPrivate, forKey: "private")
         mutableData.setValue(editTitle, forKey: "title")
         mutableData.setValue(editDes, forKey: "content")
         mutableData.setValue(editImage, forKey: "image")
-        mutableData.setValue(editTags, forKey: "tags")
+        mutableData.setValue(editTags as Array, forKey: "tags")
         mutableData.setValue("\(editPermission)", forKey: "permission")
         dataArrayTop = DataDecode(mutableData)
         self.SATableView.reloadData()

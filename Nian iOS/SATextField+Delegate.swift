@@ -20,7 +20,7 @@ extension InputView {
             let type = inputType == inputTypeEnum.comment ? "0" : "1"
             delegate?.send(content!, type: type)
             let h = resize()
-            resizeView(h)
+            _ = resizeView(h)
             return false
         }
         return true
@@ -29,7 +29,7 @@ extension InputView {
     /* 改变文本时，调整整个视图 */
     func textViewDidChange(_ textView: UITextView) {
         let h = resize()
-        resizeView(h)
+        _ = resizeView(h)
         if textView.text == "" {
             labelPlaceHolder.isHidden = false
         } else {
@@ -138,7 +138,7 @@ extension InputView {
             let type = inputType == inputTypeEnum.comment ? "1" : "3"
             delegate?.send("\(code)-\(tag + 1)", type: type)
             let h = resize()
-            resizeView(h)
+            _ = resizeView(h)
         }
     }
 }

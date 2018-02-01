@@ -99,19 +99,17 @@ extension UIImageView {
     func setHead(_ uid: String) {
         self.image = UIImage(named: "head")
         let urlString = "http://img.nian.so/head/\(uid).jpg!dream"
-        let url = URL(string: urlString)
-        self.contentMode = .scaleAspectFill
-        let networkStatus = getStatus()
-        let saveMode = Cookies.get("saveMode") as? String
-        if (saveMode == "on") && (networkStatus == 1) {
-            self.loadCacheImage(urlString, placeholderImage: self.image)
-        } else {
-            // todo
-//            self.sd_setImage(with: url, placeholderImage: UIImage(named: "head"), completed: { (image, err, type, url) -> Void in
-//                if image != nil {
-//                    self.image = image
-//                }
-//            })
+        if let url = URL(string: urlString) {
+            self.contentMode = .scaleAspectFill
+            let networkStatus = getStatus()
+            let saveMode = Cookies.get("saveMode") as? String
+            if (saveMode == "on") && (networkStatus == 1) {
+                self.loadCacheImage(urlString, placeholderImage: self.image)
+            } else {
+                if let placeholder = UIImage(named: "head") {
+                    self.sd_setImage(with: url, placeholderImage: placeholder)
+                }
+            }
         }
     }
     

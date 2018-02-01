@@ -213,7 +213,6 @@ class ImageViewer: UIScrollView, UIScrollViewDelegate {
                     } else {
                         heightNew = globalWidth * height / width
                     }
-                    // todo: 测试图片功能
                     let y = (globalHeight - heightNew)/2
                     var v = UIImageView()
                     

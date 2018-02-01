@@ -61,23 +61,25 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
     func SAReloadData(){
         Api.getSingleStep(self.Id) { json in
             if json != nil {
-                self.dataArray.removeAllObjects()
-                let arr = json!.object(forKey: "data")
-                let error = json!.object(forKey: "error") as? NSNumber
-                if error == 0 {
-                    let data = (arr! as AnyObject).object(forKey: "step") as! NSDictionary
-                    let hidden = data.stringAttributeForKey("hidden")
-                    if hidden == "0" {
-                        let d = VVeboCell.SACellDataRecode(data)
-                        self.dataArray.add(d)
-                    } else {
-                        self.tableView?.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight - 49 - 64))
-                        self.tableView?.tableHeaderView?.addGhost("这条进展\n不见了")
+                if let j = json as? NSDictionary {
+                    self.dataArray.removeAllObjects()
+                    let arr = j.object(forKey: "data")
+                    let error = j.stringAttributeForKey("error")
+                    if error == "0" {
+                        let data = (arr! as AnyObject).object(forKey: "step") as! NSDictionary
+                        let hidden = data.stringAttributeForKey("hidden")
+                        if hidden == "0" {
+                            let d = VVeboCell.SACellDataRecode(data)
+                            self.dataArray.add(d)
+                        } else {
+                            self.tableView?.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight - 49 - 64))
+                            self.tableView?.tableHeaderView?.addGhost("这条进展\n不见了")
+                        }
                     }
+                    self.currentDataArray = self.dataArray
+                    self.tableView!.reloadData()
+                    self.tableView!.headerEndRefreshing()
                 }
-                self.currentDataArray = self.dataArray
-                self.tableView!.reloadData()
-                self.tableView!.headerEndRefreshing()
             }
         }
     }

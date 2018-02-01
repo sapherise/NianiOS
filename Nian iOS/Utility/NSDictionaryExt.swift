@@ -10,15 +10,8 @@ import UIKit
 import Foundation
 extension NSDictionary {
     func stringAttributeForKey(_ key:String)->String {
-      //  if let obj: AnyObject = self[key] {
-        // todo
-        if true {
-          //  if obj.isKind(of: NSNumber()) {
-            if true {
-             //   let num = obj as! NSNumber
-               // return num.stringValue
-            }
-            //return "\(obj)"
+        if let value = self.object(forKey: key) {
+            return "\(value)"
         }
         return ""
     }

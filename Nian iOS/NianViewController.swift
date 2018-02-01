@@ -254,47 +254,49 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         if let uid = Int(safeuid) {
             Api.getUserTop(uid){ json in
                 if json != nil {
-                    let error = json!.object(forKey: "error") as? NSNumber
-                    if error == 0 {
-                        let _data = json!.object(forKey: "data") as! NSDictionary
-                        let data = _data.object(forKey: "user") as! NSDictionary
-                        let name = data.stringAttributeForKey("name")
-                        let coin = data.stringAttributeForKey("coin")
-                        let dream = data.stringAttributeForKey("dream")
-                        let step = data.stringAttributeForKey("step")
-                        let coverURL = data.stringAttributeForKey("cover")
-                        self.birthday = V.relativeTime(data.stringAttributeForKey("lastdate"))
-                        let petCount = data.stringAttributeForKey("pet_count")
-                        let AllCoverURL = "http://img.nian.so/cover/\(coverURL)!cover"
-                        let vip = data.stringAttributeForKey("vip")
-                        let member = data.stringAttributeForKey("member")
-                        Cookies.set(member as AnyObject?, forKey: "member")
-                        let deadLine = data.stringAttributeForKey("deadline")
-                        self.coinButton.setTitle("念币 \(coin)", for: UIControlState())
-                        self.levelButton.setTitle("宠物 \(petCount)", for: UIControlState())
-                        self.UserName.text = "\(name)"
-                        self.UserHead.setHead(safeuid)
-                        self.imageBadge.setType(vip)
-                        if deadLine == "0" {
-                            self.UserStep.text = "\(dream) 记本，\(step) 进展"
-                        } else {
-                            self.UserStep.text = "倒计时 \(deadLine)"
-                        }
-                        if willRefreshCover {
-                            if coverURL == "" {
-                                self.imageBG.image = UIImage(named: "bg")
-                                self.navView.image = UIImage(named: "bg")
-                                self.navView.contentMode = UIViewContentMode.scaleAspectFill
+                    if let j = json as? NSDictionary {
+                        let error = j.stringAttributeForKey("error")
+                        if error == "0" {
+                            let _data = json!.object(forKey: "data") as! NSDictionary
+                            let data = _data.object(forKey: "user") as! NSDictionary
+                            let name = data.stringAttributeForKey("name")
+                            let coin = data.stringAttributeForKey("coin")
+                            let dream = data.stringAttributeForKey("dream")
+                            let step = data.stringAttributeForKey("step")
+                            let coverURL = data.stringAttributeForKey("cover")
+                            self.birthday = V.relativeTime(data.stringAttributeForKey("lastdate"))
+                            let petCount = data.stringAttributeForKey("pet_count")
+                            let AllCoverURL = "http://img.nian.so/cover/\(coverURL)!cover"
+                            let vip = data.stringAttributeForKey("vip")
+                            let member = data.stringAttributeForKey("member")
+                            Cookies.set(member as AnyObject?, forKey: "member")
+                            let deadLine = data.stringAttributeForKey("deadline")
+                            self.coinButton.setTitle("念币 \(coin)", for: UIControlState())
+                            self.levelButton.setTitle("宠物 \(petCount)", for: UIControlState())
+                            self.UserName.text = "\(name)"
+                            self.UserHead.setHead(safeuid)
+                            self.imageBadge.setType(vip)
+                            if deadLine == "0" {
+                                self.UserStep.text = "\(dream) 记本，\(step) 进展"
                             } else {
-                                self.navView.setCover(AllCoverURL)
-                                self.imageBG.setCover(AllCoverURL)
+                                self.UserStep.text = "倒计时 \(deadLine)"
                             }
+                            if willRefreshCover {
+                                if coverURL == "" {
+                                    self.imageBG.image = UIImage(named: "bg")
+                                    self.navView.image = UIImage(named: "bg")
+                                    self.navView.contentMode = UIViewContentMode.scaleAspectFill
+                                } else {
+                                    self.navView.setCover(AllCoverURL)
+                                    self.imageBG.setCover(AllCoverURL)
+                                }
+                            }
+                            Cookies.set(name as AnyObject?, forKey: "user")
+                            Cookies.set(AllCoverURL as AnyObject?, forKey: "coverUrl")
+                            Cookies.set(coin as AnyObject?, forKey: "coin")
+                        } else {
+                            self.SAlogout()
                         }
-                        Cookies.set(name as AnyObject?, forKey: "user")
-                        Cookies.set(AllCoverURL as AnyObject?, forKey: "coverUrl")
-                        Cookies.set(coin as AnyObject?, forKey: "coin")
-                    } else {
-                        self.SAlogout()
                     }
                 }
             }
@@ -443,61 +445,63 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         Api.getNian() { json in
             if json != nil {
                 self.activity.isHidden = true
-                let error = json!.object(forKey: "error") as! NSNumber
-                if error == 0 {
-                    let d = json!.object(forKey: "data") as! NSDictionary
-                    let arr = d.object(forKey: "dreams") as! NSArray
-                    
-                    let mutableArray = NSMutableArray()
-                    
-                    var idArrayLocal: [Int] = []
-                    var idArrayRemote: [Int] = []
-                    
-                    // 创建远程记本数组，以及记本的编号数组
-                    for data  in arr {
-                        mutableArray.add(data)
-                        let d = data as! NSDictionary
-                        if let id = Int(d.stringAttributeForKey("id")) {
-                            idArrayRemote.append(id)
+                if let j = json as? NSDictionary {
+                    let error = j.stringAttributeForKey("error")
+                    if error == "0" {
+                        let d = j.object(forKey: "data") as! NSDictionary
+                        let arr = d.object(forKey: "dreams") as! NSArray
+                        
+                        let mutableArray = NSMutableArray()
+                        
+                        var idArrayLocal: [Int] = []
+                        var idArrayRemote: [Int] = []
+                        
+                        // 创建远程记本数组，以及记本的编号数组
+                        for data  in arr {
+                            mutableArray.add(data)
+                            let d = data as! NSDictionary
+                            if let id = Int(d.stringAttributeForKey("id")) {
+                                idArrayRemote.append(id)
+                            }
                         }
-                    }
-                    
-                    // 创建本地记本数组，以及记本的编号数组
-                    for data in self.dataArray {
-                        let d = data as! NSDictionary
-                        if let id = Int(d.stringAttributeForKey("id")) {
-                            idArrayLocal.append(id)
+                        
+                        // 创建本地记本数组，以及记本的编号数组
+                        for data in self.dataArray {
+                            let d = data as! NSDictionary
+                            if let id = Int(d.stringAttributeForKey("id")) {
+                                idArrayLocal.append(id)
+                            }
                         }
-                    }
-                    
-                    /* 当记本在本地和服务器两边数据不相同时
-                    ** 以服务器的数据为准
-                    ** 同时服务器的数据会覆盖本地的数据
-                    */
-                    if bubble(idArrayRemote) != bubble(idArrayLocal) {
-                        // 启动后不延时
-                        self.dataArray = mutableArray
-                        Cookies.set(self.dataArray, forKey: "NianDreams")
-                        self.reloadFromDataArray()
-                    } else {
-                        /* 本地与服务器的记本完全相同
-                        ** 在完成卡片动画后关闭动画选项
-                        */
-                        let newArr = NSMutableArray()
-                        for id in idArrayLocal {
-                            for _data in mutableArray {
-                                if let data = _data as? NSDictionary {
-                                    let newId = data.stringAttributeForKey("id")
-                                    if newId == "\(id)" {
-                                        newArr.add(data)
-                                        break
+                        
+                        /* 当记本在本地和服务器两边数据不相同时
+                         ** 以服务器的数据为准
+                         ** 同时服务器的数据会覆盖本地的数据
+                         */
+                        if bubble(idArrayRemote) != bubble(idArrayLocal) {
+                            // 启动后不延时
+                            self.dataArray = mutableArray
+                            Cookies.set(self.dataArray, forKey: "NianDreams")
+                            self.reloadFromDataArray()
+                        } else {
+                            /* 本地与服务器的记本完全相同
+                             ** 在完成卡片动画后关闭动画选项
+                             */
+                            let newArr = NSMutableArray()
+                            for id in idArrayLocal {
+                                for _data in mutableArray {
+                                    if let data = _data as? NSDictionary {
+                                        let newId = data.stringAttributeForKey("id")
+                                        if newId == "\(id)" {
+                                            newArr.add(data)
+                                            break
+                                        }
                                     }
                                 }
                             }
+                            self.dataArray = newArr
+                            Cookies.set(self.dataArray, forKey: "NianDreams")
+                            self.reloadFromDataArray()
                         }
-                        self.dataArray = newArr
-                        Cookies.set(self.dataArray, forKey: "NianDreams")
-                        self.reloadFromDataArray()
                     }
                 }
             }

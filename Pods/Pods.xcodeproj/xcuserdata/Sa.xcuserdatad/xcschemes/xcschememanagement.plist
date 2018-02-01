@@ -24,7 +24,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-Nian iOS.xcscheme</key>
+		<key>Pods-NianiOS.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -47,7 +47,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>814CFDC78551C5FF0F2459637B517ACE</key>
+		<key>2602F3D0DAC534568B6AD7EEA0DD1959</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7DFCF466D5413CBAFF30FF82D5BF6D57</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -57,22 +62,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9FAFE7D2332C671DDA045FE1F94013F0</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>ACE84AEA4AD81BF5DDA3EBDC5432D207</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>AF4E429E2B66ED5C71EE4F2F218B0132</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D5CF59D7D561FCDA3A8704DF93231ED1</key>
+		<key>E8F4211E5FFEE6A9DF8E0298CD7F6D72</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FBC83D5E4ED46FBB64D6F59146786602</key>
 		<dict>
 			<key>primary</key>
 			<true/>

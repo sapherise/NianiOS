@@ -98,7 +98,6 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
             if let conversation = item as? RCConversation {
                 if let _json = conversation.jsonDict {
                     let json = _json as NSDictionary
-                    
                     /* 根据类型是图片还是文字，来决定内容是什么 */
                     var content = json.stringAttributeForKey("content")
                     if conversation.objectName == "RC:ImgMsg" {
@@ -119,7 +118,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
                                 name = a2
                             }
                         }
-                        let id = conversation.targetId
+                        let id = (conversation.targetId)!
                         let unread = conversation.unreadMessageCount
                         let time = ("\(conversation.sentTime / Int64(1000))" as NSString).doubleValue
                         let lastdate = V.absoluteTime(time)

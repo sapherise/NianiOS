@@ -45,7 +45,7 @@ class IMClass: AnyObject {
             let lastdate = V.absoluteTime(time)
             let extra = text.extra.components(separatedBy: ":")
             let messageid = "\(message.messageId)"
-            let senderUserid = message.senderUserId
+            let senderUserid = message.senderUserId!
             
             /* 发起者的昵称 */
             let nameSender = extra[1]

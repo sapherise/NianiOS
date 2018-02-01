@@ -401,8 +401,8 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                 }
                 fo = "\(fo) 关注，"
                 foed = "\(foed) 听众"
-                let foWidth = fo.stringWidthBoldWith(12, height: 21)
-                let foedWidth = foed.stringWidthBoldWith(12, height: 21)
+                let foWidth = fo.stringWidthBoldWith(12, height: 21) + 8
+                let foedWidth = foed.stringWidthBoldWith(12, height: 21) + 8
                 let foX = ( globalWidth - foWidth - foedWidth ) / 2
                 let foedX = foX + foWidth
                 let AllCoverURL = "http://img.nian.so/cover/\(cover)!cover"

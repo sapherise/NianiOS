@@ -68,6 +68,7 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
         tableView.dataSource = self
         tableView.register(UINib(nibName: "ListCell", bundle: nil), forCellReuseIdentifier: "ListCell")
         tableView.separatorStyle = .none
+        tableView.backgroundColor = UIColor.BackgroundColor()
         view.addSubview(tableView)
         tableView.addHeaderWithCallback { () -> Void in
             self.load(true)
@@ -158,8 +159,9 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
         if type == ListType.invite {
             Api.getMultiInviteList(id, page: page) { json in
                 if json != nil {
-                    if let err = json!.object(forKey: "error") as? NSNumber {
-                        if err == 0 {
+                    if let j = json as? NSDictionary {
+                        let err = j.stringAttributeForKey("error")
+                        if err == "0" {
                             if let items = json!.object(forKey: "data") as? NSArray {
                                 if clear {
                                     self.dataArray.removeAllObjects()
@@ -181,8 +183,9 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
         } else if type == ListType.members {
             Api.getMultiDreamList(id, page: page) { json in
                 if json != nil {
-                    if let err = json!.object(forKey: "error") as? NSNumber {
-                        if err == 0 {
+                    if let j = json as? NSDictionary {
+                        let err = j.stringAttributeForKey("error")
+                        if err == "0" {
                             if let items = json!.object(forKey: "data") as? NSArray {
                                 if clear {
                                     self.dataArray.removeAllObjects()
@@ -204,8 +207,9 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
         } else if type == ListType.like {
             Api.getLike(page, stepId: id) { json in
                 if json != nil {
-                    if let err = json!.object(forKey: "error") as? NSNumber {
-                        if err == 0 {
+                    if let j = json as? NSDictionary {
+                        let err = j.stringAttributeForKey("error")
+                        if err == "0" {
                             if let items = json!.object(forKey: "data") as? NSArray {
                                 if clear {
                                     self.dataArray.removeAllObjects()
@@ -227,16 +231,17 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
         } else if type == ListType.followers {
             Api.getDreamFollow(id, page: page) { json in
                 if json != nil {
-                    if let err = json!.object(forKey: "error") as? NSNumber {
-                        if err == 0 {
+                    if let j = json as? NSDictionary {
+                        let err = j.stringAttributeForKey("error")
+                        if err == "0" {
                             if let data = json!.object(forKey: "data") as? NSDictionary {
                                 if let users = data.object(forKey: "users") as? NSArray {
-                                        if clear {
-                                            self.dataArray.removeAllObjects()
-                                        }
-                                        for item in users {
-                                            self.dataArray.add(item)
-                                        }
+                                    if clear {
+                                        self.dataArray.removeAllObjects()
+                                    }
+                                    for item in users {
+                                        self.dataArray.add(item)
+                                    }
                                 }
                             }
                             self.page += 1
@@ -252,8 +257,9 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
         } else if type == ListType.dreamLikes {
             Api.getDreamLike(id, page: page) { json in
                 if json != nil {
-                    if let err = json!.object(forKey: "error") as? NSNumber {
-                        if err == 0 {
+                    if let j = json as? NSDictionary {
+                        let err = j.stringAttributeForKey("error")
+                        if err == "0" {
                             if let data = json!.object(forKey: "data") as? NSDictionary {
                                 if let users = data.object(forKey: "users") as? NSArray {
                                     if clear {

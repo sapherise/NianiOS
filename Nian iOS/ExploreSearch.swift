@@ -464,7 +464,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
             userPage = 1
         }
         
-        Api.getSearchUsers(searchText.text!.encode(), page: userPage, callback: {
+        Api.getSearchUsers(searchText.text!, page: userPage, callback: {
             json in
             if json != nil {
                 if clear {
@@ -499,17 +499,18 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         if clear {
             dreamPage = 1
         }
-        Api.getSearchDream(searchText.text!.encode(), page: dreamPage, callback: {
-            json in
+        Api.getSearchDream(searchText.text!, page: dreamPage, callback: { json in
             if json != nil {
                 if clear {
                     self.dataArrayDream.removeAllObjects()
                 }
-                let data = json!.object(forKey: "data")
-                let itemsDream = (data as AnyObject).object(forKey: "dreams") as? NSArray
-                if itemsDream != nil {
-                    for item in itemsDream! {
-                        self.dataArrayDream.add(item)
+                if let j = json as? NSDictionary {
+                    if let data = j.object(forKey: "data") as? NSDictionary {
+                        if let dreams = data.object(forKey: "dreams") as? NSArray {
+                            for item in dreams {
+                                self.dataArrayDream.add(item)
+                            }
+                        }
                     }
                 }
                 if self.dataArrayDream.count == 0 {
@@ -532,7 +533,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         if clear {
             stepPage = 1
         }
-        Api.getSearchSteps(searchText.text!.encode(), page: stepPage, callback: {
+        Api.getSearchSteps(searchText.text!, page: stepPage, callback: {
             json in
             if json != nil {
                 if clear {
@@ -541,12 +542,14 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
                 } else {
                     globalVVeboReload = false
                 }
-                let data = json!.object(forKey: "data")
-                let itemsStep = (data as AnyObject).object(forKey: "steps") as? NSArray
-                if itemsStep != nil {
-                    for item in itemsStep! {
-                        let d = VVeboCell.SACellDataRecode(item as! NSDictionary)
-                        self.dataArrayStep.add(d)
+                if let j = json as? NSDictionary {
+                    if let data = j.object(forKey: "data") as? NSDictionary {
+                        if let steps = data.object(forKey: "steps") as? NSArray {
+                            for item in steps {
+                                let d = VVeboCell.SACellDataRecode(item as! NSDictionary)
+                                self.dataArrayStep.add(d)
+                            }
+                        }
                     }
                 }
                 self.currentDataArray = self.dataArrayStep

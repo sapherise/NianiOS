@@ -23,81 +23,82 @@ extension PetViewController {
                     _btn.stopAnimating()
                     
                     if json != nil {
-                        let err = json!.object(forKey: "error") as! NSNumber
-                        if err == 0 {
-                            self.isUpgradeSuccess = true
-                            let data = json!.object(forKey: "data") as! NSDictionary
-                            let id = data.stringAttributeForKey("id")
-                            let level = data.stringAttributeForKey("level")
-                            let image = data.stringAttributeForKey("image")
-                            let name = data.stringAttributeForKey("name")
-                            
-                            /* 如果最后的等级是 2，那么就扣除 5 念币 */
-                            var reduce = 5
-                            if Int(level)! > 10 {
-                                reduce = 15
-                            } else if Int(level)! > 5 {
-                                reduce = 10
-                            }
-                            if let coin = Cookies.get("coin") as? String {
-                                if let _coin = Int(coin) {
-                                    let coinNew = _coin - reduce
-                                    Cookies.set("\(coinNew)" as AnyObject?, forKey: "coin")
-                                }
-                            }
-                            
-                            if self.dataArray.count >= 1 {
-                                for i: Int in 0...self.dataArray.count - 1 {
-                                    let d = self.dataArray[i] as! NSDictionary
-                                    let _id = d.stringAttributeForKey("id")
-                                    if _id == id {
-                                        if level == "5" || level == "10" {
-                                            self.evolutionView = NIAlert()
-                                            self.evolutionView!.delegate = self
-                                            self.evolutionView!.dict = NSMutableDictionary(objects: [self.imageView, name, "\(name)进化了！", [" 嗯！"]],
-                                                forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
-                                            self.upgradeView?.dismissWithAnimationSwtichEvolution(self.evolutionView!, url: image)
-                                            let mutableData = NSMutableDictionary(dictionary: d)
-                                            mutableData.setValue(image, forKey: "image")
-                                            mutableData.setValue(level, forKey: "level")
-                                            self.dataArray[i] = mutableData
-                                            self.tableViewPet.reloadData()
-                                            delay(1, closure: {
-                                                self.setPetTitle()
-                                            })
-                                            break
-                                        } else {
-                                            let mutableData = NSMutableDictionary(dictionary: d)
-                                            mutableData.setValue(image, forKey: "image")
-                                            mutableData.setValue(level, forKey: "level")
-                                            self.dataArray[i] = mutableData
-                                            self.tableViewPet.reloadData()
-                                            self.setPetTitle()
-                                            self.upgradeView?.dismissWithAnimation(.normal)
-                                            break
+                        if let j = json as? NSDictionary {
+                            let err = j.stringAttributeForKey("error")
+                            if err == "0" {
+                                    self.isUpgradeSuccess = true
+                                    let data = json!.object(forKey: "data") as! NSDictionary
+                                    let id = data.stringAttributeForKey("id")
+                                    let level = data.stringAttributeForKey("level")
+                                    let image = data.stringAttributeForKey("image")
+                                    let name = data.stringAttributeForKey("name")
+                                    
+                                    /* 如果最后的等级是 2，那么就扣除 5 念币 */
+                                    var reduce = 5
+                                    if Int(level)! > 10 {
+                                        reduce = 15
+                                    } else if Int(level)! > 5 {
+                                        reduce = 10
+                                    }
+                                    if let coin = Cookies.get("coin") as? String {
+                                        if let _coin = Int(coin) {
+                                            let coinNew = _coin - reduce
+                                            Cookies.set("\(coinNew)" as AnyObject?, forKey: "coin")
                                         }
                                     }
-                                }
+                                    
+                                    if self.dataArray.count >= 1 {
+                                        for i: Int in 0...self.dataArray.count - 1 {
+                                            let d = self.dataArray[i] as! NSDictionary
+                                            let _id = d.stringAttributeForKey("id")
+                                            if _id == id {
+                                                if level == "5" || level == "10" {
+                                                    self.evolutionView = NIAlert()
+                                                    self.evolutionView!.delegate = self
+                                                    self.evolutionView!.dict = NSMutableDictionary(objects: [self.imageView, name, "\(name)进化了！", [" 嗯！"]],
+                                                                                                   forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
+                                                    self.upgradeView?.dismissWithAnimationSwtichEvolution(self.evolutionView!, url: image)
+                                                    let mutableData = NSMutableDictionary(dictionary: d)
+                                                    mutableData.setValue(image, forKey: "image")
+                                                    mutableData.setValue(level, forKey: "level")
+                                                    self.dataArray[i] = mutableData
+                                                    self.tableViewPet.reloadData()
+                                                    delay(1, closure: {
+                                                        self.setPetTitle()
+                                                    })
+                                                    break
+                                                } else {
+                                                    let mutableData = NSMutableDictionary(dictionary: d)
+                                                    mutableData.setValue(image, forKey: "image")
+                                                    mutableData.setValue(level, forKey: "level")
+                                                    self.dataArray[i] = mutableData
+                                                    self.tableViewPet.reloadData()
+                                                    self.setPetTitle()
+                                                    self.upgradeView?.dismissWithAnimation(.normal)
+                                                    break
+                                                }
+                                            }
+                                        }
+                                    }
+                            } else if err == "1" {
+                                self.isUpgradeSuccess = false
+                                self.upgradeResultView = NIAlert()
+                                self.upgradeResultView!.delegate = self
+                                self.upgradeResultView!.dict = NSMutableDictionary(objects: [UIImage(named: "coinless")!, "念币不足", "没有足够的念币...", ["哦"]],
+                                                                                   forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
+                                self.upgradeView?.dismissWithAnimationSwtich(self.upgradeResultView!)
+                            } else {
+                                self.isUpgradeSuccess = false
+                                self.upgradeResultView = NIAlert()
+                                self.upgradeResultView!.delegate = self
+                                self.upgradeResultView!.dict = NSMutableDictionary(objects: [UIImage(named: "coinless")!, "奇怪的错误", "遇到了一个奇怪的错误...", ["哦"]],
+                                                                                   forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
+                                self.upgradeView?.dismissWithAnimationSwtich(self.upgradeResultView!)
                             }
-                        } else if err == 1 {
-                            self.isUpgradeSuccess = false
-                            self.upgradeResultView = NIAlert()
-                            self.upgradeResultView!.delegate = self
-                            self.upgradeResultView!.dict = NSMutableDictionary(objects: [UIImage(named: "coinless")!, "念币不足", "没有足够的念币...", ["哦"]],
-                                forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
-                            self.upgradeView?.dismissWithAnimationSwtich(self.upgradeResultView!)
-                        } else {
-                            self.isUpgradeSuccess = false
-                            self.upgradeResultView = NIAlert()
-                            self.upgradeResultView!.delegate = self
-                            self.upgradeResultView!.dict = NSMutableDictionary(objects: [UIImage(named: "coinless")!, "奇怪的错误", "遇到了一个奇怪的错误...", ["哦"]],
-                                forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
-                            self.upgradeView?.dismissWithAnimationSwtich(self.upgradeResultView!)
                         }
                     }
                 }
             }
-            
         } else if niAlert == self.petDetailView {
             if didselectAtIndex == 0 {
                 let data = dataArray[current] as! NSDictionary
@@ -126,19 +127,21 @@ extension PetViewController {
                 let coins = energy/100
                 Api.getConsume("energy", coins: coins) { json in
                     if json != nil {
-                        let err = json!.object(forKey: "error") as! NSNumber
-                        self.giftView?.dismissWithAnimation(.normal)
-                        if err == 0 {
-                            if let coin = Cookies.get("coin") as? String {
-                                if let _coin = Int(coin) {
-                                    let coinNew = _coin + coins
-                                    Cookies.set("\(coinNew)" as AnyObject?, forKey: "coin")
+                        if let j = json as? NSDictionary {
+                            let err = j.stringAttributeForKey("error")
+                            self.giftView?.dismissWithAnimation(.normal)
+                            if err == "0" {
+                                if let coin = Cookies.get("coin") as? String {
+                                    if let _coin = Int(coin) {
+                                        let coinNew = _coin + coins
+                                        Cookies.set("\(coinNew)" as AnyObject?, forKey: "coin")
+                                    }
                                 }
+                                self.energy = self.energy - coins * 100
+                                self.setPetTitle()
+                            } else {
+                                self.showTipText("遇到了一个奇怪的错误...")
                             }
-                            self.energy = self.energy - coins * 100
-                            self.setPetTitle()
-                        } else {
-                            self.showTipText("遇到了一个奇怪的错误...")
                         }
                     }
                 }
@@ -164,19 +167,18 @@ extension PetViewController {
     }
     
     func shareVC() {
-        // todo
-//        let card = (Bundle.main.loadNibNamed("Card", owner: self, options: nil) as NSArray).object(at: 0) as! Card
-//        let data = dataArray[current] as! NSDictionary
-//        let name = data.stringAttributeForKey("name")
-//        let image = data.stringAttributeForKey("image")
-//        let content = "我在念里拿到了可爱的「\(name)」"
-//        card.content = content
-//        card.widthImage = "360"
-//        card.heightImage = "360"
-//        card.url = "http://img.nian.so/pets/\(image)!d"
-//        let img = card.getCard()
-//        let avc = SAActivityViewController.shareSheetInView([img, content], applicationActivities: [], isStep: true)
-//        self.present(avc, animated: true, completion: nil)
+        let card = Bundle.main.loadNibNamed("Card", owner: self, options: nil)?.first as! Card
+        let data = dataArray[current] as! NSDictionary
+        let name = data.stringAttributeForKey("name")
+        let image = data.stringAttributeForKey("image")
+        let content = "我在念里拿到了可爱的「\(name)」"
+        card.content = content
+        card.widthImage = "360"
+        card.heightImage = "360"
+        card.url = "http://img.nian.so/pets/\(image)!d"
+        let img = card.getCard()
+        let avc = SAActivityViewController.shareSheetInView([img, content as AnyObject], applicationActivities: [], isStep: true)
+        self.present(avc, animated: true, completion: nil)
     }
     
     func saEgg(_ saEgg: SAEgg, lotteryResult: NSDictionary) {

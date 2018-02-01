@@ -44,7 +44,8 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     var niAppStore: NIAlert?
     var niAppStoreStar: NIAlert?
     // 网络状态初始化
-    let reachability = Reachability.reachabilityForInternetConnection()
+//    let reachability = Reachability.reachabilityForInternetConnection()
+    let reachability = Reachability()!
     
     var newEditStepRow: Int = 0
     var newEditStepData: NSDictionary?
@@ -73,46 +74,45 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     func gameoverCheck() {
         Api.getGameover() { json in
             if json != nil {
-                let error = json!.object(forKey: "error") as? NSNumber
-                // todo
-//                let json = JSON(json!)
-////                if error == 0 {
-////                    let willLogout = json["data"]["gameover"].stringValue
-////                    
-////                    // 如果被封号
-////                    if willLogout == "1" {
-////                        let data = json["data"].dictionaryValue
-////                        self.gameoverId = data["dream"]!["id"].stringValue
-////                        let gameoverDays = data["dream"]!["days"].stringValue
-////                        
-////                        self.GameOverView = (Bundle.main.loadNibNamed("Popup", owner: self, options: nil) as NSArray).object(at: 0) as! Popup
-////                        self.GameOverView.textTitle = "游戏结束"
-////                        self.GameOverView.textContent = "因为 \(gameoverDays) 天没更新\n你损失了 5 念币"
-////                        self.GameOverView.heightImage = 130
-////                        self.GameOverView.textBtnMain = "继续日更模式"
-////                        self.GameOverView.textBtnSub = " 关闭日更模式"
-////                        self.GameOverView.btnMain.tag = 1
-////                        self.GameOverView.btnSub.tag = 2
-////                        self.GameOverView.btnMain.addTarget(self, action: #selector(HomeViewController.onBtnGameOverClick(_:)), for: UIControlEvents.touchUpInside)
-////                        self.GameOverView.btnSub.addTarget(self, action: #selector(HomeViewController.onBtnGameOverClick(_:)), for: UIControlEvents.touchUpInside)
-////                        let gameoverHead = UIImageView(frame: CGRect(x: 70, y: 60, width: 75, height: 60))
-////                        gameoverHead.image = UIImage(named: "pet_ghost")
-////                        let gameoverSpark = UIImageView(frame: CGRect(x: 35, y: 38, width: 40, height: 60))
-////                        gameoverSpark.image = UIImage(named: "pet_ghost_spark")
-////                        self.GameOverView.viewHolder.addSubview(gameoverHead)
-////                        self.GameOverView.viewHolder.addSubview(gameoverSpark)
-////                        self.view.addSubview(self.GameOverView)
-////                        gameoverHead.setAnimationWanderX(70, leftEndX: 125, rightStartX: 125, rightEndX: 70)
-////                        gameoverHead.setAnimationWanderY(60, endY: 64)
-////                        gameoverSpark.setAnimationWanderX(70-25, leftEndX: 125-25, rightStartX: 125+60, rightEndX: 70+60)
-////                        gameoverSpark.setAnimationWanderY(35, endY: 38, animated: false)
-////                    } else {
-////                        self.SANews()
-////                    }
-////                } else {
-//                    // 校验失败
-//                    self.SAlogout()
-//                }
+                if SAValue(json, "error") != "0" {
+                   self.SAlogout()
+                } else {
+                    if let j = json as? NSDictionary {
+                        if let data = j.object(forKey: "data") as? NSDictionary {
+                            let willLogout = data.stringAttributeForKey("gameover")
+                            // 如果被封号了
+                            if willLogout == "1" {
+                                if let dream = data.object(forKey: "dream") as? NSDictionary {
+                                    self.gameoverId = dream.stringAttributeForKey("id")
+                                    let gameoverDays = dream.stringAttributeForKey("days")
+                                    self.GameOverView = Bundle.main.loadNibNamed("Popup", owner: self, options: nil)?.first as! Popup
+                                    self.GameOverView.textTitle = "游戏结束"
+                                    self.GameOverView.textContent = "因为 \(gameoverDays) 天没更新\n你损失了 5 念币"
+                                    self.GameOverView.heightImage = 130
+                                    self.GameOverView.textBtnMain = "继续日更模式"
+                                    self.GameOverView.textBtnSub = " 关闭日更模式"
+                                    self.GameOverView.btnMain.tag = 1
+                                    self.GameOverView.btnSub.tag = 2
+                                    self.GameOverView.btnMain.addTarget(self, action: #selector(HomeViewController.onBtnGameOverClick(_:)), for: UIControlEvents.touchUpInside)
+                                    self.GameOverView.btnSub.addTarget(self, action: #selector(HomeViewController.onBtnGameOverClick(_:)), for: UIControlEvents.touchUpInside)
+                                    let gameoverHead = UIImageView(frame: CGRect(x: 70, y: 60, width: 75, height: 60))
+                                    gameoverHead.image = UIImage(named: "pet_ghost")
+                                    let gameoverSpark = UIImageView(frame: CGRect(x: 35, y: 38, width: 40, height: 60))
+                                    gameoverSpark.image = UIImage(named: "pet_ghost_spark")
+                                    self.GameOverView.viewHolder.addSubview(gameoverHead)
+                                    self.GameOverView.viewHolder.addSubview(gameoverSpark)
+                                    self.view.addSubview(self.GameOverView)
+                                    gameoverHead.setAnimationWanderX(70, leftEndX: 125, rightStartX: 125, rightEndX: 70)
+                                    gameoverHead.setAnimationWanderY(60, endY: 64)
+                                    gameoverSpark.setAnimationWanderX(70-25, leftEndX: 125-25, rightStartX: 125+60, rightEndX: 70+60)
+                                    gameoverSpark.setAnimationWanderY(35, endY: 38, animated: false)
+                                }
+                            } else {
+                                self.SANews()
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -198,13 +198,15 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                         let noticeLike = Int(data.stringAttributeForKey("notice_like"))
                         let noticeNews = Int(data.stringAttributeForKey("notice_news"))
                         if noticeReply != nil && noticeLike != nil && noticeNews != nil {
-//                            let a = noticeReply! + noticeLike! + noticeNews!
-//                            let notice = Int32(a)
-//                            let _letter = RCIMClient.shared().getUnreadCount([RCConversationType.ConversationType_PRIVATE.rawValue])
-//                            let letter = max(0, _letter)
-//                            self.unread = letter + notice
-//                            self.dotShow()
-                            // todo
+                            let a = noticeReply!
+                            let b = noticeLike!
+                            let c = noticeNews!
+                            let num = a + b + c
+                            let notice = Int32(num)
+                            let _letter = RCIMClient.shared().getUnreadCount([RCConversationType.ConversationType_PRIVATE.rawValue])
+                            let letter = max(0, _letter)
+                            self.unread = letter + notice
+                            self.dotShow()
                         }
                     }
                 }

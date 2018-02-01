@@ -124,8 +124,9 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
             var IDComment = 0
             Api.postDreamStepComment("\(self.dreamID)", step: "\(self.stepID)", content: content, type: type) { json in
                 if json != nil {
-                    if let status = json!.object(forKey: "status") as? NSNumber {
-                        if status == 200 {
+                    if let j = json as? NSDictionary {
+                        let status = j.stringAttributeForKey("status")
+                        if status == "200" {
                             IDComment = Int((json as! NSDictionary).stringAttributeForKey("data"))!
                             success = true
                             if finish {
@@ -135,9 +136,6 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
                             self.showTipText("对方设置了不被回应...")
                             self.keyboardView.inputKeyboard.text = replyContent
                         }
-                    } else {
-                        self.showTipText("服务器坏了...")
-                        self.keyboardView.inputKeyboard.text = replyContent
                     }
                 }
             }
@@ -316,7 +314,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         if index >= 0 {
             let data = dataArray[index] as! NSDictionary
             let name = data.stringAttributeForKey("user")
-            let text = keyboardView.inputKeyboard.text
+            let text = keyboardView.inputKeyboard.text!
             if text == "" {
                 self.keyboardView.inputKeyboard.text = "@\(name) "
             } else {
@@ -374,15 +372,13 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
     }
     
     override func keyboardWasShown(_ notification: Notification) {
-        var info: Dictionary = (notification as NSNotification).userInfo!
-        // todo
-//        let keyboardSize: CGSize = ((info[UIKeyboardFrameEndUserInfoKey]? as AnyObject).cgRectValue.size)
-//        keyboardHeight = max(keyboardSize.height, keyboardHeight)
-//        
-//        /* 移除表情界面，修改按钮样式 */
-//        keyboardView.resignEmoji()
-//        keyboardView.resizeTableView()
-//        keyboardView.labelPlaceHolder.isHidden = true
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            keyboardHeight = max(keyboardSize.height, keyboardHeight)
+            /* 移除表情界面，修改按钮样式 */
+            keyboardView.resignEmoji()
+            keyboardView.resizeTableView()
+            keyboardView.labelPlaceHolder.isHidden = true
+        }
     }
     
     override func keyboardWillBeHidden(_ notification: Notification){

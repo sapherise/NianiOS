@@ -111,8 +111,6 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate, LockDe
         self.settingCoverBlurView.translucentStyle = .black
         self.settingAvatarBlurView.translucentStyle = .black
         
-        self.settingModel = SettingModel()
-        
         /* 隐藏 “清理缓存” 的 spinner */
         self.cacheActivityIndicator.isHidden = true
         
@@ -184,37 +182,32 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate, LockDe
         beginLoading()
         
         dailyModeSwitch.isHidden = true
-        
-//        SettingModel.getUserInfoAndSetting {
-//            (task, responseObject, error) in
-//            
-//            self.endLoading()
-//            
-//            if let _ = error { // AFNetworking 返回的错误
-//                self.showTipText("网络有点问题，只加载了本地设置")
-//            } else {
-//                let json = JSON(responseObject!)
-//                
-//                if json["error"] != 0 {   // 服务器返回的错误代码
-//                    self.showTipText("网络有点问题，等下再试")
-//                } else {
-//                    self.userDict = json["data"]["user"].dictionaryObject!
-////                    
-//                    if json["data"]["user"]["isMonthly"].stringValue == "1" {
-//                        self.settingModel?.dailyMode = "0"
-//                        self.dailyModeSwitch.setOn(false, animated: false)
-//                    } else {
-//                        self.settingModel?.dailyMode = "1"
-//                        self.dailyModeSwitch.setOn(true, animated: false)
-//                    }
-//                    self.dailyModeSwitch.isHidden = false
-//                    
-//                    self.userDefaults.set(json["data"]["user"]["name"].stringValue, forKey: "user")
-//                    self.userDefaults.synchronize()
-//                } // if json["error"] != 0
-//            } // if let _error = error
-//        }  // SettingModel.getUserInfoAndSetting
-        // todo
+        Api.getUserInfoAndSetting() { json in
+            self.endLoading()
+            if json != nil {
+                if SAValue(json, "error") != "0" {
+                    self.showTipText("网络有些问题，只加载了本地设置")
+                } else {
+                    if let a = json?.object(forKey: "data") as? NSDictionary {
+                        if let user = a.object(forKey: "user") as? Dictionary<String, AnyObject> {
+                            self.userDict = user
+                            let _user = user as NSDictionary
+                            if _user.stringAttributeForKey("isMonthly") == "1" {
+                                self.settingModel?.dailyMode = "0"
+                                self.dailyModeSwitch.setOn(false, animated: false)
+                            } else {
+                                self.settingModel?.dailyMode = "1"
+                                self.dailyModeSwitch.setOn(true, animated: false)
+                            }
+                            self.dailyModeSwitch.isHidden = false
+                            let name = _user.stringAttributeForKey("name")
+                            self.userDefaults.set(name, forKey: "user")
+                            self.userDefaults.synchronize()
+                        }
+                    }
+                }
+            }
+        }
         
         // 设定彩蛋
         logo.isUserInteractionEnabled = true
@@ -247,7 +240,7 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate, LockDe
     
     func onEgg(_ sender: UILongPressGestureRecognizer) {
         if sender.state == UIGestureRecognizerState.began {
-            self.showTipText("念 爱 你")
+            self.showTipText("你是永恒\n09.26.16", delayTime: 5)
         }
     }
     
@@ -268,20 +261,13 @@ extension NewSettingViewController{
      是否日更模式
      */
     @IBAction func dailyModeChanged(_ sender: UISwitch) {
-      
         let _daily: String = sender.isOn ? "1" : "0"
-        
-        SettingModel.updateUserInfo(["daily": "\(_daily)"]) {
-            (task, responseObject, error) -> Void in
-            
-            if let _ = error {
-                
-            } else {
+        Api.updateUserInfo(["daily": "\(_daily)"]) { json in
+            if json != nil {
                 self.userDefaults.set(_daily, forKey: "dailyMode")
                 self.userDefaults.synchronize()
             }
         }
-        
     }
     
     /**
@@ -332,19 +318,13 @@ extension NewSettingViewController{
      是否只能通过昵称找到
      */
     @IBAction func findMeOnlyViaName(_ sender: UISwitch) {
-     
         let _private = sender.isOn ? "1" : "0"
-        
-        SettingModel.updateUserInfo(["private": "\(_private)"]) {
-            (task, responseObject, error) -> Void in
-            if let _ = error {
-                
-            } else {
+        Api.updateUserInfo(["private": "\(_private)"]) { json in
+            if json != nil {
                 self.userDefaults.set(_private, forKey: "privateMode")
                 self.userDefaults.synchronize()
             }
         }
-        
     }
     
     @IBAction func lockNian(_ sender: UISwitch) {
@@ -370,10 +350,6 @@ extension NewSettingViewController{
 
 // MARK: - 处理相关的 tap 手势
 extension NewSettingViewController {
-    
-    /**
-    设置封面图片， --- @warning: 应该叫做 setCoverImage 的，但是和之前不知道哪里有冲突
-     */
     @IBAction func setCover(_ sender: UITapGestureRecognizer) {
         actionSheet = UIActionSheet(title: "设定封面", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         actionSheet!.addButton(withTitle: "相册")
@@ -382,41 +358,6 @@ extension NewSettingViewController {
         actionSheet!.addButton(withTitle: "取消")
         actionSheet!.cancelButtonIndex = 3
         actionSheet!.show(in: self.view)
-//        let alertController = PSTAlertController.actionSheetWithTitle("设定封面")
-//        
-//        alertController.addAction(PSTAlertAction(title: "相册", style: .Default, handler: { (action) in
-//            self.coverImagePicker = UIImagePickerController()
-//            self.coverImagePicker!.delegate = self
-//            self.coverImagePicker!.allowsEditing = true
-//            self.coverImagePicker!.sourceType = .PhotoLibrary
-//            
-//            self.presentViewController(self.coverImagePicker!, animated: true, completion: nil)
-//        }))
-//        
-//        alertController.addAction(PSTAlertAction(title: "拍照", style: .Default, handler: { (action) in
-//            self.coverImagePicker = UIImagePickerController()
-//            self.coverImagePicker!.delegate = self
-//            self.coverImagePicker!.allowsEditing = true
-//            if UIImagePickerController.isSourceTypeAvailable(.Camera){
-//                self.coverImagePicker!.sourceType = .Camera
-//                self.presentViewController(self.coverImagePicker!, animated: true, completion: nil)
-//            }
-//        }))
-//        
-//        alertController.addAction(PSTAlertAction(title: "恢复默认封面", style: .Default, handler: { (action) in
-//            SettingModel.changeCoverImage(coverURL: "background.png", callback: {
-//                (task, responseObject, error) in
-//                
-//                self.coverImageView.image = UIImage(named: "bg")
-//                self.coverImageModified = true
-//            })
-//            
-//        }))
-        
-//        alertController.addCancelActionWithHandler(nil)
-//        
-//        alertController.showWithSender(sender, arrowDirection: .Any, controller: self, animated: true, completion: nil)
-        
     }
     
     @objc(actionSheet:clickedButtonAtIndex:) func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
@@ -436,12 +377,12 @@ extension NewSettingViewController {
                     self.present(self.coverImagePicker!, animated: true, completion: nil)
                 }
             } else if buttonIndex == 2 {
-                // todo
-//                SettingModel.changeCoverImage(coverURL: "background.png", callback: {
-//                    (task, responseObject, error) in
-//                    self.coverImageView.image = UIImage(named: "bg")
-//                    self.coverImageModified = true
-//                })
+                Api.changeCoverImage("background.png") { json in
+                    if json != nil {
+                        self.coverImageView.image = UIImage(named: "bg")
+                        self.coverImageModified = true
+                    }
+                }
             }
         } else if actionSheet == self.actionSheetHead {
             if buttonIndex == 0 {
@@ -477,32 +418,6 @@ extension NewSettingViewController {
         actionSheetHead!.addButton(withTitle: "取消")
         actionSheetHead!.cancelButtonIndex = 2
         actionSheetHead!.show(in: self.view)
-        
-//        let alertController = PSTAlertController.actionSheetWithTitle("设定头像")
-//        
-//        alertController.addAction(PSTAlertAction(title: "相册", style: .Default, handler: { (action) in
-//            self.avatarImagePicker = UIImagePickerController()
-//            self.avatarImagePicker!.delegate = self
-//            self.avatarImagePicker!.allowsEditing = true
-//            self.avatarImagePicker!.sourceType = .PhotoLibrary
-//            
-//            self.presentViewController(self.avatarImagePicker!, animated: true, completion: nil)
-//        }))
-//        
-//        alertController.addAction(PSTAlertAction(title: "拍照", style: .Default, handler: { (action) in
-//            self.avatarImagePicker = UIImagePickerController()
-//            self.avatarImagePicker!.delegate = self
-//            self.avatarImagePicker!.allowsEditing = true
-//            if UIImagePickerController.isSourceTypeAvailable(.Camera){
-//                self.avatarImagePicker!.sourceType = .Camera
-//                self.presentViewController(self.avatarImagePicker!, animated: true, completion: nil)
-//            }
-//        }))
-//
-//        alertController.addCancelActionWithHandler(nil)
-//        
-//        alertController.showWithSender(sender, arrowDirection: .Any, controller: self, animated: true, completion: nil)
-
     }
     
     
@@ -621,38 +536,28 @@ extension NewSettingViewController: UIImagePickerControllerDelegate, UINavigatio
         
         if type == "cover" {
             beginLoading()
-            
             let uy = UpYun()
-            // todo
-//            uy.successBlocker = ({ (data: AnyObject!) in
-//                var uploadURL = data.object(forKey: "url") as! String
-//                uploadURL = SAReplace(uploadURL, before: "/cover/", after: "") as String
-//                
-//                let coverImageURL = "http://img.nian.so/cover/\(uploadURL)!cover"
-//                let userDefaults = UserDefaults.standard
-//                userDefaults.set(uploadURL, forKey: "coverUrl")
-//                userDefaults.synchronize()
-//                
-//                SettingModel.changeCoverImage(coverURL: uploadURL, callback: {
-//                    (task, responseObject, error) in
-//                    self.endLoading()
-//                    
-//                    if let _ = error {
-//                        self.showTipText("上传不成功...")
-//                    } else {
-//                        setCacheImage(coverImageURL, img: image, width: 500 * globalScale)
-//                        // 上传成功后，本地显示新的封面
-//                        self.coverImageView.image = image
-//                        self.coverImageModified = true
-//                    }
-//                })
-//            })
-            
-            // todo
-//            uy.failBlocker = ({ (error: NSError!) in
-//                self.endLoading()
-//                self.showTipText("上传不成功...")
-//            })
+            uy.successBlocker = ({ d in
+                if let data = d as? NSDictionary {
+                    let a = data.stringAttributeForKey("url")
+                    let b = SAReplace(a, before: "/cover/", after: "") as String
+                    let coverImageURL = "http://img.nian.so/cover/\(b)!cover"
+                    let userDefaults = UserDefaults.standard
+                    userDefaults.set(b, forKey: "coverUrl")
+                    userDefaults.synchronize()
+                    Api.changeCoverImage(b) { json in
+                        self.endLoading()
+                        setCacheImage(coverImageURL, img: image, width: 500 * globalScale)
+                        // 上传成功后，本地显示新的封面
+                        self.coverImageView.image = image
+                        self.coverImageModified = true
+                    }
+                }
+            })
+            uy.failBlocker = ({ error in
+                self.endLoading()
+                self.showTipText("上传不成功...")
+            })
             
             uy.uploadImage(resizedImage(image, newWidth: 500), savekey: getSaveKey("cover", png: "jpg") as String)
             
@@ -660,19 +565,18 @@ extension NewSettingViewController: UIImagePickerControllerDelegate, UINavigatio
             beginLoading()
             
             let uy = UpYun()
-//            uy.successBlocker = ({ (data: AnyObject!) in
-//                self.endLoading()
-//                
-//                self.avatarImageView.image = image
-//                self.avatarImageModified = true
-//                
-//                setCacheImage("http://img.nian.so/head/\(CurrentUser.sharedCurrentUser.uid!).jpg!dream", img: image, width: 150)
-//            })
-//            uy.failBlocker = ({ (error: NSError!) in
-//                self.endLoading()
-//                self.showTipText("上传失败了...再试试")
-//            })
-            // todo
+            uy.successBlocker = ({ data in
+                self.endLoading()
+                
+                self.avatarImageView.image = image
+                self.avatarImageModified = true
+                
+                setCacheImage("http://img.nian.so/head/\(CurrentUser.sharedCurrentUser.uid!).jpg!dream", img: image, width: 150)
+            })
+            uy.failBlocker = ({ error in
+                self.endLoading()
+                self.showTipText("上传失败了...再试试")
+            })
             
             let _tmpString = "/head/" + "\(CurrentUser.sharedCurrentUser.uid!)" + ".jpg"
             
@@ -689,7 +593,7 @@ extension NewSettingViewController: EditProfileDelegate {
     func editProfile(profileDict: Dictionary<String, String>) {
         
         for (key, value) in profileDict {
-            self.userDict?.updateValue(value as AnyObject, forKey: key)
+            _ = self.userDict?.updateValue(value as AnyObject, forKey: key)
         }
     }
     

@@ -73,13 +73,13 @@ class LevelView: UIView {
     
     func layoutAMonth(_ marks: [Bool]) {
         let calendar = Calendar.current
-        let comoponents = (calendar as NSCalendar).components([NSCalendar.Unit.NSYearCalendarUnit, NSCalendar.Unit.NSMonthCalendarUnit], from: Date())
+        let comoponents = (calendar as NSCalendar).components([NSCalendar.Unit.year, NSCalendar.Unit.month], from: Date())
         let year = comoponents.year
         let month = comoponents.month
         
         let dffd = DateFormatter()
         dffd.dateFormat = "MM/dd/yyyy"
-        let firstDay :Date = dffd.date(from: "\(month)/01/\(year)")!
+        let firstDay: Date! = dffd.date(from: "\(month!)/01/\(year!)")
         
         let dfmn = DateFormatter()
         dfmn.dateFormat = "MM"
@@ -107,48 +107,47 @@ class LevelView: UIView {
             var thePosX = (40 * (theDayOfWeek - 1)) + 15 + 12
             // -1 because you want the first to be 0
             
-            let strAll = "\(strMonthNum)/\(index)/\(year)"
-            
+            let strAll = "\(strMonthNum)/\(index)/\(year!)"
             let todayF = DateFormatter()
             todayF.dateFormat = "MM/d/yyyy"
             let firstDay = todayF.string(from: Date())
             let cF = DateFormatter()
             cF.dateFormat = "MM/dd/yyyy"
-                //make a button
-                let myB = UILabel()
-                myB.text = "\(index)"
-                myB.textAlignment = NSTextAlignment.center
+            //make a button
+            let myB = UILabel()
+            myB.text = "\(index)"
+            myB.textAlignment = NSTextAlignment.center
+            myB.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
+            myB.font = UIFont(name: "Verdana", size: 11)
+            myB.frame = CGRect(x: thePosX, y: thePosY, width: 24, height: 24)
+            if marks[index] {
+                myB.textColor = UIColor.HighlightColor()
+                if index <= todayDInt {
+                    self.textLeft = self.textLeft + 1
+                    self.textRight = self.textRight + 1
+                }
+            }else{
                 myB.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
-                myB.font = UIFont(name: "Verdana", size: 11)
-                myB.frame = CGRect(x: thePosX, y: thePosY, width: 24, height: 24)
-                if marks[index] {
-                    myB.textColor = UIColor.HighlightColor()
-                    if index <= todayDInt {
-                        self.textLeft = self.textLeft + 1
-                        self.textRight = self.textRight + 1
-                    }
-                }else{
-                    myB.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
-                    if index < todayDInt {
-                        self.textLeft = 0
-                    }
+                if index < todayDInt {
+                    self.textLeft = 0
                 }
-                
-                if (strAll == firstDay) {
-                    myB.backgroundColor = UIColor.HighlightColor()
-                    myB.textColor = UIColor.white
-                    myB.layer.cornerRadius = 3
-                    myB.layer.masksToBounds = true
-                }
-                self.viewCalendar.addSubview(myB)
-                
-                theDayOfWeek = theDayOfWeek + 1
-                
-                if (theDayOfWeek == 8 ) {
-                    theDayOfWeek = 1
-                    thePosX = 15
-                    thePosY = thePosY + 29
-                }
+            }
+            
+            if (strAll == firstDay) {
+                myB.backgroundColor = UIColor.HighlightColor()
+                myB.textColor = UIColor.white
+                myB.layer.cornerRadius = 3
+                myB.layer.masksToBounds = true
+            }
+            self.viewCalendar.addSubview(myB)
+            
+            theDayOfWeek = theDayOfWeek + 1
+            
+            if (theDayOfWeek == 8 ) {
+                theDayOfWeek = 1
+                thePosX = 15
+                thePosY = thePosY + 29
+            }
         }
     }
 }

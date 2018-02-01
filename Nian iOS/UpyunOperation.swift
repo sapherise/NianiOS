@@ -8,10 +8,10 @@
 
 import Foundation
 import UIKit
-import AssetsLibrary
 
 protocol upYunDelegate {
     func upYunMulti(_ data: NSDictionary?, count: Int)
+    func delegateTitle(_ title: String)
 }
 
 class UpyunOperation: Operation {
@@ -26,29 +26,26 @@ class UpyunOperation: Operation {
         /* 由于多图不等待，所以在文件名后加个计数 */
         let name = "/step/\(SAUid())_\(Int(date))\(num).png"
         if !hasUploaded {
-            var imageFinal: UIImage!
+            var imageFinal: UIImage?
             if let imgTmp = image as? UIImage {
                 imageFinal = imgTmp.fixOrientation()
-            } else if let imgTmp = image as? ALAsset {
-                let assetRepresentation = imgTmp.defaultRepresentation()
-                let orientationValue = imgTmp.value(forProperty: "ALAssetPropertyOrientation") as! Int
-                let orientation = UIImageOrientation(rawValue: orientationValue)
-                imageFinal = UIImage(cgImage: (assetRepresentation?.fullResolutionImage().takeUnretainedValue())!, scale: 1, orientation: orientation!)
             }
-            uy.uploadImage(resizedImage(imageFinal, newWidth: 500), savekey: name)
-//            uy.successBlocker = ({(data: AnyObject!) in
-//                if let d = data as? NSDictionary {
-//                    var url = d.stringAttributeForKey("url")
-//                    url = SAReplace(url, before: "/step/", after: "") as String
-//                    let w = d.stringAttributeForKey("image-width")
-//                    let h = d.stringAttributeForKey("image-height")
-//                    setCacheImage("http://img.nian.so/step/\(url)!large", img: imageFinal, width: globalWidth * globalScale)
-//                    setCacheImage("http://img.nian.so/step/\(url)!200x", img: imageFinal, width: 200 * globalScale)
-//                    let data = ["path": url, "width": w, "height": h]
-//                    self.delegate?.upYunMulti(data, count: self.num)
-//                }
-//            })
-            // todo
+            if imageFinal != nil {
+                self.delegate?.delegateTitle("上传第 \(num + 1) 张")
+                uy.uploadImage(resizedImage(imageFinal!, newWidth: 500), savekey: name)
+                uy.successBlocker = ({data in
+                    if let d = data as? NSDictionary {
+                        var url = d.stringAttributeForKey("url")
+                        url = SAReplace(url, before: "/step/", after: "") as String
+                        let w = d.stringAttributeForKey("image-width")
+                        let h = d.stringAttributeForKey("image-height")
+                        setCacheImage("http://img.nian.so/step/\(url)!large", img: imageFinal!, width: globalWidth * globalScale)
+                        setCacheImage("http://img.nian.so/step/\(url)!200x", img: imageFinal!, width: 200 * globalScale)
+                        let dict = ["path": url, "width": w, "height": h] as NSDictionary
+                        self.delegate?.upYunMulti(dict, count: self.num)
+                    }
+                })
+            }
         } else {
             /* 如果是编辑进展，图片已上传，就跳过上传阶段，直接调用 delegate */
             self.delegate?.upYunMulti(nil, count: self.num)

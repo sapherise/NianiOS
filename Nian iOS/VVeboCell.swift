@@ -412,7 +412,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
             
             let customActivity = SAActivity()
             customActivity.saActivityTitle = "举报"
-            customActivity.saActivityType = "举报"
+            customActivity.saActivityType = UIActivityType(rawValue: "举报")
             customActivity.saActivityImage = UIImage(named: "av_report")
             customActivity.saActivityFunction = {
                 self.findRootViewController()!.showTipText("举报好了！")
@@ -420,7 +420,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
             // 保存卡片
             let cardActivity = SAActivity()
             cardActivity.saActivityTitle = "保存卡片"
-            cardActivity.saActivityType = "保存卡片"
+            cardActivity.saActivityType = UIActivityType(rawValue: "保存卡片")
             cardActivity.saActivityImage = UIImage(named: "card")
             cardActivity.saActivityFunction = {
                 card.onCardSave()
@@ -429,7 +429,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
             //编辑按钮
             let editActivity = SAActivity()
             editActivity.saActivityTitle = "编辑"
-            editActivity.saActivityType = "编辑"
+            editActivity.saActivityType = UIActivityType(rawValue: "编辑")
             editActivity.saActivityImage = UIImage(named: "av_edit")
             editActivity.saActivityFunction = {
                 let vc = AddStep(nibName: "AddStep", bundle: nil)
@@ -460,7 +460,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
             //删除按钮
             let deleteActivity = SAActivity()
             deleteActivity.saActivityTitle = "删除"
-            deleteActivity.saActivityType = "删除"
+            deleteActivity.saActivityType = UIActivityType(rawValue: "删除")
             deleteActivity.saActivityImage = UIImage(named: "av_delete")
             deleteActivity.saActivityFunction = {
                 self.actionSheetDelete = UIActionSheet(title: "再见了，进展 #\(sid)", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
@@ -713,8 +713,6 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         }
     }
     
-    // todo: 颜色不对
-    
     /* 移除通知中心的微信回调，防止多次调用导致 UI 混乱 */
     func removeWechatNotification() {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "onWechatResult"), object: nil)
@@ -804,19 +802,20 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
             var _string = string
             _string.remove(at: string.characters.index(string.startIndex, offsetBy: 0))
             self.findRootViewController()?.viewLoadingShow()
-            Api.postUserNickName(_string) {
-                json in
+            Api.postUserNickName(_string) { json in
                 if json != nil {
-                    let error = json!.object(forKey: "error") as! NSNumber
-                    self.findRootViewController()?.viewLoadingHide()
-                    if error == 0 {
-                        if let uid = json!.object(forKey: "data") as? String {
-                            let UserVC = PlayerViewController()
-                            UserVC.Id = uid
-                            self.findRootViewController()?.navigationController?.pushViewController(UserVC, animated: true)
+                    if let j = json as? NSDictionary {
+                        let error = j.stringAttributeForKey("error")
+                        self.findRootViewController()?.viewLoadingHide()
+                        if error == "0" {
+                            if let uid = json!.object(forKey: "data") as? String {
+                                let UserVC = PlayerViewController()
+                                UserVC.Id = uid
+                                self.findRootViewController()?.navigationController?.pushViewController(UserVC, animated: true)
+                            }
+                        } else {
+                            self.findRootViewController()!.showTipText("没有人叫这个名字...")
                         }
-                    } else {
-                        self.findRootViewController()!.showTipText("没有人叫这个名字...")
                     }
                 }
             }

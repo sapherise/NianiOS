@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import AssetsLibrary
 
 class Card: UIView {
     @IBOutlet var image: UIImageView!

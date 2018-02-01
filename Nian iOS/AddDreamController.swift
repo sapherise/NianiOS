@@ -9,7 +9,7 @@
 import UIKit
 
 protocol editDreamDelegate {
-    func editDream(_ editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTags: Array<String>, editPermission: Int)
+    func editDream(_ editPrivate: Int, editTitle:String, editDes:String, editImage:String, editTags: NSArray, editPermission: Int)
 }
 
 class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UITextFieldDelegate, delegatePrivate {
@@ -113,22 +113,23 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.imageDreamHead.image = UIImage(named: "add_no_plus")
         self.uploadWait!.startAnimating()
         let uy = UpYun()
-        // todo
-//        uy.successBlocker = ({(data: AnyObject!) in
-//            self.uploadWait!.isHidden = true
-//            self.uploadUrl = data.object(forKey: "url") as! String
-//            self.uploadUrl = SAReplace(self.uploadUrl, before: "/dream/", after: "") as String
-//            let url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
-//            self.imageDreamHead.contentMode = .scaleToFill
-//            self.imageDreamHead.image = img
-//            setCacheImage(url, img: img, width: (globalWidth - 40) * globalScale)
-//            self.uploadWait!.stopAnimating()
-//        })
-//        uy.failBlocker = ({(error: NSError!) in
-//            self.uploadWait!.isHidden = true
-//            self.uploadWait!.stopAnimating()
-//            self.imageDreamHead.image = UIImage(named: "add_plus")
-//        })
+        uy.successBlocker = ({ data in
+            if let d = data as? NSDictionary {
+                self.uploadWait!.isHidden = true
+                self.uploadUrl = d.stringAttributeForKey("url")
+                self.uploadUrl = SAReplace(self.uploadUrl, before: "/dream/", after: "") as String
+                let url = "http://img.nian.so/dream/\(self.uploadUrl)!dream"
+                self.imageDreamHead.contentMode = .scaleToFill
+                self.imageDreamHead.image = img
+                setCacheImage(url, img: img, width: (globalWidth - 40) * globalScale)
+                self.uploadWait!.stopAnimating()
+            }
+        })
+        uy.failBlocker = ({ err in
+            self.uploadWait.isHidden = true
+            self.uploadWait.stopAnimating()
+            self.imageDreamHead.image = UIImage(named: "add_plus")
+        })
         uy.uploadImage(resizedImage(img, newWidth: 260), savekey: getSaveKey("dream", png: "png") as String)
     }
     
@@ -296,13 +297,12 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
             self.navigationItem.rightBarButtonItems = buttonArray()
             Api.postAddDream(title, content: content, uploadUrl: self.uploadUrl, isPrivate: self.isPrivate, tags: tags!, permission: "\(permission)") {
                 json in
-                let error = json!.object(forKey: "error") as! NSNumber
-                if error == 0 {
+                if SAValue(json, "error") == "0" {
                     let data = json!.object(forKey: "data") as! NSDictionary
                     let id = data.stringAttributeForKey("dream")
                     let img = data.stringAttributeForKey("image")
                     self.delegateAddDream?.addDreamCallback(id, img: img, title: (self.field1.text)!)
-                    self.navigationController?.popViewController(animated: true)
+                    _ = self.navigationController?.popViewController(animated: true)
                 }
             }
         } else {
@@ -314,58 +314,38 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     //MARK: edit dream
     
     func editDreamOK(){
-        var title = self.field1?.text
-        var content = self.field2.text
-        var tags = self.tokenView.tokenTitles
-        var tagsString: String = ""
-        var tagsArray: Array<String> = [String]()
-        
-        if (tags!).count > 0 {
-            for i in 0...((tags!).count - 1){
-                let tmpString = tags![i] as! String
-                tagsArray.append(tmpString)
-                if i == 0 {
-                    tagsString = "tags[]=\(SAEncode(SAHtml(tmpString)))"
-                } else {
-                    tagsString = tagsString + "&&tags[]=\(SAEncode(SAHtml(tmpString)))"
-                }
-            }
-        } else {
-            tagsString = "tags[]="
-        }
+        let title = self.field1.text!
+        let content = self.field2.text!
+        let tags = self.tokenView.tokenTitles!
         
         if title != "" {
             self.navigationItem.rightBarButtonItems = buttonArray()
-            title = SAEncode(SAHtml(title!))
-            content = SAEncode(SAHtml(content!))
-            
-            Api.postEditDream(self.editId, title: title!, content: content!, uploadUrl: self.uploadUrl, editPrivate: self.isPrivate, tags: tagsString, permission: "\(permission)"){
+            Api.postEditDream(self.editId, title: title, content: content, uploadUrl: self.uploadUrl, editPrivate: self.isPrivate, tags: tags, permission: "\(permission)"){
                 json in
-                let error = json!.object(forKey: "error") as! NSNumber
-                if error == 0 {
-                    if let dreams = Cookies.get("NianDreams") as? NSMutableArray {
-                        var i = 0
-                        let arr = NSMutableArray(array: dreams)
-                        for _dream in dreams {
-                            if let dream = _dream as? NSDictionary {
-                                let id = dream.stringAttributeForKey("id")
-                                if id == self.editId {
-                                    let mutableData = NSMutableDictionary(dictionary: dream)
-                                    mutableData.setValue(self.field1!.text!, forKey: "title")
-                                    mutableData.setValue(self.uploadUrl, forKey: "image")
-                                    arr.replaceObject(at: i, with: mutableData)
-                                    Cookies.set(arr, forKey: "NianDreams")
-                                    Nian.loadFromLocal()
-                                    break
+                    if SAValue(json, "error") == "0" {
+                        if let dreams = Cookies.get("NianDreams") as? NSMutableArray {
+                            var i = 0
+                            let arr = NSMutableArray(array: dreams)
+                            for _dream in dreams {
+                                if let dream = _dream as? NSDictionary {
+                                    let id = dream.stringAttributeForKey("id")
+                                    if id == self.editId {
+                                        let mutableData = NSMutableDictionary(dictionary: dream)
+                                        mutableData.setValue(self.field1!.text!, forKey: "title")
+                                        mutableData.setValue(self.uploadUrl, forKey: "image")
+                                        arr.replaceObject(at: i, with: mutableData)
+                                        Cookies.set(arr, forKey: "NianDreams")
+                                        Nian.loadFromLocal()
+                                        break
+                                    }
                                 }
+                                i += 1
                             }
-                            i += 1
                         }
+                        
+                        self.delegate?.editDream(self.isPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2.text)!, editImage: self.uploadUrl, editTags: tags, editPermission: self.permission)
+                        _ = self.navigationController?.popViewController(animated: true)
                     }
-                    
-                    self.delegate?.editDream(self.isPrivate, editTitle: (self.field1?.text)!, editDes: (self.field2.text)!, editImage: self.uploadUrl, editTags:tagsArray, editPermission: self.permission)
-                    self.navigationController?.popViewController(animated: true)
-                }
             }
         } else {
             self.field1!.becomeFirstResponder()
@@ -495,29 +475,23 @@ extension AddDreamController: TITokenFieldDelegate {
         return true
     }
     
-    func tokenField(_ field: TITokenField!, performCustomSearchForSearch searchString: String!, withCompletionHandler completionHandler: (([AnyObject]?) -> Void)!) {
-        var data: Array<String> = []
-        
+    func tokenField(_ field: TITokenField!, performCustomSearchForSearch searchString: String!, withCompletionHandler completionHandler: (([Any]?) -> Void)!) {
         if searchString.characters.count > 0 {
-            let _string = SAEncode(SAHtml(searchString))
-            Api.getAutoComplete(_string, callback: {
-                json in
+            Api.getAutoComplete(searchString) { json in
                 if json != nil {
-                    let error = json!.object(forKey: "error") as! NSNumber
-                    
-                    if error == 0 {
-                        data = json!.object(forKey: "data") as! Array
-                        
-                        if data.count > 0 {
-                            for i in 0...(data.count - 1) {
-                                data[i] = data[i].decode()
+                    if SAValue(json, "error") == "0" {
+                        if let d = json!.object(forKey: "data") as? Array<String> {
+                            var data = d
+                            if d.count > 0 {
+                                for i in 0...(d.count - 1) {
+                                    data[i] = d[i].decode()
+                                }
                             }
+                            completionHandler(data)
                         }
                     }
                 }
-//                completionHandler(data)
-                // todo
-            })
+            }
         }
     }
     

@@ -83,29 +83,31 @@ func SAReplace(_ word:String, before:String, after:String)->NSString{
 
 //替换危险字符
 func SAHtml(_ content:String) -> String {
-    let s = CFStringCreateMutableCopy(nil, 0, content as CFString!)
-    var r = CFRangeMake(0, 0)
-    r.length = CFStringGetLength(s)
-    CFStringFindAndReplace(s, "&" as CFString!, "&amp;" as CFString!, r, CFStringCompareFlags())
-    r.length = CFStringGetLength(s)
-    CFStringFindAndReplace(s, "<" as CFString!, "&lt;" as CFString!, r, CFStringCompareFlags())
-    r.length = CFStringGetLength(s)
-    CFStringFindAndReplace(s, ">" as CFString!, "&gt;" as CFString!, r, CFStringCompareFlags())
-    r.length = CFStringGetLength(s)
-    CFStringFindAndReplace(s, "\"" as CFString!, "&quot;" as CFString!, r, CFStringCompareFlags())
-    r.length = CFStringGetLength(s)
-    CFStringFindAndReplace(s, "'" as CFString!, "&#039;" as CFString!, r, CFStringCompareFlags())
-    r.length = CFStringGetLength(s)
-    CFStringFindAndReplace(s, " " as CFString!, "&nbsp;" as CFString!, r, CFStringCompareFlags())
-    r.length = CFStringGetLength(s)
-    CFStringFindAndReplace(s, "\n" as CFString!, "<br>" as CFString!, r, CFStringCompareFlags())
-    
-    return "\(s)" as String
+    if let s = CFStringCreateMutableCopy(nil, 0, content as CFString!) {
+        var r = CFRangeMake(0, 0)
+        r.length = CFStringGetLength(s)
+        CFStringFindAndReplace(s, "&" as CFString!, "&amp;" as CFString!, r, CFStringCompareFlags())
+        r.length = CFStringGetLength(s)
+        CFStringFindAndReplace(s, "<" as CFString!, "&lt;" as CFString!, r, CFStringCompareFlags())
+        r.length = CFStringGetLength(s)
+        CFStringFindAndReplace(s, ">" as CFString!, "&gt;" as CFString!, r, CFStringCompareFlags())
+        r.length = CFStringGetLength(s)
+        CFStringFindAndReplace(s, "\"" as CFString!, "&quot;" as CFString!, r, CFStringCompareFlags())
+        r.length = CFStringGetLength(s)
+        CFStringFindAndReplace(s, "'" as CFString!, "&#039;" as CFString!, r, CFStringCompareFlags())
+        r.length = CFStringGetLength(s)
+        CFStringFindAndReplace(s, " " as CFString!, "&nbsp;" as CFString!, r, CFStringCompareFlags())
+        r.length = CFStringGetLength(s)
+        CFStringFindAndReplace(s, "\n" as CFString!, "<br>" as CFString!, r, CFStringCompareFlags())
+        return "\(s)"
+    }
+    return ""
 }
 
 func SAEncode(_ content:String) -> String {
     let legalURLCharactersToBeEscaped: CFString = "=\"#%/<>?@\\^`{|}&+" as CFString
-    return CFURLCreateStringByAddingPercentEscapes(nil, content as CFString!, nil, legalURLCharactersToBeEscaped, CFStringBuiltInEncodings.UTF8.rawValue) as String
+    let a = CFURLCreateStringByAddingPercentEscapes(nil, content as CFString!, nil, legalURLCharactersToBeEscaped, CFStringBuiltInEncodings.UTF8.rawValue) as String
+    return a
 }
 
 func SADecode(_ word: String) -> String {
@@ -210,16 +212,15 @@ func resizedImage(_ initalImage: UIImage, newWidth:CGFloat) -> UIImage {
         newheight = height * newWidth / width
         newheight = SACeil(newheight, dot: 0, isCeil: false)
     }
-    var newImage: UIImage
     if width >= newWidth {
         UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newheight))
         initalImage.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newheight))
-        newImage = UIGraphicsGetImageFromCurrentImageContext()!
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
+        return newImage
     }else{
-        newImage = initalImage
+        return initalImage
     }
-    return newImage
 }
 
 func getSaveKey(_ title:NSString, png:NSString) -> NSString{
@@ -473,11 +474,10 @@ class SAActivity: UIActivity {
     var saActivityTitle:String = ""
     var saActivityImage: UIImage?
     var saActivityFunction: (() -> Void)?
-    var saActivityType: String = ""
-    // todo
-//    override var activityType : String {
-//        return saActivityType
-//    }
+    var saActivityType: UIActivityType = UIActivityType(rawValue: "")
+    override var activityType: UIActivityType {
+        return saActivityType
+    }
     override var activityTitle : String  {
         return saActivityTitle
     }
@@ -519,25 +519,6 @@ extension UIImage{
         UIGraphicsEndImageContext()
         return normalizedImage!
     }
-    
-    class func imageFromURL(_ aURL: URL, success: @escaping ((_ image: UIImage) -> Void), error: () -> Void) {
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: { () -> Void in
-            
-            let mutableRequest: NSMutableURLRequest = NSMutableURLRequest(url: aURL,
-                                                                          cachePolicy: NSURLRequest.CachePolicy.returnCacheDataElseLoad,
-                                                                          timeoutInterval: 30.0)
-            let rcvData: Data? = try? NSURLConnection.sendSynchronousRequest(mutableRequest as URLRequest, returning: nil)
-//            var img: UIImage = UIImage(data: rcvData!)!
-            
-            DispatchQueue.main.async(execute: {
-                if let img = UIImage(data: rcvData!) {
-                    success(img)
-                }
-            })
-            
-        })
-    }
-    
 }
 
 extension UIImageView{
@@ -629,9 +610,8 @@ extension UIViewController {
     }
     
     func keyboardEndObserve() {
-        // todo
-//        NotificationCenter.default.removeObserver(NSNotification.Name.UIKeyboardWillShow)
-//        NotificationCenter.default.removeObserver(NSNotification.Name.UIKeyboardWillHide)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     func onURL(_ sender: Notification){
@@ -748,9 +728,8 @@ func SAUpdate(_ delete: Bool, dataArray: NSMutableArray, index: Int, tableView: 
 
 func SAUid() -> String {
     let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-    let uid = uidKey?.object(forKey: kSecAttrAccount) as? String
-    if uid != nil {
-        return uid!
+    if let uid = uidKey?.object(forKey: kSecAttrAccount) as? String {
+        return uid
     }
     return "0"
 }
@@ -924,7 +903,7 @@ func bubble(_ arr: [Int]) -> [Int] {
 }
 
 func go(_ justdoit: @escaping () -> Void) {
-    DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: justdoit)
+    DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async(execute: justdoit)
 }
 
 func back(_ justdoit: @escaping () -> Void) {
@@ -948,4 +927,47 @@ func guideline() {
     let guide = Guide()
     guide.setup()
     UIApplication.shared.windows.last?.addSubview(guide)
+}
+
+func SAType(_ json: Any) {
+    print(type(of: json))
+}
+
+func SAValue(_ json: AnyObject?, _ key: String) -> String {
+    if json != nil {
+        if let a = json!.object(forKey: key) {
+            return "\(a)"
+        }
+    }
+    return ""
+}
+
+public extension DispatchQueue {
+    private static var _onceTracker = [String]()
+    public class func once(token: String, block:(Void)->Void) {
+        objc_sync_enter(self); defer { objc_sync_exit(self) }
+        if _onceTracker.contains(token) {
+            return
+        }
+        _onceTracker.append(token)
+        block()
+    }
+}
+
+
+func getContent(_ content: String) -> String {
+    let t = DateFormatter()
+    t.dateFormat = "HH:mm:ss"
+    let s = t.string(from: Date())
+    let a = s + "  " + content
+    return a
+}
+
+func getWrite(_ content: String) {
+    let url = NSURL.fileURL(withPath: "/Users/Sa/Desktop/1.txt")
+    let data = NSMutableData()
+    let b = NSData(contentsOfFile: url.path)
+    let c = NSString(data: b as! Data, encoding: String.Encoding.utf8.rawValue) as! String
+    data.append((c + "\n" + getContent(content)).data(using: String.Encoding.utf8, allowLossyConversion: true)!)
+    data.write(toFile: url.path, atomically: true)
 }

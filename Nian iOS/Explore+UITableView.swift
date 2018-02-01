@@ -63,39 +63,42 @@ extension ExploreViewController {
         
         Api.getExploreFollow("\(page)", callback: { json in
             if json != nil {
-                globalTabhasLoaded[0] = true
-                if clear {
-                    globalVVeboReload = true
-                    self.dataArray.removeAllObjects()
+                if SAValue(json, "error") != "0" {
+                    self.showTipText("账号有误，重新登录试试")
                 } else {
-                    globalVVeboReload = false
-                }
-                let data = json!.object(forKey: "data")
-                let items = (data! as AnyObject).object(forKey: "items") as! NSArray
-                if items.count != 0 {
-                    for item in items {
-                        let data = VVeboCell.SACellDataRecode(item as! NSDictionary)
-                        self.dataArray.add(data)
+                    globalTabhasLoaded[0] = true
+                    if clear {
+                        globalVVeboReload = true
+                        self.dataArray.removeAllObjects()
+                    } else {
+                        globalVVeboReload = false
                     }
-                    
-                    /* 当是第一页时，缓存到本地 */
-                    if self.page == 1 {
-                        print("添加缓存！")
-                        Cookies.set(self.dataArray, forKey: "explore_follow")
+                    let data = json!.object(forKey: "data")
+                    let items = (data! as AnyObject).object(forKey: "items") as! NSArray
+                    if items.count != 0 {
+                        for item in items {
+                            let data = VVeboCell.SACellDataRecode(item as! NSDictionary)
+                            self.dataArray.add(data)
+                        }
+                        
+                        /* 当是第一页时，缓存到本地 */
+                        if self.page == 1 {
+                            Cookies.set(self.dataArray, forKey: "explore_follow")
+                        }
+                        self.currentDataArray = self.dataArray
+                        self.tableView.tableHeaderView = nil
+                    } else if clear {
+                        self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight - 49 - 64))
+                        self.tableView.tableHeaderView?.addGhost("这是关注页面！\n当你关注了一些人或记本时\n这里会发生微妙变化")
                     }
-                    self.currentDataArray = self.dataArray
-                    self.tableView.tableHeaderView = nil
-                } else if clear {
-                    self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight - 49 - 64))
-                    self.tableView.tableHeaderView?.addGhost("这是关注页面！\n当你关注了一些人或记本时\n这里会发生微妙变化")
+                    /* 当 current 为 -1 或者 0 时 */
+                    if self.current <= 0 {
+                        self.tableView.headerEndRefreshing()
+                        self.tableView.footerEndRefreshing()
+                        self.tableView.reloadData()
+                    }
+                    self.page += 1
                 }
-                /* 当 current 为 -1 或者 0 时 */
-                if self.current <= 0 {
-                    self.tableView.headerEndRefreshing()
-                    self.tableView.footerEndRefreshing()
-                    self.tableView.reloadData()
-                }
-                self.page += 1
             }
         })
     }

@@ -48,7 +48,8 @@
  *
  *  @brief  加入 SDWebImage
  */
-#import "SDWebImage.h"
+//#import <SDWebImage/SDWebImage.h>
+#import <SDWebImage/UIImageView+WebCache.h>
 
 /**
  *  @author Sa, 15-12-23 11:33:56

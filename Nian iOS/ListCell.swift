@@ -39,6 +39,7 @@ class ListCell: UITableViewCell {
         viewLine.frame = CGRect(x: 70, y: 70, width: globalWidth - 85, height: globalHalf)
         imageHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ListCell.onHead)))
         labelTitle.setWidth(globalWidth - 170)
+        self.backgroundColor = UIColor.BackgroundColor()
     }
     
     func setup() {
@@ -56,7 +57,7 @@ class ListCell: UITableViewCell {
             labelButton.setX(globalWidth - 15 - labelButton.width())
             let inviting = data.stringAttributeForKey("inviting")
             if inviting == "0" {
-                labelButton.backgroundColor = UIColor.white
+                labelButton.backgroundColor = UIColor.BackgroundColor()
                 labelButton.textColor = UIColor.HighlightColor()
                 labelButton.text = "邀请"
                 labelButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ListCell.onSelect)))

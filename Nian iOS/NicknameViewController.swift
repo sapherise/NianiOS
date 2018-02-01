@@ -114,60 +114,42 @@ extension NicknameViewController {
             }
             
             self.button.startAnimating()
-            // todo
-//            LogOrRegModel.checkNameAvailability(name: self.nameTextfield.text!) {
-//                (task, responseObject, error) in
-//                
-//                if let _ = error {
-//                    self.showTipText("网络有点问题，等一会儿再试")
-//                } else {
-//                    // todo
-////                    let json = JSON(responseObject!)
-////                    if json["error"] != 0 {
-////                        self.button.stopAnimating()
-////                        self.button.setTitle("确定", for: UIControlState())
-////                        self.showTipText("昵称被占用...")
-////                    } else {
-////                        LogOrRegModel.registerVia3rd(self.id, type: self.originalType, name: self.nameTextfield.text!, nameFrom3rd: self.nameFrom3rd) {
-////                            (task, responseObject, error) in
-////                            
-////                            self.button.stopAnimating()
-////                            self.button.setTitle("确定", for: UIControlState())
-////                            
-////                            if let _ = error {
-////                                self.showTipText("网络有点问题，等一会儿再试")
-////                            } else {
-////                                
-////                                let json = JSON(responseObject!)
-////                                
-////                                if json["error"] != 0 {
-////                                    self.showTipText("注册不成功...")
-////                                } else {
-////                                    let shell = json["data"]["shell"].stringValue
-////                                    let uid = json["data"]["uid"].stringValue
-////
-////                                    /// uid 和 shell 保存到 keychain
-////                                    let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-////                                    uidKey.setObject(uid, forKey: kSecAttrAccount)
-////                                    uidKey.setObject(shell, forKey: kSecValueData)
-////                                    
-////                                    UserDefaults.standard.set(self.nameTextfield.text!, forKey: "user")
-////                                    
-////                                    Api.requestLoad()
-////                                    
-////                                    /* 使用第三方来注册 */
-////                                    self.launch(0)
-////                                    self.pushTomorrow()
-////                                    self.nameTextfield.text = ""
-////                                }
-////                            }
-////                        }
-////                        
-////                    }
-//                }
-//            }
+            Api.checkNameAvailability(self.nameTextfield.text!) { json in
+                if json != nil {
+                    if SAValue(json, "error") != "0" {
+                        self.button.stopAnimating()
+                        self.button.setTitle("确定", for: UIControlState())
+                        self.showTipText("昵称被占用...")
+                    } else {
+                        Api.registerVia3rd(self.id, type: self.originalType, name: self.nameTextfield.text!, nameFrom3rd: self.nameFrom3rd) { json in
+                            self.button.stopAnimating()
+                            self.button.setTitle("确定", for: UIControlState())
+                            if SAValue(json, "error") != "0" {
+                                self.showTipText("注册不成功...")
+                            } else {
+                                if let j = json as? NSDictionary {
+                                    if let data = j.object(forKey: "data") as? NSDictionary {
+                                        let shell = data.stringAttributeForKey("shell")
+                                        let uid = data.stringAttributeForKey("uid")
+                                        /// uid 和 shell 保存到 keychain
+                                        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                                        uidKey?.setObject(uid, forKey: kSecAttrAccount)
+                                        uidKey?.setObject(shell, forKey: kSecValueData)
+                                        UserDefaults.standard.set(self.nameTextfield.text!, forKey: "user")
+                                        Api.requestLoad()
+                                        
+                                        /* 使用第三方来注册 */
+                                        self.launch(0)
+                                        self.pushTomorrow()
+                                        self.nameTextfield.text = ""
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         } else {
-            
         }
     }
     

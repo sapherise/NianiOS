@@ -13,8 +13,9 @@ extension PetViewController: UITableViewDelegate, UITableViewDataSource {
     func load() {
         let jsonCache: AnyObject? = Cookies.get("pets")
         if jsonCache != nil {
-            if let err = jsonCache!.object(forKey: "error") as? NSNumber {
-                if err == 0 {
+            if let j = jsonCache as? NSDictionary {
+                let err = j.stringAttributeForKey("error")
+                if err == "0" {
                     self.dataArray.removeAllObjects()
                     let data = jsonCache!.object(forKey: "data") as! NSDictionary
                     let arr = data.object(forKey: "pets") as! NSArray
@@ -33,8 +34,9 @@ extension PetViewController: UITableViewDelegate, UITableViewDataSource {
             if json != nil {
                 self.labelLeft.isHidden = false
                 Cookies.set(json, forKey: "pets")
-                if let err = json!.object(forKey: "error") as? NSNumber {
-                    if err == 0 {
+                if let j = json as? NSDictionary {
+                    let err = j.stringAttributeForKey("error")
+                    if err == "0" {
                         self.dataArray.removeAllObjects()
                         let data = json!.object(forKey: "data") as! NSDictionary
                         let arr = data.object(forKey: "pets") as! NSArray

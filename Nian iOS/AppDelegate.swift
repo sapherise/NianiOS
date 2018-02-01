@@ -151,9 +151,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
             let WX_APP_ID = "wx08fea299d0177c01"
             let WX_SECRET_ID = "64dc8c89f7310a91b29e9b636b7472cb"
             
-            let accessUrlStr = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=\(WX_APP_ID)&secret=\(WX_SECRET_ID)&code=\(_resp.code)&grant_type=authorization_code"
-            
-            manager.get(accessUrlStr,
+            let accessUrlStr = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=\(WX_APP_ID)&secret=\(WX_SECRET_ID)&code=\(_resp.code!)&grant_type=authorization_code"
+            let url = accessUrlStr.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
+            manager.get(url,
                 parameters: nil,
                 success: {
                     (task, id) in

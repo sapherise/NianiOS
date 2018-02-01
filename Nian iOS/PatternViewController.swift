@@ -102,57 +102,30 @@ class PatternViewController: UIViewController {
         self.accompolishButton.startAnimating()
         
         let _password = "n*A\(self.regInfo!.password!)"
-        
-        // todo
-//        LogOrRegModel.register(email: self.regInfo!.email!,
-//            password: _password.md5,
-//            username: self.regInfo!.nickname!,
-//            daily: self.playMode!.rawValue) {
-//               (task, responseObject, error) in
-//                
-//                self.accompolishButton.stopAnimating()
-//                self.accompolishButton.setTitle("完成", for: UIControlState())
-//                
-//                if let _ = error { // 服务器返回错误
-//                    self.showTipText("网络有点问题，等一会儿再试")
-//                } else {
-//                    let json = JSON(responseObject!)
-//                    
-//                    if json["error"] == 2 { // 服务器返回的数据包含“错误信息”
-//                        self.showTipText("用户名被占用...")
-//                        self.dismiss(animated: true, completion: nil)
-//                        
-//                    } else if json["error"] == 0 { // 服务器返回正常，注册成功
-//                        let shell = json["data"]["shell"].stringValue
-//                        let uid = json["data"]["uid"].stringValue
-//                        
-//                        let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-//                        uidKey.setObject(uid, forKey: kSecAttrAccount)
-//                        uidKey.setObject(shell, forKey: kSecValueData)
-//                        
-//                        Api.requestLoad()
-//                        
-//                        /* 使用邮箱来注册 */
-//                        self.launch(0)
-//                        self.pushTomorrow()
-//                    }
-//                    
-//                }
-//                
-//        }
-        
+        Api.register(self.regInfo!.email!, password: _password.md5, username: self.regInfo!.nickname!, daily: self.playMode!.rawValue) { json in
+            if json != nil {
+                self.accompolishButton.stopAnimating()
+                self.accompolishButton.setTitle("完成", for: UIControlState())
+                let error = SAValue(json, "error")
+                if error == "2" {
+                    self.showTipText("用户名被占用...")
+                    self.dismiss(animated: true, completion: nil)
+                } else if error == "0" {
+                    if let j = json as? NSDictionary {
+                        if let data = j.object(forKey: "data") as? NSDictionary {
+                            let shell = data.stringAttributeForKey("shell")
+                            let uid = data.stringAttributeForKey("uid")
+                            let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                            uidKey?.setObject(uid, forKey: kSecAttrAccount)
+                            uidKey?.setObject(shell, forKey: kSecValueData)
+                            Api.requestLoad()
+                            /* 使用邮箱来注册 */
+                            self.launch(0)
+                            self.pushTomorrow()
+                        }
+                    }
+                }
+            }
+        }
     }
-    
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

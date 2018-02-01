@@ -35,7 +35,7 @@ class LikeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         self.tableView = UITableView(frame:CGRect(x: 0, y: 64, width: globalWidth, height: globalHeight - 64))
         self.tableView!.delegate = self;
         self.tableView!.dataSource = self;
-        self.tableView!.backgroundColor = BGColor
+        self.tableView!.backgroundColor = UIColor.BackgroundColor()
         self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.none
         let nib = UINib(nibName:"LikeCell", bundle: nil)
         

@@ -8,21 +8,20 @@
 
 import Foundation
 import SpriteKit
-import AssetsLibrary
+import Photos
 
 extension AddStep {
     func onImage() {
         field2.resignFirstResponder()
-        LSYAlbum.sharedAlbum().setupAlbumGroups { (groups) -> () in
-            let albumPicker = LSYAlbumPicker()
-            if groups.count > 0 {
-                albumPicker.group = groups[0] as! ALAssetsGroup
-                albumPicker.maxminumNumber = 9 - self.imageArray.count
-                albumPicker.delegate = self
-                self.navigationController?.pushViewController(albumPicker, animated: true)
-            } else {
-                self.showTipText("念没有访问照片的权限 >_<")
-            }
+        let vc = imagesViewController()
+        vc.delegate = self
+        vc.max = 9 - imageArray.count
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func delegateTitle(_ title: String) {
+        back {
+            self._setTitle(title)
         }
     }
     
@@ -48,6 +47,9 @@ extension AddStep {
                 self.queue.addOperation(op)
             } else {
                 /* 全部上传成功后，提交服务器 */
+                back {
+                    self._setTitle("正在发布进展")
+                }
                 self.addStep()
             }
         }
@@ -85,131 +87,136 @@ extension AddStep {
         
         if willEdit {
             let sid = dataEdit!.stringAttributeForKey("sid")
-            AddStepModel.postEditStep(content: field2.text, stepType: type, images: uploadArray, sid: sid, callback: { (task, data, error) -> Void in
-                if let d = data as? NSDictionary {
-                    let error = d.stringAttributeForKey("error")
-                    if error == "0" {
-                        let mutableData = NSMutableDictionary(dictionary: self.dataEdit!)
-                        mutableData.setValue(self.field2.text, forKey: "content")
-                        mutableData.setValue(self.uploadArray, forKey: "images")
-                        mutableData.setValue(type, forKey: "type")
-                        if self.uploadArray.count > 0 {
-                            if let image = self.uploadArray[0] as? NSDictionary {
-                                mutableData.setValue(image.stringAttributeForKey("path"), forKey: "image")
-                                mutableData.setValue(image.stringAttributeForKey("width"), forKey: "width")
-                                mutableData.setValue(image.stringAttributeForKey("height"), forKey: "height")
-                            }
-                        } else {
-                            mutableData.setValue("", forKey: "image")
-                            mutableData.setValue("0", forKey: "width")
-                            mutableData.setValue("0", forKey: "height")
-                        }
-                        
-                        let heightContent = (self.field2.text as NSString).sizeWithConstrained(toWidth: globalWidth - 40, from: UIFont.systemFont(ofSize: 16), lineSpace: 5).height
-                        var heightCell: CGFloat = 0
-                        var heightImage: CGFloat = 0
-                        
-                        if type == 7 {
-                            /* 无图，有文字 */
-                            heightCell = heightContent + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
-                        } else if type == 1 {
-                            /* 无图，无文字 */
-                            heightCell = 155 + 23
-                        } else {
-                            /* 多图带文字 */
-                            if type == 3 {
-                                let count = ceil(CGFloat(self.uploadArray.count) / 3)
-                                let h = (globalWidth - SIZE_PADDING * 2 - SIZE_COLLECTION_PADDING * 2) / 3 + SIZE_COLLECTION_PADDING
-                                heightImage = h * count - SIZE_COLLECTION_PADDING
-                                heightCell = heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
-                            } else if type == 4 {
-                                /* 多图不带文字 */
-                                let count = ceil(CGFloat(self.uploadArray.count) / 3)
-                                let h = (globalWidth - SIZE_PADDING * 2 - SIZE_COLLECTION_PADDING * 2) / 3 + SIZE_COLLECTION_PADDING
-                                heightImage = h * count - SIZE_COLLECTION_PADDING
-                                heightCell = heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
-                            } else {
-                                /* 单图 */
+            let jsonString = try! JSONSerialization.data(withJSONObject: uploadArray, options: JSONSerialization.WritingOptions.prettyPrinted)
+            let imagesString = NSString(data: jsonString, encoding: String.Encoding.utf8.rawValue)!
+            Api.postStepEdit(sid: sid, content: field2.text, stepType: type, imagesString: imagesString) { json in
+                if json != nil {
+                   if let d = json as? NSDictionary {
+                        let error = d.stringAttributeForKey("error")
+                        if error == "0" {
+                            let mutableData = NSMutableDictionary(dictionary: self.dataEdit!)
+                            mutableData.setValue(self.field2.text, forKey: "content")
+                            mutableData.setValue(self.uploadArray, forKey: "images")
+                            mutableData.setValue(type, forKey: "type")
+                            if self.uploadArray.count > 0 {
                                 if let image = self.uploadArray[0] as? NSDictionary {
-                                    let w = image.stringAttributeForKey("width").toCGFloat()
-                                    let h = image.stringAttributeForKey("height").toCGFloat()
-                                    heightImage = h * (globalWidth - 40) / w
-                                    if type == 6 {
-                                        /* 有文字，单图片 */
-                                        heightCell = heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
-                                    } else if type == 5 {
-                                        /* 无文字，单图片 */
-                                        heightCell = heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
+                                    mutableData.setValue(image.stringAttributeForKey("path"), forKey: "image")
+                                    mutableData.setValue(image.stringAttributeForKey("width"), forKey: "width")
+                                    mutableData.setValue(image.stringAttributeForKey("height"), forKey: "height")
+                                }
+                            } else {
+                                mutableData.setValue("", forKey: "image")
+                                mutableData.setValue("0", forKey: "width")
+                                mutableData.setValue("0", forKey: "height")
+                            }
+                            
+                            let heightContent = (self.field2.text as NSString).sizeWithConstrained(toWidth: globalWidth - 40, from: UIFont.systemFont(ofSize: 16), lineSpace: 5).height
+                            var heightCell: CGFloat = 0
+                            var heightImage: CGFloat = 0
+                            
+                            if type == 7 {
+                                /* 无图，有文字 */
+                                heightCell = heightContent + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
+                            } else if type == 1 {
+                                /* 无图，无文字 */
+                                heightCell = 155 + 23
+                            } else {
+                                /* 多图带文字 */
+                                if type == 3 {
+                                    let count = ceil(CGFloat(self.uploadArray.count) / 3)
+                                    let h = (globalWidth - SIZE_PADDING * 2 - SIZE_COLLECTION_PADDING * 2) / 3 + SIZE_COLLECTION_PADDING
+                                    heightImage = h * count - SIZE_COLLECTION_PADDING
+                                    heightCell = heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
+                                } else if type == 4 {
+                                    /* 多图不带文字 */
+                                    let count = ceil(CGFloat(self.uploadArray.count) / 3)
+                                    let h = (globalWidth - SIZE_PADDING * 2 - SIZE_COLLECTION_PADDING * 2) / 3 + SIZE_COLLECTION_PADDING
+                                    heightImage = h * count - SIZE_COLLECTION_PADDING
+                                    heightCell = heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
+                                } else {
+                                    /* 单图 */
+                                    if let image = self.uploadArray[0] as? NSDictionary {
+                                        let w = image.stringAttributeForKey("width").toCGFloat()
+                                        let h = image.stringAttributeForKey("height").toCGFloat()
+                                        heightImage = h * (globalWidth - 40) / w
+                                        if type == 6 {
+                                            /* 有文字，单图片 */
+                                            heightCell = heightImage + SIZE_PADDING * 4 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
+                                        } else if type == 5 {
+                                            /* 无文字，单图片 */
+                                            heightCell = heightContent + heightImage + SIZE_PADDING * 5 + SIZE_IMAGEHEAD_WIDTH + SIZE_LABEL_HEIGHT
+                                        }
                                     }
                                 }
                             }
+                            mutableData["heightImage"] = heightImage
+                            mutableData["heightCell"] = heightCell
+                            mutableData["heightContent"] = heightContent
+                            
+                            self.delegate?.editStepRow = self.rowEdit
+                            self.delegate?.editStepData = mutableData
+                            self.delegate?.Editstep()
+                            _ = self.navigationController?.popViewController(animated: true)
                         }
-                        mutableData["heightImage"] = heightImage
-                        mutableData["heightCell"] = heightCell
-                        mutableData["heightContent"] = heightContent
-                        
-                        self.delegate?.editStepRow = self.rowEdit
-                        self.delegate?.editStepData = mutableData
-                        self.delegate?.Editstep()
-                        self.navigationController?.popViewController(animated: true)
                     }
                 }
-            })
+            }
         } else {
-            AddStepModel.postAddStep(content: field2.text, stepType: type, images: uploadArray, dreamId: idDream, callback: { (task, data, error) -> Void in
-                if let d = data as? NSDictionary {
-                    let error = d.stringAttributeForKey("error")
-                    if error == "0" {
-                        let result = d.object(forKey: "data") as! NSDictionary
-                        let coin = result.stringAttributeForKey("coin")
-                        let totalCoin = result.stringAttributeForKey("totalCoin")
-                        let isfirst = result.stringAttributeForKey("isfirst")
-                        self.field2.resignFirstResponder()
-                        
-                        let contentCard = self.field2.text
-                        go {
-                            /* 创建进展卡片 */
-                            let modeCard = SACookie("modeCard")
-                            if modeCard == "off" {
-                            } else {
-                                let card = (Bundle.main.loadNibNamed("Card", owner: self, options: nil))?.first as! Card
-                                if self.uploadArray.count > 0 {
-                                    let image = self.uploadArray[0] as! NSDictionary
-                                    card.url = "http://img.nian.so/step/\(image.stringAttributeForKey("path"))!large"
-                                    card.widthImage = image.stringAttributeForKey("width")
-                                    card.heightImage = image.stringAttributeForKey("height")
-                                }
-                                card.content = contentCard!
-                                card.onCardSave()
-                            }
-                        }
-                        
-                        /* 设置为空，以确保保存到 draft 里的内容为空 */
-                        self.field2.text = ""
-                        
-                        if isfirst == "1" {
-                            /* 更新后将新增加的念币加入缓存 */
-                            if let coinBefore = Cookies.get("coin") as? String {
-                                if let _coin = Int(coin) {
-                                    let coinAfter = _coin + Int(coinBefore)!
-                                    Cookies.set("\(coinAfter)" as AnyObject?, forKey: "coin")
+            let images = uploadArray
+            let jsonString = try! JSONSerialization.data(withJSONObject: images, options: JSONSerialization.WritingOptions.prettyPrinted)
+            let imagesString = NSString(data: jsonString, encoding: String.Encoding.utf8.rawValue)!
+            Api.postStep(dreamId: idDream, content: field2.text, stepType: type, imagesString: imagesString) { json in
+                if json != nil {
+                    if let d = json as? NSDictionary {
+                        let error = d.stringAttributeForKey("error")
+                        if error == "0" {
+                            let result = d.object(forKey: "data") as! NSDictionary
+                            let coin = result.stringAttributeForKey("coin")
+                            let totalCoin = result.stringAttributeForKey("totalCoin")
+                            let isfirst = result.stringAttributeForKey("isfirst")
+                            self.field2.resignFirstResponder()
+                            
+                            let contentCard = self.field2.text
+                            go {
+                                /* 创建进展卡片 */
+                                let modeCard = SACookie("modeCard")
+                                if modeCard == "off" {
+                                } else {
+                                    let card = (Bundle.main.loadNibNamed("Card", owner: self, options: nil))?.first as! Card
+                                    if self.uploadArray.count > 0 {
+                                        let image = self.uploadArray[0] as! NSDictionary
+                                        card.url = "http://img.nian.so/step/\(image.stringAttributeForKey("path"))!large"
+                                        card.widthImage = image.stringAttributeForKey("width")
+                                        card.heightImage = image.stringAttributeForKey("height")
+                                    }
+                                    card.content = contentCard!
+                                    card.onCardSave()
                                 }
                             }
-                            Nian.saegg(coin, totalCoin: totalCoin)
+                            
+                            /* 设置为空，以确保保存到 draft 里的内容为空 */
+                            self.field2.text = ""
+                            
+                            if isfirst == "1" {
+                                /* 更新后将新增加的念币加入缓存 */
+                                if let coinBefore = Cookies.get("coin") as? String {
+                                    if let _coin = Int(coin) {
+                                        let coinAfter = _coin + Int(coinBefore)!
+                                        Cookies.set("\(coinAfter)" as AnyObject?, forKey: "coin")
+                                    }
+                                }
+                                Nian.saegg(coin, totalCoin: totalCoin)
+                            }
+                            let vc = DreamViewController()
+                            vc.Id = self.idDream
+                            vc.willBackToRootViewController = true
+                            self.navigationController?.pushViewController(vc, animated: true)
+                        } else {
+                            self.showTipText("服务器坏了")
                         }
-                        let vc = DreamViewController()
-                        vc.Id = self.idDream
-                        vc.willBackToRootViewController = true
-                        self.navigationController?.pushViewController(vc, animated: true)
-                        
-                        
-                    } else {
-                        self.showTipText("服务器坏了")
                     }
-                } else {
-                    self.showTipText("服务器坏了")
                 }
-            })
+            }
         }
     }
     
@@ -235,17 +242,26 @@ extension AddStep {
     }
     
     /* 筛选多图完成后调用 */
-    func AlbumPickerDidFinishPick(_ assets:NSArray) {
+    
+    func imagesPickerDidFinishPick(_ assets: [PHAsset]) {
+        let imageManager = PHCachingImageManager()
+        var i = 0
         for asset in assets {
-            if let a = asset as? ALAsset {
-                if  (a.value(forProperty: "ALAssetPropertyType") as AnyObject).isEqual("ALAssetTypePhoto") {
-                    imageArray.append(a)
-                    hasUploadedArray.append(-1)
+            i += 1
+            
+            let options = PHImageRequestOptions()
+            options.isSynchronous = true
+            imageManager.requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: PHImageContentMode.default, options: options, resultHandler: { (image, _) in
+                if image != nil {
+                    self.imageArray.append(image!)
+                    self.hasUploadedArray.append(-1)
+                    if i == assets.count {
+                        self.reLayout()
+                    }
                 }
-            }
+            })
         }
-        reLayout()
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     func onViewDream() {

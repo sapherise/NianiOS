@@ -75,7 +75,8 @@ class CareViewController: UIViewController, UIPickerViewDataSource, UIPickerView
     
     func startPush(){
         let date = Date()
-        let comp = (Calendar.current as NSCalendar).components( [NSCalendar.Unit.NSHourCalendarUnit, NSCalendar.Unit.NSMinuteCalendarUnit, NSCalendar.Unit.NSSecondCalendarUnit] , from: date)
+        
+        let comp = (Calendar.current as NSCalendar).components( [NSCalendar.Unit.hour, NSCalendar.Unit.minute, NSCalendar.Unit.second] , from: date)
         let hour = comp.hour
         let min = comp.minute
         let sec = comp.second
@@ -102,7 +103,7 @@ class CareViewController: UIViewController, UIPickerViewDataSource, UIPickerView
         }
         thepush("记得更新念。\(Greetings)", dateSinceNow: TimeInterval(delayTime), willReapt: true, id: "dailyPush")
         Cookies.set("on" as AnyObject?, forKey: "pushMode")
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
 }
 

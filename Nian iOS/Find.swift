@@ -193,54 +193,9 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     // 获得通讯录权限
     func onPhoneClick(_ sender: UIButton) {
-        let addressBook = ContactsHelper()
-        let status = addressBook.determineStatus()
-        if status {
-            self.transPhone()
-        }else{
-            sender.setTitle("发现通讯录", for: UIControlState())
-            sender.removeTarget(self, action: #selector(FindViewController.onPhoneClick(_:)), for: UIControlEvents.touchUpInside)
-            sender.addTarget(self, action: #selector(FindViewController.onPhoneFindClick), for: UIControlEvents.touchUpInside)
-        }
+        self.tableViewPhone.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight - 64 - 75))
+        self.tableViewPhone.tableFooterView?.addGhost("手机里的好友们\n还没有来玩念")
     }
-    
-    // 搜索通讯录
-    func onPhoneFindClick() {
-        let addressBook = ContactsHelper()
-        let status = addressBook.determineStatus()
-        if status {
-            self.transPhone()
-        }else{
-            self.tableViewPhone.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight - 64 - 75))
-            self.tableViewPhone.tableFooterView?.addGhost("失败了\n念不能获得你的通讯录")
-        }
-    }
-    
-    // 将通讯录提交到数据库
-    func transPhone() {
-        self.viewLoadingShow()
-        let addressBook = ContactsHelper()
-        addressBook.createAddressBook()
-        let list = addressBook.getContactNames()
-        Api.postPhone(list) { json in
-            self.viewLoadingHide()
-            if json != nil {
-                let arr = json!.object(forKey: "items") as! NSArray
-                self.dataArrayPhone.removeAllObjects()
-                for data in arr{
-                    self.dataArrayPhone.add(data)
-                }
-                self.tableViewPhone!.reloadData()
-                if self.dataArrayPhone.count == 0 {
-                    self.tableViewPhone.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight - 64 - 75))
-                    self.tableViewPhone.tableFooterView?.addGhost("手机里的好友们\n还没有来玩念")
-                }else{
-                    self.tableViewPhone.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 50))
-                }
-            }
-        }
-    }
-    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
             return 71

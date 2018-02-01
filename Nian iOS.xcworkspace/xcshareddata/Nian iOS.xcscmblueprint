@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "6F9B95C2331515DDD7197A89DDBE7596623A020B",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "6F9B95C2331515DDD7197A89DDBE7596623A020B" : 9223372036854775807,
+    "11D79FA5D3EBEAD025E5F4DE3F702B9BCCA5F15D" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "33178876-2901-4986-A39A-F68F34DAE83B",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "6F9B95C2331515DDD7197A89DDBE7596623A020B" : "NianiOS\/",
+    "11D79FA5D3EBEAD025E5F4DE3F702B9BCCA5F15D" : "Nian%20iOS"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Nian iOS",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Nian iOS.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/coding.net\/sap\/Nian_iOS.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "11D79FA5D3EBEAD025E5F4DE3F702B9BCCA5F15D"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/sapherise\/NianiOS.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "6F9B95C2331515DDD7197A89DDBE7596623A020B"
+    }
+  ]
+}

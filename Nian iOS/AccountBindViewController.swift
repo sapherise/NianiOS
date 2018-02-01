@@ -39,28 +39,19 @@ class AccountBindViewController: SAViewController, UIActionSheetDelegate {
         self.tableview.separatorStyle = .none
         
         self.startAnimating()
-        // todo
-//        SettingModel.getUserAllOauth() {
-//            (task, responseObject, error) in
-//            
-//            self.stopAnimating()
-//            
-//            if let _ = error {
-//                self.showTipText("网络有点问题，等一会儿再试")
-//            } else {
-////                let json = JSON(responseObject!)
-////                
-////                if json["error"].numberValue != 0 {
-////                    
-////                } else {
-////                    self.bindDict = json["data"].dictionaryObject!
-////                    
-////                    self.tableview.reloadData()
-////                }
-//                    // todo
-//            }
-//        }
-        
+        Api.getUserAllOauth() { json in
+            self.stopAnimating()
+            if json != nil {
+                if SAValue(json, "error") != "0" {
+                    self.showTipText("网络有点问题，等一会儿再试")
+                } else {
+                    if let data = json?.object(forKey: "data") as? Dictionary<String, AnyObject> {
+                        self.bindDict = data
+                        self.tableview.reloadData()
+                    }
+                }
+            }
+        }
     }
     
     
@@ -358,71 +349,48 @@ extension AccountBindViewController: UITableViewDelegate, UITableViewDataSource 
         if actionSheet == self.actionSheet {
             if buttonIndex == 0 {
                 /* 解除微信 */
-                SettingModel.relieveThirdAccount("wechat", callback: { (task, responseObject, error) -> Void in
-                    if let _ = error {
-                        self.showTipText("网络有点问题，等一会儿再试")
-                    } else {
-                        // todo
-//                        let json = JSON(responseObject!)
-//                        
-//                        if json["error"] != 0 {
-//                            self.showTipText("网络有点问题，等一会儿再试")
-//                        } else {
-//                            self.bindDict["wechat"] = "0" as AnyObject?
-//                            self.bindDict["wechat_username"] = "" as AnyObject?
-//                            self.tableview.beginUpdates()
-//                            self.tableview.reloadRows(at: [IndexPath(row: 0, section: 1)], with: .none)
-//                            self.tableview.endUpdates()
-//                            self.showTipText("微信解除绑定成功")
-//                        }
+                Api.relieveThirdAccount("wechat") { json in
+                    if json != nil {
+                        if SAValue(json, "error") != "0" {
+                            self.showTipText("网络有点问题，等一会儿再试")
+                        } else {
+                            self.bindDict["wechat"] = "0" as AnyObject?
+                            self.bindDict["wechat_username"] = "" as AnyObject?
+                            self.tableview.reloadData()
+                            self.showTipText("微信解除绑定成功")
+                        }
                     }
-                })
+                }
             }
         } else if actionSheet == self.actionSheetQQ {
             if buttonIndex == 0 {
-                SettingModel.relieveThirdAccount("QQ", callback: { (task, responseObject, error) -> Void in
-                    if let _ = error {
-                        self.showTipText("网络有点问题，等一会儿再试")
-                    } else {
-                        // todo
-//                        let json = JSON(responseObject!)
-//                        
-//                        if json["error"] != 0 {
-//                            self.showTipText("网络有点问题，等一会儿再试")
-//                        } else {
-//                            self.bindDict["QQ"] = 1 as AnyObject?
-//                            self.bindDict["QQ_username"] = ""
-//                            self.tableview.beginUpdates()
-//                            self.tableview.reloadRows(at: [IndexPath(row: 1, section: 1)], with: .none)
-//                            self.tableview.endUpdates()
-//                            self.showTipText("QQ 解除绑定成功")
-//                        }
+                Api.relieveThirdAccount("QQ") { json in
+                    if json != nil {
+                        if SAValue(json, "error") != "0" {
+                           self.showTipText("网络有点问题，等一会儿再试")
+                        } else {
+                            self.bindDict["QQ"] = "0" as AnyObject?
+                            self.bindDict["QQ_username"] = "" as AnyObject?
+                            self.tableview.reloadData()
+                            self.showTipText("QQ 解除绑定成功")
+                        }
                     }
-                })
+                }
             }
         } else if actionSheet == self.actionSheetWeibo {
             if buttonIndex == 0 {
-                SettingModel.relieveThirdAccount("weibo", callback: { (task, responseObject, error) -> Void in
-                    if let _ = error {
-                        self.showTipText("网络有点问题，等一会儿再试")
-                    } else {
-                        // todo
-//                        let json = JSON(responseObject!)
-//                        
-//                        if json["error"] != 0 {
-//                            self.showTipText("网络有点问题，等一会儿再试")
-//                        } else {
-//                            self.bindDict["weibo"] = "0" as AnyObject?
-//                            self.bindDict["weibo_username"] = "" as AnyObject?
-//                            
-//                            self.tableview.beginUpdates()
-//                            self.tableview.reloadRows(at: [IndexPath(row: 2, section: 1)], with: .none)
-//                            self.tableview.endUpdates()
-//                            
-//                            self.showTipText("微博解除绑定成功")
-//                        }
+                Api.relieveThirdAccount("weibo") { json in
+                    if json != nil {
+                        if SAValue(json, "error") != "0" {
+                           self.showTipText("网络有点问题，等一会儿再试")
+                        } else {
+                            self.bindDict["weibo"] = "0" as AnyObject?
+                            self.bindDict["weibo_username"] = "" as AnyObject?
+                            self.tableview.reloadData()
+                            self.showTipText("微博解除绑定成功")
+                        }
                     }
-                })
+                }
             }
         }
     }
@@ -445,32 +413,19 @@ extension AccountBindViewController: TencentLoginDelegate, TencentSessionDelegat
         }
         
         if openid.characters.count > 0 && appid.characters.count > 0 && accessToken.characters.count > 0 {
-            
-//            LogOrRegModel.getQQName(accessToken, openid: openid, appid: appid) {
-//                (task, responseObject, error) in
-            
-                // todo
-//                if let _ = error {
-//                    self.showTipText("网络有点问题，等一会儿再试")
-//                } else {
-//                    let json = JSON(responseObject!)
-//                    
-//                    if json["ret"].numberValue != 0 {
-//                        self.showTipText("QQ 授权不成功...")
-//                    } else {
-//                        let _name = json["nickname"].stringValue
-//                        
-//                        if _name.characters.count > 0 {
-//                            self.bind3rdAccount(openid, nameFrom3rd: _name, type: "QQ")
-//                        }
-//                    }
-//                }
-//            }
-            
-        } else {
-            
+            Api.getQQName(accessToken, openid: openid, appid: appid) { json in
+                if json != nil {
+                    if SAValue(json, "ret") != "0" {
+                       self.showTipText("QQ 授权不成功...")
+                    } else {
+                        let name = SAValue(json, "nickname")
+                        if name.characters.count > 0 {
+                            self.bind3rdAccount(openid, nameFrom3rd: name, type: "QQ")
+                        }
+                    }
+                }
+            }
         }
-        
     }
     
     /**
@@ -501,28 +456,15 @@ extension AccountBindViewController {
         if (notiObject as! NSArray).count > 0 {
             let weiboUid = (notiObject as! NSArray)[0] as? String
             let accessToken = (notiObject as! NSArray)[1] as? String
-            
-//            if weiboUid != nil && accessToken != nil {
-//                LogOrRegModel.getWeiboName(accessToken!, openid: weiboUid!) {
-//                    (task, responseObject, error) in
-//                    if let _ = error {
-//                        self.showTipText("网络有点问题，等一会儿再试")
-//                    } else {
-//                        let json = JSON(responseObject!)
-//                        
-//                        if let _ = json["error"].string {
-//                            self.showTipText("微博授权不成功...")
-//                        } else {
-//                            let _name = json["name"].stringValue
-//                            
-//                            if _name.characters.count > 0 {
-//                                self.bind3rdAccount(weiboUid!, nameFrom3rd: _name, type: "weibo")
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-            
+            if weiboUid != nil && accessToken != nil {
+                Api.getWeiboName(accessToken!, openid: weiboUid!) { json in
+                    if json != nil {
+                        let name = SAValue(json, "name")
+                        self.bind3rdAccount(weiboUid!, nameFrom3rd: name, type: "weibo")
+                        self.showTipText("微博绑定成功")
+                    }
+                }
+            }
         } else {
             
         }
@@ -530,82 +472,45 @@ extension AccountBindViewController {
 
 
     func handleBindWechat(_ noti: Notification) {
-        guard let notiObject = noti.object else {
-            return
-        }
-        
-        if let openid = (notiObject as! NSDictionary)["openid"] as? String {
-            if let accessToken = (notiObject as! NSDictionary)["access_token"] as? String {
-//                LogOrRegModel.getWechatName(accessToken, openid: openid) {
-//                    (task, responseObject, error) in
-//                    
-//                    if let _ = error {
-//                        self.showTipText("网络有点问题，等一会儿再试")
-//                    } else {
-//                        let json = JSON(responseObject!)
-//                        
-//                        if let _ = json["errcode"].number {
-//                            self.showTipText("微信授权不成功...")
-//                        } else {
-//                            let _name = json["nickname"].stringValue
-//                            
-//                            if openid.characters.count > 0 {
-//                                self.bind3rdAccount(openid, nameFrom3rd: _name, type: "wechat")
-//                            }
-//                        }
-//                    }
-//                    
-//                }
+        if let json = noti.object as? NSDictionary {
+            if SAValue(json, "errcode") != "" {
+                self.showTipText("网络有点问题，等一会儿再试")
+            } else {
+                let openid = json.stringAttributeForKey("openid")
+                let token = json.stringAttributeForKey("access_token")
+                Api.getWechatName(token, openid: openid) { json in
+                    if json != nil {
+                        let name = SAValue(json, "nickname")
+                        self.bind3rdAccount(openid, nameFrom3rd: name, type: "wechat")
+                    }
+                }
             }
-        } else {
-            
         }
-
     }
     
     
     func bind3rdAccount(_ id: String, nameFrom3rd: String, type: String) {
-            // todo
-//        SettingModel.bindThirdAccount(id, nameFrom3rd: nameFrom3rd, type: type) {
-//            (task, responseObject, error) -> Void in
-//            if let _ = error {
-//                self.showTipText("网络有点问题，等一会儿再试")
-//            } else {
-//                let json = JSON(responseObject!)
-//                
-//                if json["error"].numberValue != 0 {
-//                    self.showTipText("网络有点问题，等一会儿再试")
-//                } else {
-//                    
-//                    if type == "wechat" {
-//                        self.bindDict["wechat"] = "1" as AnyObject?
-//                        self.bindDict["wechat_username"] = nameFrom3rd as AnyObject?
-//                        
-//                        self.tableview.beginUpdates()
-//                        self.tableview.reloadRows(at: [IndexPath(row: 0, section: 1)], with: .none)
-//                        self.tableview.endUpdates()
-//                        
-//                    } else if type == "QQ" {
-//                        self.bindDict["QQ"] = "1"
-//                        self.bindDict["QQ_username"] = nameFrom3rd
-//                        
-//                        self.tableview.beginUpdates()
-//                        self.tableview.reloadRows(at: [IndexPath(row: 1, section: 1)], with: .none)
-//                        self.tableview.endUpdates()
-//                        
-//                    } else if type == "weibo" {
-//                        self.bindDict["weibo"] = "1"
-//                        self.bindDict["weibo_username"] = nameFrom3rd
-//                        
-//                        self.tableview.beginUpdates()
-//                        self.tableview.reloadRows(at: [IndexPath(row: 2, section: 1)], with: .none)
-//                        self.tableview.endUpdates()
-//                    
-//                    }
-//                }
-//            }
-//        }
-    
+        Api.bindThirdAccount(id, nameFrom3rd: nameFrom3rd, type: type) { json in
+            if json != nil {
+                if SAValue(json, "error") != "0" {
+                   self.showTipText("网络有点问题，等一会儿再试")
+                } else {
+                    if type == "wechat" {
+                        self.bindDict["wechat"] = "1" as AnyObject?
+                        self.bindDict["wechat_username"] = nameFrom3rd as AnyObject?
+                        self.tableview.reloadData()
+                    } else if type == "QQ" {
+                        self.bindDict["QQ"] = "1" as AnyObject?
+                        self.bindDict["QQ_username"] = nameFrom3rd as AnyObject?
+                        self.tableview.reloadData()
+                    } else if type == "weibo" {
+                        self.bindDict["weibo"] = "1" as AnyObject?
+                        self.bindDict["weibo_username"] = nameFrom3rd as AnyObject?
+                        self.tableview.reloadData()
+                    }
+                }
+            }
+        }
     }
 }
 

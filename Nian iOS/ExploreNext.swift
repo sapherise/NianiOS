@@ -62,42 +62,46 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
             if type == 0 {
                 Api.getDiscoverEditorRecom("\(page)") { json in
                     if json != nil {
-                        let error = json!.object(forKey: "error") as! NSNumber
-                        if error == 0 {
-                            if clear {
-                                self.dataArray.removeAllObjects()
+                        if let j = json as? NSDictionary {
+                            let error = j.stringAttributeForKey("error")
+                            if error == "0" {
+                                if clear {
+                                    self.dataArray.removeAllObjects()
+                                }
+                                let arr = json!.object(forKey: "data") as! NSArray
+                                for d in arr {
+                                    let data = self.getDataEncode(d as AnyObject)
+                                    self.dataArray.add(data!)
+                                }
+                                self.collectionView.reloadData()
+                                self.collectionView.headerEndRefreshing()
+                                self.collectionView.footerEndRefreshing()
+                                self.page += 1
+                                self.isLoading = false
                             }
-                            let arr = json!.object(forKey: "data") as! NSArray
-                            for d in arr {
-                                let data = self.getDataEncode(d as AnyObject)
-                                self.dataArray.add(data!)
-                            }
-                            self.collectionView.reloadData()
-                            self.collectionView.headerEndRefreshing()
-                            self.collectionView.footerEndRefreshing()
-                            self.page += 1
-                            self.isLoading = false
                         }
                     }
                 }
             } else if type == 1 {
                 Api.getDiscoverLatest("\(page)") { json in
                     if json != nil {
-                        let error = json!.object(forKey: "error") as! NSNumber
-                        if error == 0 {
-                            if clear {
-                                self.dataArray.removeAllObjects()
+                        if let j = json as? NSDictionary {
+                            let error = j.stringAttributeForKey("error")
+                            if error == "0" {
+                                if clear {
+                                    self.dataArray.removeAllObjects()
+                                }
+                                let arr = json!.object(forKey: "data") as! NSArray
+                                for d in arr {
+                                    let data = self.getDataEncode(d as AnyObject)
+                                    self.dataArray.add(data!)
+                                }
+                                self.collectionView.reloadData()
+                                self.collectionView.headerEndRefreshing()
+                                self.collectionView.footerEndRefreshing()
+                                self.page += 1
+                                self.isLoading = false
                             }
-                            let arr = json!.object(forKey: "data") as! NSArray
-                            for d in arr {
-                                let data = self.getDataEncode(d as AnyObject)
-                                self.dataArray.add(data!)
-                            }
-                            self.collectionView.reloadData()
-                            self.collectionView.headerEndRefreshing()
-                            self.collectionView.footerEndRefreshing()
-                            self.page += 1
-                            self.isLoading = false
                         }
                     }
                 }
@@ -122,42 +126,46 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
             } else if type == 3 {
                 Api.getMyLikeDreams("\(page)") { json in
                     if json != nil {
-                        let error = json!.object(forKey: "error") as! NSNumber
-                        if error == 0 {
-                            if clear {
-                                self.dataArray.removeAllObjects()
+                        if let j = json as? NSDictionary {
+                            let error = j.stringAttributeForKey("error")
+                            if error == "0" {
+                                if clear {
+                                    self.dataArray.removeAllObjects()
+                                }
+                                let arr = json!.object(forKey: "data") as! NSArray
+                                for d in arr {
+                                    let data = self.getDataEncode(d as AnyObject)
+                                    self.dataArray.add(data!)
+                                }
+                                self.collectionView.reloadData()
+                                self.collectionView.headerEndRefreshing()
+                                self.collectionView.footerEndRefreshing()
+                                self.page += 1
+                                self.isLoading = false
                             }
-                            let arr = json!.object(forKey: "data") as! NSArray
-                            for d in arr {
-                                let data = self.getDataEncode(d as AnyObject)
-                                self.dataArray.add(data!)
-                            }
-                            self.collectionView.reloadData()
-                            self.collectionView.headerEndRefreshing()
-                            self.collectionView.footerEndRefreshing()
-                            self.page += 1
-                            self.isLoading = false
                         }
                     }
                 }
             } else if type == 4 {
                 Api.getMyFollowDreams("\(page)") { json in
                     if json != nil {
-                        let error = json!.object(forKey: "error") as! NSNumber
-                        if error == 0 {
-                            if clear {
-                                self.dataArray.removeAllObjects()
+                        if let j = json as? NSDictionary {
+                            let error = j.stringAttributeForKey("error")
+                            if error == "0" {
+                                if clear {
+                                    self.dataArray.removeAllObjects()
+                                }
+                                let arr = json!.object(forKey: "data") as! NSArray
+                                for d in arr {
+                                    let data = self.getDataEncode(d as AnyObject)
+                                    self.dataArray.add(data!)
+                                }
+                                self.collectionView.reloadData()
+                                self.collectionView.headerEndRefreshing()
+                                self.collectionView.footerEndRefreshing()
+                                self.page += 1
+                                self.isLoading = false
                             }
-                            let arr = json!.object(forKey: "data") as! NSArray
-                            for d in arr {
-                                let data = self.getDataEncode(d as AnyObject)
-                                self.dataArray.add(data!)
-                            }
-                            self.collectionView.reloadData()
-                            self.collectionView.headerEndRefreshing()
-                            self.collectionView.footerEndRefreshing()
-                            self.page += 1
-                            self.isLoading = false
                         }
                     }
                 }
@@ -187,9 +195,9 @@ class ExploreNext: SAViewController, UICollectionViewDelegate, UICollectionViewD
             DreamVC.Id = id
             if type == 2 {
                 delegate?.dreamSelected(id, title: title, content: lastdate, image: image)
-                self.navigationController?.popViewController(animated: true)
+                _ = self.navigationController?.popViewController(animated: true)
             } else {
-                self.navigationController?.pushViewController(DreamVC, animated: true)
+                _ = self.navigationController?.pushViewController(DreamVC, animated: true)
             }
         }
     }

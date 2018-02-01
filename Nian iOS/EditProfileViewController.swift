@@ -14,7 +14,7 @@ import UIKit
 
 
 class EditProfileViewController: SAViewController, UIActionSheetDelegate {
-
+    
     @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet weak var containerView: UIControl!
@@ -46,16 +46,16 @@ class EditProfileViewController: SAViewController, UIActionSheetDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
-
+        
         self._setTitle("编辑个人资料")
         self.settingSeperateHeight()
         
         NotificationCenter.default.addObserver(self,
-                                                        selector: #selector(EditProfileViewController.handleChooseGender(_:)),
-                                                        name: NSNotification.Name(rawValue: "tapOnGenderTextField"),
-                                                        object: nil)
+                                               selector: #selector(EditProfileViewController.handleChooseGender(_:)),
+                                               name: NSNotification.Name(rawValue: "tapOnGenderTextField"),
+                                               object: nil)
         if self.profileDict != nil {
             self.nameTextField.text = self.profileDict!["name"]
             
@@ -67,14 +67,14 @@ class EditProfileViewController: SAViewController, UIActionSheetDelegate {
             self.setBarButton("保存", actionGesture: #selector(EditProfileViewController.saveProfileSetting(_:)))
         }
         
-
+        
     }
-
+    
     @IBAction func dismissKeyboard(_ sender: UIControl) {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         
     }
-
+    
     /**
      
      */
@@ -87,23 +87,23 @@ class EditProfileViewController: SAViewController, UIActionSheetDelegate {
         actionSheet.cancelButtonIndex = 3
         actionSheet.show(in: self.view)
         
-//        let alertController = PSTAlertController.actionSheetWithTitle(nil)
-//        
-//        alertController.addAction(PSTAlertAction(title: "男", style: .Default, handler: { (action) in
-//            self.genderTextField.text = "男"
-//        }))
-//        
-//        alertController.addAction(PSTAlertAction(title: "女", style: .Default, handler: { (action) in
-//            self.genderTextField.text = "女"
-//        }))
-//        
-//        alertController.addAction(PSTAlertAction(title: "保密", style: .Default, handler: { (action) in
-//            self.genderTextField.text = "保密"
-//        }))
-//        
-//        alertController.addCancelActionWithHandler(nil)
-//        
-//        alertController.showWithSender(nil, arrowDirection: .Any, controller: self, animated: true, completion: nil)
+        //        let alertController = PSTAlertController.actionSheetWithTitle(nil)
+        //
+        //        alertController.addAction(PSTAlertAction(title: "男", style: .Default, handler: { (action) in
+        //            self.genderTextField.text = "男"
+        //        }))
+        //
+        //        alertController.addAction(PSTAlertAction(title: "女", style: .Default, handler: { (action) in
+        //            self.genderTextField.text = "女"
+        //        }))
+        //
+        //        alertController.addAction(PSTAlertAction(title: "保密", style: .Default, handler: { (action) in
+        //            self.genderTextField.text = "保密"
+        //        }))
+        //
+        //        alertController.addCancelActionWithHandler(nil)
+        //
+        //        alertController.showWithSender(nil, arrowDirection: .Any, controller: self, animated: true, completion: nil)
     }
     
     func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
@@ -138,7 +138,7 @@ extension EditProfileViewController: UITextFieldDelegate {
      
      */
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-
+        
         switch textField {
         case self.nameTextField:
             self.profileDict!["name"] = textField.text!
@@ -168,7 +168,7 @@ extension EditProfileViewController {
                 }
             }
         }
-
+        
         return false
     }
     
@@ -187,7 +187,7 @@ extension EditProfileViewController {
         
         return false
     }
-
+    
 }
 
 extension EditProfileViewController {
@@ -244,7 +244,8 @@ extension EditProfileViewController {
             var _tmpDict: Dictionary<String, String> = Dictionary()
             
             if previousName == _name && previousPhone == _phone && previousGender == _gender  {
-                self.navigationController?.popViewController(animated: true)
+//                self.navigationController?.popViewController(animated: true)
+                _ = navigationController?.popViewController(animated: true)
             } else {
                 
                 if previousName != _name {
@@ -259,28 +260,19 @@ extension EditProfileViewController {
                     _tmpDict["gender"] = _gender
                 }
                 
-                SettingModel.updateUserInfo(_tmpDict, callback: {
-                    (task, responseObject, error) -> Void in
-                    
-                    if let _ = error {
-                        self.showTipText("网络有点问题，等一会儿再试")
-                    } else {
-                        // todo
-//                        let json = JSON(responseObject!)
-//                        
-//                        if json["error"] != 0 {
-//                            self.showTipText("昵称或手机号不可用...")
-//                        } else {
-//                            self.delegate?.editProfile?(profileDict: self.profileDict!)
-//                            self.navigationController?.popViewController(animated: true)
-//                        }
+                Api.updateUserInfo(_tmpDict) { json in
+                    if json != nil {
+                        if SAValue(json, "error") != "0" {
+                            self.showTipText("网络有点问题，等一会儿再试")
+                        } else {
+                            self.delegate?.editProfile?(profileDict: self.profileDict!)
+                            _ = self.navigationController?.popViewController(animated: true)
+                        }
                     }
-                })
+                }
             }
-       
         }
     }
-
 }
 
 

@@ -8,13 +8,12 @@
 
 import Foundation
 extension HomeViewController {
+    
     func setupReachability() {
-        NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.reachabilityChanged(_:)), name: NSNotification.Name(rawValue: ReachabilityChangedNotification), object: reachability)
-        reachability?.startNotifier()
-        if let reachability = reachability {
-            let status = reachability.currentReachabilityString
-//            Cookies.set(status, forKey: "reachability")
-            globalReachability = status
+        NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.reachabilityChanged(_:)),name: ReachabilityChangedNotification,object: reachability)
+        do {
+            try reachability.startNotifier()
+        } catch {
         }
     }
     
@@ -22,7 +21,7 @@ extension HomeViewController {
     func reachabilityChanged(_ note: Notification) {
         let reachability = note.object as! Reachability
         let status = reachability.currentReachabilityString
-//        Cookies.set(status, forKey: "reachability")
+        Cookies.set(status as AnyObject?, forKey: "reachability")
         globalReachability = status
     }
 }

@@ -92,13 +92,6 @@ class LogOrRegViewController: UIViewController {
     /// 提示用户“重置密码”邮件发送成功
     var niAlert = NIAlert()
     
-    /// 检查邮箱是否注册的结果
-    var checkEmailResult: NetworkClosure?
-    /// 请求登录的结果
-    var logInResult: NetworkClosure?
-    /// 请求注册的结果
-    var registerResult: NetworkClosure?
-    
     // MARK: - view controller life recycle
     
     override func viewDidLoad() {
@@ -172,42 +165,26 @@ class LogOrRegViewController: UIViewController {
         let _tmpType = self.functionalType
         
         self.functionalButton.startAnimating()
-        // todo
-//        LogOrRegModel.resetPaeeword(email: self.emailTextField.text!) {
-//            (task, responseObject, error) in
-//            
-//            self.functionalButton.stopAnimating()
-//            self.functionalType = _tmpType
-//            
-//            if let _ = error {
-//                self.showTipText("网络有点问题，等一会儿再试")
-//            } else {
-//                let json = JSON(responseObject!)
-//                
-//                if json["error"] != 0 {
-//                    let msg = json["message"].stringValue
-//                    
-//                    if msg == "The resources is not exist." {
-//                        self.showTipText("这个邮箱没注册过...")
-//                    } else if msg == "The request is too busy." {
-//                        self.showTipText("超出发送限制...")
-//                    }
-//                    
-//                } else {
-//                    
-//                    let niAlert = NIAlert()
-//                    niAlert.delegate = self
-//                    
-//                    niAlert.dict = NSMutableDictionary(objects: [UIImage(named: "reset_password")!, "发好了", "重置密码邮件已发送\n快去查收邮件", ["好"]],
-//                        forKeys: ["img", "title", "content", "buttonArray"])
-//                    
-//                    niAlert.showWithAnimation(showAnimationStyle.spring)
-//                    
-//                }
-//            }
-//        }
-        
-        
+        Api.resetPassword(self.emailTextField.text!) { json in
+            if json != nil {
+                self.functionalButton.stopAnimating()
+                self.functionalType = _tmpType
+                if SAValue(json, "error") != "0" {
+                    if let j = json as? NSDictionary {
+                        let message = j.stringAttributeForKey("message")
+                        if message == "The resources is not exist." {
+                            self.showTipText("这个邮箱没注册过...")
+                        } else {
+                            self.showTipText("超出发送限制...")
+                        }
+                    }
+                } else {
+                    let niAlert = NIAlert()
+                    niAlert.delegate = self
+                    niAlert.dict = NSMutableDictionary(objects: [UIImage(named: "reset_password")!, "发好了", "重置密码邮件已发送\n快去查收邮件", ["好"]], forKeys: ["img" as NSCopying, "title" as NSCopying, "content" as NSCopying, "buttonArray" as NSCopying])
+                }
+            }
+        }
     }
     
     
@@ -299,27 +276,18 @@ extension LogOrRegViewController {
                 if self.validateEmailAddress(_text) {
                     
                     self.functionalButton.startAnimating()
-                    // todo
-//                    LogOrRegModel.checkEmailValidation(email: self.emailTextField.text!) {
-//                        (task, responseObject, error) in
-//                        
-//                        self.functionalType = .confirm
-//                        self.functionalButton.stopAnimating()
-//                        
-//                        if let _ = error {
-//                            self.showTipText("网络有点问题，等一会儿再试")
-//                        } else {
-//                            let json = JSON(responseObject!)
-//                            if json["data"] == "0" {  // email 未注册
-//                                // 处理未注册
-//                                self.handleUnregisterEmail()
-//                            } else if json["data"] == "1" { // email 已注册
-//                                // 处理登陆
-//                                self.handleRegisterEmail()
-//                            }
-//                            
-//                        }
-//                    }
+                    Api.checkEmailValidation(self.emailTextField.text!) { json in
+                        self.functionalType = .confirm
+                        self.functionalButton.stopAnimating()
+                        if let j = json as? NSDictionary {
+                            let data = j.stringAttributeForKey("data")
+                            if data == "0" {
+                                self.handleUnregisterEmail()
+                            } else if data == "1" {
+                                self.handleRegisterEmail()
+                            }
+                        }
+                    }
                 } else {  //if self.validateEmailAddress == false
                     self.showTipText("不是地球上的邮箱...")
                 }
@@ -339,45 +307,32 @@ extension LogOrRegViewController {
                 let _password = "n*A\(self.passwordTextField.text!)"
                 
                 self.functionalButton.startAnimating()
-                // todo
-//                LogOrRegModel.logIn(email: _email, password: _password.md5) {
-//                    (task, responseObject, error) in
-//                    
-//                    self.functionalButton.stopAnimating()
-//                    self.functionalType = .logIn
-//                    
-//                    if let _ = error {
-//                        self.showTipText("网络有点问题，等一会儿再试")
-//                    } else {
-//                        let json = JSON(responseObject!)
-//                        
-//                        if json["error"] != 0 { // 服务器返回错误
-//                            self.showTipText("邮箱或密码不对...")
-//                        } else {
-//                            let shell = json["data"]["shell"].stringValue
-//                            let uid = json["data"]["uid"].stringValue
-//                            let username = json["data"]["username"].stringValue
-//                            
-//                            UserDefaults.standard.set(username, forKey: "user")
-//                            
-//                            /// uid 和 shell 保存到 keychain
-//                            let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
-//                            uidKey.setObject(uid, forKey: kSecAttrAccount)
-//                            uidKey.setObject(shell, forKey: kSecValueData)
-//                            
-//                            Api.requestLoad()
-//                            
-//                            /* 使用邮箱来登录 */
-//                            self.launch(0)
-////                            self.navigationController?.popViewControllerAnimated(false)
-//                            self.emailTextField.text = ""
-//                            self.passwordTextField.text = ""
-//                            
-//                        } // if json["error"] != 0
-//                    } // if let _error = error
-//                }  // end of closure
-                
-            }  // if self.passwordTextField.text != ""
+                Api.logIn(_email, password: _password.md5) { json in
+                    self.functionalButton.stopAnimating()
+                    self.functionalType = .logIn
+                    if SAValue(json, "error") != "0" {
+                        self.showTipText("邮箱或密码不对...")
+                    } else {
+                        if let j = json as? NSDictionary {
+                            if let data = j.object(forKey: "data") as? NSDictionary {
+                                let shell = data.stringAttributeForKey("shell")
+                                let uid = data.stringAttributeForKey("uid")
+                                let username = data.stringAttributeForKey("username")
+                                UserDefaults.standard.set(username, forKey: "user")
+                                let uidKey = KeychainItemWrapper(identifier: "uidKey", accessGroup: nil)
+                                uidKey?.setObject(uid, forKey: kSecAttrAccount)
+                                uidKey?.setObject(shell, forKey: kSecValueData)
+                                Api.requestLoad()
+                                
+                                /* 使用邮箱来登录 */
+                                self.launch(0)
+                                self.emailTextField.text = ""
+                                self.passwordTextField.text = ""
+                            }
+                        }
+                    }
+                }
+            }
         } else if self.functionalType == .register {
             if self.passwordTextField.text != "" {
                 if self.passwordTextField.text!.characters.count < 4 {
@@ -389,29 +344,15 @@ extension LogOrRegViewController {
                     if self.validateNickname(_nickname) {
                         
                         self.functionalButton.startAnimating()
-                        // todo
-//                        LogOrRegModel.checkNameAvailability(name: _nickname, callback: {
-//                            (task, responseObject, error) in
-//                            
-//                            self.functionalButton.stopAnimating()
-//                            self.functionalType = .register
-//                            
-//                            if let _ = error { // 服务器返回错误
-//                                self.showTipText("网络有点问题，等一会儿再试")
-//                            } else {
-//                                let json = JSON(responseObject!)
-//                                
-//                                if json["error"] == 1 { // 服务器返回的数据包含“错误信息”
-//                                    self.showTipText("昵称被占用...")
-//                                    
-//                                } else if json["error"] == 0 {
-//                                    self.performSegue(withIdentifier: "toModeVC", sender: nil)
-//                                }
-//                            }
-//                        })
-                        
-                    } else { // nickname 不符合要求
-                        
+                        Api.checkNameAvailability(_nickname) { json in
+                            self.functionalButton.stopAnimating()
+                            self.functionalType = .register
+                            if SAValue(json, "error") == "1" {
+                                self.showTipText("昵称被占用...")
+                            } else if SAValue(json, "error") == "0" {
+                                self.performSegue(withIdentifier: "toModeVC", sender: nil)
+                            }
+                        }
                     }
                 } else { // 没有输入 nickname
                     self.showTipText("名字不能是空的...")

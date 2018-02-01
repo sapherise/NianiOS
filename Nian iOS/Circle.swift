@@ -464,64 +464,65 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         
         send("\(SAUid())_loading_\(width)_\(height)", type: "2")
         let uy = UpYun()
-        // todo
-//        uy.successBlocker = ({(data:AnyObject!) in
-//            var uploadUrl = data.object(forKey: "url") as! String
-//            uploadUrl = "http://img.nian.so\(uploadUrl)"
-//            setCacheImage("\(uploadUrl)!a", img: img, width: wSmall)
-//            setCacheImage("\(uploadUrl)!large", img: img, width: wLarge)
-//            uploadUrl = SAReplace(uploadUrl, before: ".png", after: "") as String
-//            let content = "\(uploadUrl)_\(width)_\(height)"
-//            
-//            var i = 0
-//            for _data in self.dataArray {
-//                if let data = _data as? NSDictionary {
-//                    let c = data.stringAttributeForKey("content")
-//                    let arr = c.components(separatedBy: "_")
-//                    if arr.count > 1 {
-//                        if arr[1] == "loading.png!a" {
-//                            let newarr = content.components(separatedBy: "_")
-//                            if newarr.count > 3 {
-//                                let path = "\(newarr[0])_\(newarr[1]).png!a"
-//                                let mutableData = NSMutableDictionary(dictionary: data)
-//                                mutableData.setValue(path, forKey: "content")
-//                                self.dataArray.replaceObject(at: i, with: mutableData)
-//                            }
-//                            
-//                            break
-//                        }
-//                    }
-//                }
-//                i += 1
-//            }
-//            self.tableView.reloadData()
-//            var nameSelf = ""
-//            if let _name = Cookies.get("user") as? String {
-//                nameSelf = _name
-//            }
-//            let message = RCImageMessage(imageURI: "\(content)")
-//            message.extra = "\(self.name):\(nameSelf)"
-//            RCIMClient.shared().sendMessage(RCConversationType.ConversationType_PRIVATE, targetId: "\(self.id)", content: message, pushContent: "\(nameSelf)写了一封信给你！", success: { (messageID) -> Void in
-//                var i = 0
-//                for _data in self.dataArray {
-//                    if let data = _data as? NSDictionary {
-//                        let type = data.stringAttributeForKey("type")
-//                        let lastdate = data.stringAttributeForKey("lastdate")
-//                        if type == "2" && lastdate == "sending" {
-//                            let mutableData = NSMutableDictionary(dictionary: data)
-//                            mutableData.setValue("刚刚", forKey: "lastdate")
-//                            self.dataArray.replaceObject(at: i, with: mutableData)
-//                            break
-//                        }
-//                    }
-//                    i += 1
-//                }
-//                back {
-//                    self.tableView.reloadData()
-//                }
-//                }, error: { (err, no) -> Void in
-//            })
-//        })
+        uy.successBlocker = ({ json in
+            if let data = json as? NSDictionary {
+                var uploadUrl = data.object(forKey: "url") as! String
+                uploadUrl = "http://img.nian.so\(uploadUrl)"
+                setCacheImage("\(uploadUrl)!a", img: img, width: wSmall)
+                setCacheImage("\(uploadUrl)!large", img: img, width: wLarge)
+                uploadUrl = SAReplace(uploadUrl, before: ".png", after: "") as String
+                let content = "\(uploadUrl)_\(width)_\(height)"
+                
+                var i = 0
+                for _data in self.dataArray {
+                    if let data = _data as? NSDictionary {
+                        let c = data.stringAttributeForKey("content")
+                        let arr = c.components(separatedBy: "_")
+                        if arr.count > 1 {
+                            if arr[1] == "loading.png!a" {
+                                let newarr = content.components(separatedBy: "_")
+                                if newarr.count > 3 {
+                                    let path = "\(newarr[0])_\(newarr[1]).png!a"
+                                    let mutableData = NSMutableDictionary(dictionary: data)
+                                    mutableData.setValue(path, forKey: "content")
+                                    self.dataArray.replaceObject(at: i, with: mutableData)
+                                }
+                                
+                                break
+                            }
+                        }
+                    }
+                    i += 1
+                }
+                self.tableView.reloadData()
+                var nameSelf = ""
+                if let _name = Cookies.get("user") as? String {
+                    nameSelf = _name
+                }
+                let message = RCImageMessage(imageURI: "\(content)")
+                message?.extra = "\(self.name):\(nameSelf)"
+                RCIMClient.shared().sendMessage(RCConversationType.ConversationType_PRIVATE, targetId: "\(self.id)", content: message, pushContent: "\(nameSelf)写了一封信给你！", success: { (messageID) -> Void in
+                    var i = 0
+                    for _data in self.dataArray {
+                        if let data = _data as? NSDictionary {
+                            let type = data.stringAttributeForKey("type")
+                            let lastdate = data.stringAttributeForKey("lastdate")
+                            if type == "2" && lastdate == "sending" {
+                                let mutableData = NSMutableDictionary(dictionary: data)
+                                mutableData.setValue("刚刚", forKey: "lastdate")
+                                self.dataArray.replaceObject(at: i, with: mutableData)
+                                break
+                            }
+                        }
+                        i += 1
+                    }
+                    back {
+                        self.tableView.reloadData()
+                    }
+                    }, error: { (err, no) -> Void in
+                })
+            }
+        })
         uy.uploadImage(resizedImage(img, newWidth: 500), savekey: getSaveKey("circle", png: "png") as String)
     }
     
@@ -530,13 +531,13 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     override func keyboardWasShown(_ notification: Notification) {
-        var info: Dictionary = (notification as NSNotification).userInfo!
-        let keyboardSize: CGSize = ((info[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue.size)
-        keyboardHeight = max(keyboardSize.height, keyboardHeight)
-        /* 移除表情界面，修改按钮样式 */
-        keyboardView.resignEmoji()
-        keyboardView.resizeTableView()
-        keyboardView.labelPlaceHolder.isHidden = true
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            keyboardHeight = max(keyboardSize.height, keyboardHeight)
+            /* 移除表情界面，修改按钮样式 */
+            keyboardView.resignEmoji()
+            keyboardView.resizeTableView()
+            keyboardView.labelPlaceHolder.isHidden = true
+        }
     }
     
     override func keyboardWillBeHidden(_ notification: Notification){

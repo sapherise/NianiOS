@@ -106,25 +106,27 @@ extension RedditViewController {
                 dataArrayNewest.removeAllObjects()
                 Api.getDiscoverTop() { json in
                     if json != nil {
-                        let err = json!.object(forKey: "error") as? NSNumber
-                        if err == 0 {
-                            let data = json!.object(forKey: "data") as? NSDictionary
-                            if data != nil {
-                                let d1 = data!.object(forKey: "recommend") as? NSMutableArray
-                                for i in d1! {
-                                    self.dataArrayEditor.add(i)
+                        if let j = json as? NSDictionary {
+                            let err = j.stringAttributeForKey("error")
+                            if err == "0" {
+                                let data = json!.object(forKey: "data") as? NSDictionary
+                                if data != nil {
+                                    let d1 = data!.object(forKey: "recommend") as? NSArray
+                                    for i in d1! {
+                                        self.dataArrayEditor.add(i)
+                                    }
+                                    let d2 = data!.object(forKey: "newest")
+                                    let items = (d2! as AnyObject).object(forKey: "items") as! NSArray
+                                    let promo = (d2! as AnyObject).object(forKey: "promo") as! NSArray
+                                    for i in promo {
+                                        self.dataArrayNewest.add(i)
+                                    }
+                                    for i in items {
+                                        self.dataArrayNewest.add(i)
+                                    }
+                                    self.tableViewEditor.reloadData()
+                                    self.tableViewNewest.reloadData()
                                 }
-                                let d2 = data!.object(forKey: "newest")
-                                let items = (d2! as AnyObject).object(forKey: "items") as! NSMutableArray
-                                let promo = (d2! as AnyObject).object(forKey: "promo") as! NSMutableArray
-                                for i in promo {
-                                    self.dataArrayNewest.add(i)
-                                }
-                                for i in items {
-                                    self.dataArrayNewest.add(i)
-                                }
-                                self.tableViewEditor.reloadData()
-                                self.tableViewNewest.reloadData()
                             }
                         }
                     }

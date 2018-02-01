@@ -21,178 +21,46 @@ struct V {
     
     static let Tags = ["日常", "摄影", "恋爱", "创业", "阅读", "追剧", "绘画", "英语", "收集", "健身", "音乐", "写作", "旅行", "美食", "设计", "游戏", "工作", "习惯", "写字", "其他"]
     
-    class CustomActivity: UIActivity {
-        
-        var title: String?
-        var image: UIImage?
-        var callback: (([AnyObject]) -> Void)?
-        
-        init(title: String, image: UIImage?,callback: @escaping ([AnyObject]) -> Void) {
-            super.init()
-            self.title = title
-            self.image = image
-            self.callback = callback
-        }
-        
-        // todo
-//        override var activityType : String? {
-//            return ""
-//        }
-        
-        override var activityTitle : String? {
-            return title
-        }
-        
-        override var activityImage : UIImage? {
-            return image
-        }
-        
-        override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
-            return true
-        }
-        
-        override func prepare(withActivityItems activityItems: [Any]) {
-            self.callback!(activityItems as [AnyObject])
-        }
-    }
-    
     typealias StringCallback = (String?) -> Void
     typealias JsonCallback = (AnyObject?) -> Void
     
     static func httpGetForJson(_ requestURL: String, callback: @escaping JsonCallback) {
         let manager = AFHTTPSessionManager()
+        let url = requestURL.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
         manager.responseSerializer = AFJSONResponseSerializer()
-        
-        manager.get(requestURL,
+        manager.get(url!,
             parameters: nil,
             success: {(op: URLSessionDataTask?, obj: Any?) in
                 callback(obj as AnyObject?)
             },
-            failure: {(op, error) in
+            failure: {(op: URLSessionDataTask?, error: Error?) in
+                let t = DateFormatter()
+                t.dateFormat = "HH:mm:ss"
+                let s = t.string(from: Date())
+                let e = s + "  " + "\(error)"
+                let url = NSURL.fileURL(withPath: "/Users/Sa/Desktop/1.txt")
+                let data = NSMutableData()
+                data.append(e.data(using: String.Encoding.utf8, allowLossyConversion: true)!)
+                data.write(toFile: url.path, atomically: true)
         })
     }
     
-    static func httpPostForJson_AFN(_ requestURL: String, content: Any?, callback: @escaping JsonCallback) {
+    static func httpPostForJson(_ requestURL: String, content: Any?, callback: @escaping JsonCallback) {
         let manager = AFHTTPSessionManager()
+        let url = requestURL.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
         manager.responseSerializer = AFJSONResponseSerializer()
-        manager.post(requestURL, parameters: content, success: { (op: URLSessionDataTask?, obj: Any?) in
+        manager.post(url!, parameters: content, success: { (op: URLSessionDataTask?, obj: Any?) in
                 callback(obj as AnyObject?)
-            }) { (op, error) in
+        }) { (op: URLSessionDataTask?, error: Error?) in
+            let t = DateFormatter()
+            t.dateFormat = "HH:mm:ss"
+            let s = t.string(from: Date())
+            let e = s + "  " + "\(error)"
+            let url = NSURL.fileURL(withPath: "/Users/Sa/Desktop/1.txt")
+            let data = NSMutableData()
+            data.append(e.data(using: String.Encoding.utf8, allowLossyConversion: true)!)
+            data.write(toFile: url.path, atomically: true)
         }
-    }
-    
-    static func httpGetForJsonSync(_ requestURL: String, callback: @escaping JsonCallback) {
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: {
-            let url = URL(string: requestURL)
-            let data = try? Data(contentsOf: url!, options: NSData.ReadingOptions.uncached)
-            var json: AnyObject? = nil
-            if data != nil {
-                json = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as AnyObject?
-            }
-            callback(json)
-        })
-    }
-    
-    static func httpGetForString(_ requestURL: String, callback: @escaping StringCallback) {
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: {
-            let url = URL(string: requestURL)
-            let data = try? Data(contentsOf: url!, options: NSData.ReadingOptions.uncached)
-            var string: String?
-            if data != nil {
-                string = NSString(data: data!, encoding: String.Encoding.utf8.rawValue) as? String
-            }
-            DispatchQueue.main.async(execute: {
-                callback(string)
-            })
-        })
-    }
-    
-    static func httpPostForString(_ requestURL: String, content: String, callback: @escaping StringCallback) {
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: {
-            let request = NSMutableURLRequest()
-            request.url = URL(string: requestURL)
-            request.httpMethod = "POST"
-            request.httpBody = content.data(using: String.Encoding.utf8, allowLossyConversion : true)
-            var response: URLResponse?
-            var error: NSError?
-            var data: Data?
-            do {
-                data = try NSURLConnection.sendSynchronousRequest(request as URLRequest, returning : &response)
-            } catch let error1 as NSError {
-                error = error1
-                data = nil
-            } catch {
-                fatalError()
-            }
-            var string: String?
-            if  error == nil {
-                string = NSString(data: data!, encoding: String.Encoding.utf8.rawValue) as? String
-            }
-            DispatchQueue.main.async(execute: {
-                callback(string)
-            })
-        })
-        
-    }
-    
-    static func httpPostForJson(_ requestURL: String, content: String, callback: @escaping JsonCallback) {
-        
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: {
-            let request = NSMutableURLRequest()
-            request.url = URL(string: requestURL)
-            request.httpMethod = "POST"
-            request.httpBody = content.data(using: String.Encoding.utf8, allowLossyConversion : true)
-            var response: URLResponse?
-            var data: Data?
-            do {
-                data = try NSURLConnection.sendSynchronousRequest(request as URLRequest, returning : &response)
-            } catch _ as NSError {
-                data = nil
-            } catch {
-                fatalError()
-            }
-            var json: AnyObject? = nil
-            if data != nil {
-                do {
-                    json = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as AnyObject?
-                } catch _ as NSError {
-                    json = nil
-                } catch {
-                    fatalError()
-                }
-
-            }
-            
-            DispatchQueue.main.async(execute: {
-                callback(json)
-            })
-        })
-    }
-    
-    static func httpPostForJsonSync(_ requestURL: String, content: String, callback: @escaping JsonCallback) {
-        DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
-            let request = NSMutableURLRequest()
-            request.url = URL(string: requestURL)
-            request.httpMethod = "POST"
-            request.httpBody = content.data(using: String.Encoding.utf8, allowLossyConversion : true)
-            var response: URLResponse?
-            var data: Data?
-            do {
-                data = try NSURLConnection.sendSynchronousRequest(request as URLRequest, returning : &response)
-            } catch _ as NSError {
-                data = nil
-            } catch {
-                fatalError()
-            }
-            var json: AnyObject? = nil
-            if data != nil {
-                json = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as AnyObject?
-            }
-            // 为什么没有回到主线程 ?
-            callback(json)
-        }
-//        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: {
-//        })
     }
     
     static func enTime(_ timestamp: String) -> String {
@@ -316,15 +184,15 @@ struct V {
 
 extension UIView {
     func findRootViewController() -> UIViewController? {
-//        var view: UIView?
-//        for view = self; view != nil; view = view!.superview {
-//            if let responder = view?.next {
-//                if responder is UIViewController {
-//                    return responder as? UIViewController
-//                }
-//            }
-//        }
-         // todo
+        var a: UIView? = self
+        while a != nil {
+            if let b = a?.next {
+                if b is UIViewController {
+                    return b as? UIViewController
+                }
+            }
+            a = a?.superview
+        }
         return nil
     }
 }
