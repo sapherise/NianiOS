@@ -15,7 +15,6 @@ class PlayerCellTop: UIView, UIGestureRecognizerDelegate{
     @IBOutlet var BGImage:UIImageView!
     @IBOutlet var viewHolder: UIView!
     @IBOutlet var btnMain: UIButton!
-    @IBOutlet var btnLetter: UIButton!
     @IBOutlet var UserFo: UILabel!
     @IBOutlet var UserFoed: UILabel!
     @IBOutlet var viewMenu: UIView!
@@ -39,7 +38,7 @@ class PlayerCellTop: UIView, UIGestureRecognizerDelegate{
         self.viewHolderHead.setX(globalWidth/2-32)
         self.viewBlack.frame.size = CGSize(width: globalWidth, height: 320)
         self.btnMain.setX(globalWidth/2 - 105)
-        self.btnLetter.setX(globalWidth/2 + 5)
+//        self.btnLetter.setX(globalWidth/2 + 5)
         self.UserFo.setX(globalWidth/2 - 53)
         self.UserFoed.setX(globalWidth/2 + 1)
         self.imageBadge.setX(globalWidth/2 + 60/2 - 14)

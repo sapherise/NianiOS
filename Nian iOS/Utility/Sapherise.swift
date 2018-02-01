@@ -458,7 +458,7 @@ extension UIViewController {
         globalTabhasLoaded = [false, false]
         self.dismiss(animated: true, completion: nil)
         
-        RCIMClient.shared().disconnect(false)
+//        RCIMClient.shared().disconnect(false)
     }
 }
 

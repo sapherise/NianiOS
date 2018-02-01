@@ -40,7 +40,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         keyboardEndObserve()
         
         /* 当离开该页面时，设置所有为已读 */
-        RCIMClient.shared().clearMessagesUnreadStatus(RCConversationType.ConversationType_PRIVATE, targetId: "\(id)")
+//        RCIMClient.shared().clearMessagesUnreadStatus(RCConversationType.ConversationType_PRIVATE, targetId: "\(id)")
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -72,29 +72,29 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 
                 /* type = 1 时表示文本，2 表示图片，3 表示表情 */
                 if type == "1" {
-                    let message = RCTextMessage(content: replyContent)
-                    message?.extra = "\(self.name):\(nameSelf)"
-                    RCIMClient.shared().sendMessage(RCConversationType.ConversationType_PRIVATE, targetId: "\(self.id)", content: message, pushContent: "\(nameSelf)写了一封信给你！", success: { (messageID) -> Void in
-                        success = true
-                        if finish {
-                            self.newInsert(replyContent, id: messageID, type: type)
-                        }
-                        }) { (err, no) -> Void in
-                    }
+//                    let message = RCTextMessage(content: replyContent)
+//                    message?.extra = "\(self.name):\(nameSelf)"
+////                    RCIMClient.shared().sendMessage(RCConversationType.ConversationType_PRIVATE, targetId: "\(self.id)", content: message, pushContent: "\(nameSelf)写了一封信给你！", success: { (messageID) -> Void in
+//                        success = true
+//                        if finish {
+//                            self.newInsert(replyContent, id: messageID, type: type)
+//                        }
+//                        }) { (err, no) -> Void in
+//                    }
                 } else if type == "2" {
                 } else if type == "3" {
                     
                     
                     //            私信发送 content=[表情]（暂定）extra=聊天对象昵称:自己昵称:gif:1001-1
-                    let message = RCTextMessage(content: "[表情]")
-                    message?.extra = "\(self.name):\(nameSelf):gif:\(replyContent)"
-                    RCIMClient.shared().sendMessage(RCConversationType.ConversationType_PRIVATE, targetId: "\(self.id)", content: message, pushContent: "\(nameSelf)发送了一个表情给你！", success: { (messageID) -> Void in
-                        success = true
-                        if finish {
-                            self.newInsert(replyContent, id: messageID, type: type)
-                        }
-                        }, error: { (err, no) -> Void in
-                    })
+//                    let message = RCTextMessage(content: "[表情]")
+//                    message?.extra = "\(self.name):\(nameSelf):gif:\(replyContent)"
+//                    RCIMClient.shared().sendMessage(RCConversationType.ConversationType_PRIVATE, targetId: "\(self.id)", content: message, pushContent: "\(nameSelf)发送了一个表情给你！", success: { (messageID) -> Void in
+//                        success = true
+//                        if finish {
+//                            self.newInsert(replyContent, id: messageID, type: type)
+//                        }
+//                        }, error: { (err, no) -> Void in
+//                    })
                 }
                 UIView.animate(withDuration: 0.2, animations: { () -> Void in
                     self.tableView.contentOffset.y = max(self.tableView.contentSize.height - self.tableView.height(), 0)
@@ -227,14 +227,14 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }
         
         /* 默认是拉取最新的 30 条 */
-        var arr = RCIMClient.shared().getLatestMessages(RCConversationType.ConversationType_PRIVATE, targetId: "\(id)", count: 30)
+//        var arr = RCIMClient.shared().getLatestMessages(RCConversationType.ConversationType_PRIVATE, targetId: "\(id)", count: 30)
         
         /* 当不是在第一页时，拉取数据从最新的 id 往后 */
         let count = dataArray.count
         if count > 0 {
             let data = dataArray[count - 1] as! NSDictionary
             let oldestid = data.stringAttributeForKey("id")
-            arr = RCIMClient.shared().getHistoryMessages(.ConversationType_PRIVATE, targetId: "\(id)", oldestMessageId: Int(oldestid)!, count: 30)
+//            arr = RCIMClient.shared().getHistoryMessages(.ConversationType_PRIVATE, targetId: "\(id)", oldestMessageId: Int(oldestid)!, count: 30)
         }
         
         self.page += 1
@@ -499,28 +499,28 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
                 if let _name = Cookies.get("user") as? String {
                     nameSelf = _name
                 }
-                let message = RCImageMessage(imageURI: "\(content)")
-                message?.extra = "\(self.name):\(nameSelf)"
-                RCIMClient.shared().sendMessage(RCConversationType.ConversationType_PRIVATE, targetId: "\(self.id)", content: message, pushContent: "\(nameSelf)写了一封信给你！", success: { (messageID) -> Void in
-                    var i = 0
-                    for _data in self.dataArray {
-                        if let data = _data as? NSDictionary {
-                            let type = data.stringAttributeForKey("type")
-                            let lastdate = data.stringAttributeForKey("lastdate")
-                            if type == "2" && lastdate == "sending" {
-                                let mutableData = NSMutableDictionary(dictionary: data)
-                                mutableData.setValue("刚刚", forKey: "lastdate")
-                                self.dataArray.replaceObject(at: i, with: mutableData)
-                                break
-                            }
-                        }
-                        i += 1
-                    }
-                    back {
-                        self.tableView.reloadData()
-                    }
-                    }, error: { (err, no) -> Void in
-                })
+//                let message = RCImageMessage(imageURI: "\(content)")
+//                message?.extra = "\(self.name):\(nameSelf)"
+//                RCIMClient.shared().sendMessage(RCConversationType.ConversationType_PRIVATE, targetId: "\(self.id)", content: message, pushContent: "\(nameSelf)写了一封信给你！", success: { (messageID) -> Void in
+//                    var i = 0
+//                    for _data in self.dataArray {
+//                        if let data = _data as? NSDictionary {
+//                            let type = data.stringAttributeForKey("type")
+//                            let lastdate = data.stringAttributeForKey("lastdate")
+//                            if type == "2" && lastdate == "sending" {
+//                                let mutableData = NSMutableDictionary(dictionary: data)
+//                                mutableData.setValue("刚刚", forKey: "lastdate")
+//                                self.dataArray.replaceObject(at: i, with: mutableData)
+//                                break
+//                            }
+//                        }
+//                        i += 1
+//                    }
+//                    back {
+//                        self.tableView.reloadData()
+//                    }
+//                    }, error: { (err, no) -> Void in
+//                })
             }
         })
         uy.uploadImage(resizedImage(img, newWidth: 500), savekey: getSaveKey("circle", png: "png") as String)
@@ -548,21 +548,21 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     /* 当收到表情时，将 type 从 1 变成 3，内容从 [表情] 替换成 extra 的另外一个样子 */
-    func decodeToEmojiType(_ data: NSMutableDictionary, message: RCMessage) -> NSMutableDictionary {
-        if let text = message.content as? RCTextMessage {
-            let extra = text.extra
-            let arr = extra?.components(separatedBy: ":")
-            if arr?.count == 4 {
-                data.setValue("3", forKey: "type")
-                data.setValue(arr?[3], forKey: "content")
-                
-                /* 见回应页面表情计算高度的方式 */
-                data.setValue(72 + 40, forKey: "heightCell")
-                data.setValue(72, forKey: "heightImage")
-                data.setValue(72, forKey: "widthImage")
-            }
-        }
-        return data
-    }
+//    func decodeToEmojiType(_ data: NSMutableDictionary, message: RCMessage) -> NSMutableDictionary {
+//        if let text = message.content as? RCTextMessage {
+//            let extra = text.extra
+//            let arr = extra?.components(separatedBy: ":")
+//            if arr?.count == 4 {
+//                data.setValue("3", forKey: "type")
+//                data.setValue(arr?[3], forKey: "content")
+//                
+//                /* 见回应页面表情计算高度的方式 */
+//                data.setValue(72 + 40, forKey: "heightCell")
+//                data.setValue(72, forKey: "heightImage")
+//                data.setValue(72, forKey: "widthImage")
+//            }
+//        }
+//        return data
+//    }
 }
 

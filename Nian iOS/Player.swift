@@ -139,7 +139,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                     self.showTipText("成功拖进小黑屋")
                     Api.postBlackAdd(Id) { json in
                         if json != nil {
-                            RCIMClient.shared().add(toBlacklist: self.Id, success: nil, error: nil)
+//                            RCIMClient.shared().add(toBlacklist: self.Id, success: nil, error: nil)
                             self.isBan = 1
                         }
                     }
@@ -148,7 +148,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                     self.showTipText("和好了")
                     Api.postBlackRemove(Id) { json in
                         if json != nil {
-                            RCIMClient.shared().remove(fromBlacklist: self.Id, success: nil, error: nil)
+//                            RCIMClient.shared().remove(fromBlacklist: self.Id, success: nil, error: nil)
                             self.isBan = 0
                         }
                     }
@@ -179,7 +179,6 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
         scrollHidden(self.topCell.UserFo, height: height, scrollY: 161)
         scrollHidden(self.topCell.UserFoed, height: height, scrollY: 161)
         scrollHidden(self.topCell.btnMain, height: height, scrollY: 214)
-        scrollHidden(self.topCell.btnLetter, height: height, scrollY: 214)
         if height >= 320 - 64 {
             self.navView.isHidden = false
             self.view.bringSubview(toFront: self.navView)
@@ -423,7 +422,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                 self.topCell.imageBadge.setType(vip)
                 
                 self.topCell.btnMain.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.55)
-                self.topCell.btnLetter.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.55)
+//                self.topCell.btnLetter.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.55)
                 if cover == "" {
                     self.navView.image = UIImage(named: "bg")
                     self.navView.contentMode = UIViewContentMode.scaleAspectFill
@@ -439,18 +438,19 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                     self.topCell.btnMain.addTarget(self, action: #selector(PlayerViewController.SAfo(_:)), for: UIControlEvents.touchUpInside)
                     self.topCell.btnMain.setTitle("关注", for: UIControlState())
                 }
-                self.topCell.btnLetter.addTarget(self, action: #selector(PlayerViewController.SALetter(_:)), for: UIControlEvents.touchUpInside)
-                self.topCell.btnLetter.setTitle("写信", for: UIControlState())
+//                self.topCell.btnLetter.addTarget(self, action: #selector(PlayerViewController.SALetter(_:)), for: UIControlEvents.touchUpInside)
+//                self.topCell.btnLetter.setTitle("写信", for: UIControlState())
                 
                 let safeuid = SAUid()
                 
                 if self.Id == safeuid {
-                    self.topCell.btnLetter.isHidden = true
+//                    self.topCell.btnLetter.isHidden = true
                     self.topCell.btnMain.setTitle("设置", for: UIControlState())
-                    self.topCell.btnMain.setX(globalWidth/2 - 50)
                     self.topCell.btnMain.removeTarget(self, action: #selector(PlayerViewController.SAunfo(_:)), for: UIControlEvents.touchUpInside)
                     self.topCell.btnMain.removeTarget(self, action: #selector(PlayerViewController.SAfo(_:)), for: UIControlEvents.touchUpInside)
                     self.topCell.btnMain.addTarget(self, action: #selector(PlayerViewController.SASettings), for: UIControlEvents.touchUpInside)
+                } else {
+                    self.topCell.btnMain.setX(globalWidth/2 - 50)
                 }
                 if cover == "" {
                     self.topCell.BGImage.contentMode = UIViewContentMode.scaleAspectFill

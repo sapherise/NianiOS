@@ -63,7 +63,7 @@
 #import "UIImageView+ProgressView.h"
 
 /* 融云 IM */
-#import <RongIMLib/RongIMLib.h>
+//#import <RongIMLib/RongIMLib.h>
 
 #import "FLAnimatedImage.h"
 

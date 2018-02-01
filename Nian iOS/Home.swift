@@ -11,7 +11,7 @@ import UIKit
 var Nian: NianViewController!
 var numExplore = 0
 
-class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionSheetDelegate, ShareDelegate, RCIMClientReceiveMessageDelegate {
+class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionSheetDelegate, ShareDelegate {
     /*!
      接收消息的回调方法
      
@@ -56,11 +56,11 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     /* 未读消息 */
     var unread: Int32 = 0
     
-    func onReceived(_ message: RCMessage!, left nLeft: Int32, object: Any!) {
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "Letter"), object: message)
-        unread += 1
-        dotShow()
-    }
+//    func onReceived(_ message: RCMessage!, left nLeft: Int32, object: Any!) {
+//        NotificationCenter.default.post(name: Notification.Name(rawValue: "Letter"), object: message)
+//        unread += 1
+//        dotShow()
+//    }
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -68,7 +68,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         self.initViewControllers()
         gameoverCheck()
         setupReachability()
-        RCIMClient.shared().setReceiveMessageDelegate(self, object: nil)
+//        RCIMClient.shared().setReceiveMessageDelegate(self, object: nil)
     }
 
     func gameoverCheck() {
@@ -203,9 +203,9 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
                             let c = noticeNews!
                             let num = a + b + c
                             let notice = Int32(num)
-                            let _letter = RCIMClient.shared().getUnreadCount([RCConversationType.ConversationType_PRIVATE.rawValue])
-                            let letter = max(0, _letter)
-                            self.unread = letter + notice
+//                            let _letter = RCIMClient.shared().getUnreadCount([RCConversationType.ConversationType_PRIVATE.rawValue])
+//                            let letter = max(0, _letter)
+                            self.unread = notice
                             self.dotShow()
                         }
                     }

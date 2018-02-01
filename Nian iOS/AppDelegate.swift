@@ -7,6 +7,8 @@
 //  change the world
 
 import UIKit
+import GoogleMobileAds
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDelegate {
     var window: UIWindow?
@@ -35,8 +37,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         
         application.clearBadge()
         
-        /* 融云 IM 接入 */
-        RCIMClient.shared().initWithAppKey("4z3hlwrv3t1yt")
+        // Google 广告接入
+//        GADMobileAds.configure(withApplicationID: "ca-app-pub-4401117476228272~7045340998")
+        
+        // 下面使用测试广告
+        GADMobileAds.configure(withApplicationID: "ca-app-pub-3940256099942544/2934735716")
+
         
         // check current shortcut item
         if #available(iOS 9.0, *) {
@@ -77,8 +83,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let token = deviceToken.description.replacingOccurrences(of: "<", with: "").replacingOccurrences(of: ">", with: "").replacingOccurrences(of: " ", with: "")
-        RCIMClient.shared().setDeviceToken(token)
+//        let token = deviceToken.description.replacingOccurrences(of: "<", with: "").replacingOccurrences(of: ">", with: "").replacingOccurrences(of: " ", with: "")
+//        RCIMClient.shared().setDeviceToken(token)
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
@@ -90,7 +96,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
-        RCIMClient.shared().recordRemoteNotificationEvent(userInfo)
+//        RCIMClient.shared().recordRemoteNotificationEvent(userInfo)
         NotificationCenter.default.post(name: Notification.Name(rawValue: "Notice"), object: nil)
     }
     

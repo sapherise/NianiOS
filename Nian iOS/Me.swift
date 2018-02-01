@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import GoogleMobileAds
 
-class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, GADInterstitialDelegate {
     
     var tableView:UITableView!
     var dataArray = NSMutableArray()
@@ -17,6 +18,8 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     var numMiddel: String = ""
     var numRight: String = ""
     var labelNav = UILabel()
+    
+    var interstitial: GADInterstitial!
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -75,7 +78,63 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.tableView!.register(nib2, forCellReuseIdentifier: "MeCellTop")
         self.tableView!.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: 20))
         self.view.addSubview(self.tableView!)
+        let a = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: 300))
+        let b = UIView(frame: CGRect(x: (globalWidth - 120) / 2, y: 180, width: 120, height: 120))
+        b.backgroundColor = UIColor.green
+        b.isUserInteractionEnabled = true
+        b.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.onAd)))
+        a.addSubview(b)
+        a.backgroundColor = UIColor.yellow
+        self.tableView!.tableFooterView = a
+        
+        interstitial = createAndLoadInterstitial()
+        let request = GADRequest()
+        interstitial.load(request)
     }
+    
+    @objc func onAd() {
+        if interstitial.isReady {
+            interstitial.present(fromRootViewController: self)
+//            self.tableView!.tableFooterView = nil
+        }
+    }
+    
+    func createAndLoadInterstitial() -> GADInterstitial {
+        let interstitial = GADInterstitial(adUnitID: "ca-app-pub-3940256099942544/4411468910")
+        interstitial.delegate = self
+        interstitial.load(GADRequest())
+        return interstitial
+    }
+    
+    func interstitialDidDismissScreen(_ ad: GADInterstitial) {
+        interstitial = createAndLoadInterstitial()
+    }
+    /// Tells the delegate an ad request succeeded.
+    func interstitialDidReceiveAd(_ ad: GADInterstitial) {
+        print("interstitialDidReceiveAd")
+    }
+    
+    /// Tells the delegate an ad request failed.
+    func interstitial(_ ad: GADInterstitial, didFailToReceiveAdWithError error: GADRequestError) {
+        print("interstitial:didFailToReceiveAdWithError: \(error.localizedDescription)")
+    }
+    
+    /// Tells the delegate that an interstitial will be presented.
+    func interstitialWillPresentScreen(_ ad: GADInterstitial) {
+        print("interstitialWillPresentScreen")
+    }
+    
+    /// Tells the delegate the interstitial is to be animated off the screen.
+    func interstitialWillDismissScreen(_ ad: GADInterstitial) {
+        print("interstitialWillDismissScreen")
+    }
+    
+    /// Tells the delegate that a user click will open another app
+    /// (such as the App Store), backgrounding the current app.
+    func interstitialWillLeaveApplication(_ ad: GADInterstitial) {
+        print("interstitialWillLeaveApplication")
+    }
+
     
     func SALoadData() {
         Api.postLetter() { json in
@@ -93,58 +152,8 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     func load(){
         self.dataArray.removeAllObjects()
-        let arr = RCIMClient.shared().getConversationList([RCConversationType.ConversationType_PRIVATE.rawValue])
-        for item in arr! {
-            if let conversation = item as? RCConversation {
-                if let _json = conversation.jsonDict {
-                    let json = _json as NSDictionary
-                    /* 根据类型是图片还是文字，来决定内容是什么 */
-                    var content = json.stringAttributeForKey("content")
-                    if conversation.objectName == "RC:ImgMsg" {
-                        content = "[图片]"
-                    }
-                    
-                    let extra = json.stringAttributeForKey("extra")
-                    if let nameSelf = Cookies.get("user") as? String {
-                        
-                        /* 传值为 他人昵称 : 自己昵称 */
-                        var arr = extra.components(separatedBy: ":")
-                        var name = ""
-                        if arr.count > 1 {
-                            let a1 = arr[0]
-                            let a2 = arr[1]
-                            name = a1
-                            if a1 == nameSelf {
-                                name = a2
-                            }
-                        }
-                        let id = (conversation.targetId)!
-                        let unread = conversation.unreadMessageCount
-                        let time = ("\(conversation.sentTime / Int64(1000))" as NSString).doubleValue
-                        let lastdate = V.absoluteTime(time)
-                        let e = ["id": id, "title": name, "content": content, "unread": "\(unread)", "lastdate": lastdate]
-                        self.dataArray.add(e)
-                    }
-                }
-            }
-        }
         back {
             self.tableView.reloadData()
-//            if self.dataArray.count == 0 {
-////                let viewHeader = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: 200))
-////                let viewQuestion = viewEmpty(globalWidth, content: "这里是空的\n要去给好友写信吗")
-////                viewQuestion.setY(70)
-////                let btnGo = UIButton()
-////                btnGo.setButtonNice("  嗯！")
-////                btnGo.setX(globalWidth/2-50)
-////                btnGo.setY(viewQuestion.bottom())
-////                btnGo.addTarget(self, action: #selector(MeViewController.onBtnGoClick), for: UIControlEvents.touchUpInside)
-////                viewHeader.addSubview(viewQuestion)
-////                viewHeader.addSubview(btnGo)
-////                self.tableView.tableFooterView = viewHeader
-//            }else{
-//                self.tableView.tableFooterView = UIView()
-//            }
         }
     }
     
@@ -177,8 +186,8 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         let data = self.dataArray[(indexPath as NSIndexPath).row] as! NSDictionary
         let id = data.stringAttributeForKey("id")
-        RCIMClient.shared().clearMessages(RCConversationType.ConversationType_PRIVATE, targetId: id)
-        RCIMClient.shared().remove(RCConversationType.ConversationType_PRIVATE, targetId: id)
+//        RCIMClient.shared().clearMessages(RCConversationType.ConversationType_PRIVATE, targetId: id)
+//        RCIMClient.shared().remove(RCConversationType.ConversationType_PRIVATE, targetId: id)
         load()
     }
     
