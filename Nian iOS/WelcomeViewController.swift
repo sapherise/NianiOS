@@ -147,7 +147,7 @@ class WelcomeViewController: UIViewController {
         qq()
     }
     
-    func qq() {
+    @objc func qq() {
         let permissions = [
             kOPEN_PERMISSION_GET_USER_INFO,
             kOPEN_PERMISSION_GET_SIMPLE_USER_INFO,
@@ -254,7 +254,7 @@ extension WelcomeViewController {
      
      :param: noti <#noti description#>
      */
-    func handleLogInViaWeibo(_ noti: Notification) {
+    @objc func handleLogInViaWeibo(_ noti: Notification) {
         guard let notiObject = noti.object else {
             return
         }
@@ -281,7 +281,7 @@ extension WelcomeViewController {
      
      :param: noti <#noti description#>
      */
-    func handleLogInViaWechat(_ noti: Notification) {
+    @objc func handleLogInViaWechat(_ noti: Notification) {
         guard let notiObject = noti.object else {
             return
         }

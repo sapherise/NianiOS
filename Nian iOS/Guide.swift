@@ -94,7 +94,7 @@ class Guide: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func onTap(_ sender: UIGestureRecognizer) {
+    @objc func onTap(_ sender: UIGestureRecognizer) {
         if let v = sender.view {
             let tag = v.tag
             if arr.count > tag {

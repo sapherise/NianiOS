@@ -154,7 +154,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         NotificationCenter.default.addObserver(self, selector: #selector(NianViewController.QuickActionsEgg), name: NSNotification.Name(rawValue: "QuickActionsEgg"), object: nil)
     }
     
-    func EggShell(_ sender: UILongPressGestureRecognizer) {
+    @objc func EggShell(_ sender: UILongPressGestureRecognizer) {
         if sender.state == UIGestureRecognizerState.began {
             showEgg()
         }
@@ -162,7 +162,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     var i = 0
     // 3D Touch 下的调用彩蛋
-    func QuickActionsEgg() {
+    @objc func QuickActionsEgg() {
         showEgg()
     }
     
@@ -337,7 +337,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         }
     }
     
-    func addDreamButton(){
+    @objc func addDreamButton(){
         let vc = AddDreamController(nibName: "AddDreamController", bundle: nil)
         vc.delegateAddDream = self
         self.navigationController!.pushViewController(vc, animated: true)
@@ -348,19 +348,19 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.onDreamClick("\(tag)")
     }
     
-    func stepClick(){
+    @objc func stepClick(){
         let safeuid = SAUid()
         let userVC = PlayerViewController()
         userVC.Id = "\(safeuid)"
         self.navigationController!.pushViewController(userVC, animated: true)
     }
     
-    func levelClick(){
+    @objc func levelClick(){
         let vc = PetViewController()
         self.navigationController!.pushViewController(vc, animated: true)
     }
     
-    func coinClick(){
+    @objc func coinClick(){
 //        let storyboard = UIStoryboard(name: "Coin", bundle: nil)
 //        let viewController = storyboard.instantiateViewControllerWithIdentifier("CoinViewController") 
 //        self.navigationController!.pushViewController(viewController, animated: true)
@@ -388,7 +388,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     /**
      进入新的设置页面
      */
-    func headClick(){
+    @objc func headClick(){
         let vc = NewSettingViewController(nibName: "NewSettingView", bundle: nil)
         vc.coverImage = self.imageBG.image
         vc.avatarImage = self.UserHead.image
@@ -399,7 +399,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     /**
      进入汇总页
      */
-    func toActivitiesSummary(_ sender: UIButton) {
+    @objc func toActivitiesSummary(_ sender: UIButton) {
         let storyBoard = UIStoryboard(name: "ActivitiesSummary", bundle: nil)
         let vc = storyBoard.instantiateViewController(withIdentifier: "ActivitiesViewController")
         self.navigationController?.pushViewController(vc, animated: true)

@@ -57,7 +57,7 @@ class imagesViewController: SAViewController, UICollectionViewDelegate, UICollec
         }
     }
     
-    func onOK() {
+    @objc func onOK() {
         var arr: [PHAsset] = []
         if indexSeleted.count > 0 {
             for i in 0...(indexSeleted.count - 1) {

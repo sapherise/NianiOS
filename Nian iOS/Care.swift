@@ -73,7 +73,7 @@ class CareViewController: UIViewController, UIPickerViewDataSource, UIPickerView
         return 50
     }
     
-    func startPush(){
+    @objc func startPush(){
         let date = Date()
         
         let comp = (Calendar.current as NSCalendar).components( [NSCalendar.Unit.hour, NSCalendar.Unit.minute, NSCalendar.Unit.second] , from: date)

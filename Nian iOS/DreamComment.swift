@@ -214,7 +214,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         return 1
     }
     
-    func onBubbleClick(_ sender:UIGestureRecognizer) {
+    @objc func onBubbleClick(_ sender:UIGestureRecognizer) {
         if let tag = sender.view?.tag {
             index = tag
             commentVC()
@@ -245,7 +245,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         }
     }
     
-    func onMore(_ sender: UILongPressGestureRecognizer) {
+    @objc func onMore(_ sender: UILongPressGestureRecognizer) {
         resign()
         if let tag = sender.view?.tag {
             index = tag
@@ -284,7 +284,7 @@ class DreamCommentViewController: UIViewController,UITableViewDelegate,UITableVi
         }
     }
     
-    func onCellTap(_ sender:UITapGestureRecognizer) {
+    @objc func onCellTap(_ sender:UITapGestureRecognizer) {
         resign()
     }
     

@@ -102,15 +102,15 @@ class DreamCellTop: UITableViewCell {
                 title = "\(title)（私密）"
                 let textTitle = NSMutableAttributedString(string: title)
                 let l = textTitle.length
-                textTitle.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSMakeRange(0, l-4))
-                textTitle.addAttribute(NSForegroundColorAttributeName, value: UIColor.HighlightColor(), range: NSMakeRange(l-4, 4))
+                textTitle.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.black, range: NSMakeRange(0, l-4))
+                textTitle.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.HighlightColor(), range: NSMakeRange(l-4, 4))
                 labelTitle.attributedText = textTitle
             } else if percent == "1" {
                 title = "\(title)（完成）"
                 let textTitle = NSMutableAttributedString(string: title)
                 let l = textTitle.length
-                textTitle.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSMakeRange(0, l-4))
-                textTitle.addAttribute(NSForegroundColorAttributeName, value: GoldColor, range: NSMakeRange(l-4, 4))
+                textTitle.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.black, range: NSMakeRange(0, l-4))
+                textTitle.addAttribute(NSAttributedStringKey.foregroundColor, value: GoldColor, range: NSMakeRange(l-4, 4))
                 labelTitle.attributedText = textTitle
             } else {
                 labelTitle.text = title
@@ -341,7 +341,7 @@ class DreamCellTop: UITableViewCell {
         btnJoin.addTarget(self, action: #selector(self.join), for: UIControlEvents.touchUpInside)
     }
     
-    func join(_ sender: UIButton) {
+    @objc func join(_ sender: UIButton) {
         let w: CGFloat = 32
         imageJoin = UIImageView(frame: CGRect(x: SIZE_PADDING - 8 - w, y: viewHeaders.y() + (viewHeaders.height() - w) / 2, width: w, height: w))
         imageJoin!.setHead(SAUid())
@@ -380,13 +380,13 @@ class DreamCellTop: UITableViewCell {
         }
     }
     
-    func onHeadMe() {
+    @objc func onHeadMe() {
         let vc = PlayerViewController()
         vc.Id = SAUid()
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func onUser(_ sender: UIGestureRecognizer) {
+    @objc func onUser(_ sender: UIGestureRecognizer) {
         if let v = sender.view {
             let tag = v.tag
             let vc = PlayerViewController()
@@ -421,23 +421,23 @@ class DreamCellTop: UITableViewCell {
         viewNav.setHeight(heightViewNavBefore - y)
     }
     
-    func toEdit() {
+    @objc func toEdit() {
         delegate?.editMyDream()
     }
     
-    func onAdd() {
+    @objc func onAdd() {
         delegate?.onAddStep!()
     }
     
-    func onUnFollow() {
+    @objc func onUnFollow() {
         delegate?.onUnFo!()
     }
     
-    func onFollow() {
+    @objc func onFollow() {
         delegate?.onFo!()
     }
     
-    func toUser() {
+    @objc func toUser() {
         if data != nil {
             let vc = PlayerViewController()
             vc.Id = data!.stringAttributeForKey("uid")
@@ -445,7 +445,7 @@ class DreamCellTop: UITableViewCell {
         }
     }
     
-    func onImage() {
+    @objc func onImage() {
         let img = data!.stringAttributeForKey("image")
         let images = NSMutableArray()
         let d = ["path": "\(img)", "width": "500", "height": "500"]
@@ -454,14 +454,14 @@ class DreamCellTop: UITableViewCell {
     }
     
     /* 查看按赞 */
-    func onLike() {
+    @objc func onLike() {
         let vc = List()
         vc.type = ListType.dreamLikes
         vc.id = data.stringAttributeForKey("id")
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func onFollowers() {
+    @objc func onFollowers() {
         let vc = List()
         vc.type = ListType.followers
         vc.id = data.stringAttributeForKey("id")
@@ -469,7 +469,7 @@ class DreamCellTop: UITableViewCell {
     }
     
     /* 查看成员 */
-    func onMembers() {
+    @objc func onMembers() {
         let vc = List()
         vc.type = ListType.members
         let id = data.stringAttributeForKey("id")
@@ -482,7 +482,7 @@ class DreamCellTop: UITableViewCell {
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func toSearch(_ sender: UIGestureRecognizer) {
+    @objc func toSearch(_ sender: UIGestureRecognizer) {
         let label = sender.view
         let storyboard = UIStoryboard(name: "Explore", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "ExploreSearch") as! ExploreSearch

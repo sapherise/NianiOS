@@ -17,8 +17,8 @@ extension String {
         let size = CGSize(width: width,height: CGFloat.greatestFiniteMagnitude)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byWordWrapping;
-        let  attributes = [NSFontAttributeName:font,
-            NSParagraphStyleAttributeName:paragraphStyle]
+        let  attributes = [NSAttributedStringKey.font:font,
+            NSAttributedStringKey.paragraphStyle:paragraphStyle]
         let text = self as NSString
         let rect = text.boundingRect(with: size, options:.usesLineFragmentOrigin, attributes: attributes, context:nil)
         return SACeil(rect.size.height, dot: 0, isCeil: true)
@@ -30,7 +30,7 @@ extension String {
         let paragraphStyle = NSMutableParagraphStyle()
         let size = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
         paragraphStyle.lineSpacing = 8
-        let attrDictionary = [NSFontAttributeName: font, NSParagraphStyleAttributeName: paragraphStyle]
+        let attrDictionary = [NSAttributedStringKey.font: font, NSAttributedStringKey.paragraphStyle: paragraphStyle]
         let text = self as NSString
         let rect = text.boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attrDictionary, context: nil)
         return SACeil(rect.size.height, dot: 0, isCeil: true)
@@ -41,8 +41,8 @@ extension String {
         let size = CGSize(width: width,height: CGFloat.greatestFiniteMagnitude)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byWordWrapping;
-        let  attributes = [NSFontAttributeName:font,
-            NSParagraphStyleAttributeName:paragraphStyle.copy()]
+        let  attributes = [NSAttributedStringKey.font:font,
+            NSAttributedStringKey.paragraphStyle:paragraphStyle.copy()]
         let text = self as NSString
         let rect = text.boundingRect(with: size, options:.usesLineFragmentOrigin, attributes: attributes, context:nil)
         return SACeil(rect.size.height, dot: 0, isCeil: true)
@@ -53,8 +53,8 @@ extension String {
         let size = CGSize(width: CGFloat.greatestFiniteMagnitude, height: height)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byWordWrapping;
-        let  attributes = [NSFontAttributeName:font,
-            NSParagraphStyleAttributeName:paragraphStyle.copy()]
+        let  attributes = [NSAttributedStringKey.font:font,
+            NSAttributedStringKey.paragraphStyle:paragraphStyle.copy()]
         let text = self as NSString
         let rect = text.boundingRect(with: size, options:.usesLineFragmentOrigin, attributes: attributes, context:nil)
         return SACeil(rect.size.width, dot: 0, isCeil: true)
@@ -65,8 +65,8 @@ extension String {
         let size = CGSize(width: CGFloat.greatestFiniteMagnitude, height: height)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byWordWrapping;
-        let  attributes = [NSFontAttributeName:font,
-            NSParagraphStyleAttributeName:paragraphStyle.copy()]
+        let  attributes = [NSAttributedStringKey.font:font,
+            NSAttributedStringKey.paragraphStyle:paragraphStyle.copy()]
         let text = self as NSString
         let rect = text.boundingRect(with: size, options:.usesLineFragmentOrigin, attributes: attributes, context:nil)
         return SACeil(rect.size.width, dot: 0, isCeil: true)

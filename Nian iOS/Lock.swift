@@ -141,11 +141,11 @@ class Lock: SAViewController, UITextViewDelegate {
     }
     
     /* 禁用左上角返回 */
-    func onNoBack() {
+    @objc func onNoBack() {
     }
     
     /* 弹起键盘 */
-    func onInput() {
+    @objc func onInput() {
         textView.becomeFirstResponder()
     }
     

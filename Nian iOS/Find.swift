@@ -116,7 +116,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         self.view.addSubview(self.tableViewPhone)
     }
     
-    func onTopClick(_ sender:UIGestureRecognizer){
+    @objc func onTopClick(_ sender:UIGestureRecognizer){
         self.viewFindCellTop.imageLeft.image = UIImage(named: arr[0])
         self.viewFindCellTop.imageMiddle.image = UIImage(named: arr[1])
         self.viewFindCellTop.imageRight.image = UIImage(named: arr[2])
@@ -177,14 +177,14 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         }
     }
     
-    func onUserClick(_ sender:UIGestureRecognizer) {
+    @objc func onUserClick(_ sender:UIGestureRecognizer) {
         let tag = sender.view!.tag
         let UserVC = PlayerViewController()
         UserVC.Id = "\(tag)"
         self.navigationController?.pushViewController(UserVC, animated: true)
     }
     
-    func onWeiboClick() {
+    @objc func onWeiboClick() {
         let request: WBAuthorizeRequest! = WBAuthorizeRequest.request() as! WBAuthorizeRequest
         request.redirectURI = "https://api.weibo.com/oauth2/default.html"
         request.scope = "follow_app_official_microblog"
@@ -192,7 +192,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     // 获得通讯录权限
-    func onPhoneClick(_ sender: UIButton) {
+    @objc func onPhoneClick(_ sender: UIButton) {
         self.tableViewPhone.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight - 64 - 75))
         self.tableViewPhone.tableFooterView?.addGhost("手机里的好友们\n还没有来玩念")
     }
@@ -219,7 +219,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         NotificationCenter.default.addObserver(self, selector: #selector(FindViewController.weibo(_:)), name: NSNotification.Name(rawValue: "weibo"), object: nil)
     }
     
-    func weibo(_ sender: Notification) {
+    @objc func weibo(_ sender: Notification) {
         self.viewLoadingShow()
         let object: NSArray? = sender.object as? NSArray
         if object != nil {
@@ -266,7 +266,7 @@ class FindViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         return viewFooter
     }
     
-    func sharePromo() {
+    @objc func sharePromo() {
         let url:URL = URL(string: "http://nian.so/m/user/\(SAUid())")!
         imagePromo.layer.cornerRadius = 0
         let image = getImageFromView(imagePromo)

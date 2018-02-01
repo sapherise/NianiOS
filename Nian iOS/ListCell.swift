@@ -147,12 +147,12 @@ class ListCell: UITableViewCell {
         }
     }
     
-    func onPremium() {
+    @objc func onPremium() {
         let vc = Premium()
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func onSelect() {
+    @objc func onSelect() {
         let uid = data.stringAttributeForKey("uid")
         if type == ListType.invite {
             delegate?.update(num, key: "inviting", value: "1")
@@ -173,7 +173,7 @@ class ListCell: UITableViewCell {
         }
     }
     
-    func onUnSelect() {
+    @objc func onUnSelect() {
         let uid = data.stringAttributeForKey("uid")
         if type == ListType.like {
             delegate?.update(num, key: "follow", value: "0")
@@ -190,7 +190,7 @@ class ListCell: UITableViewCell {
         }
     }
     
-    func onHead() {
+    @objc func onHead() {
         let uid = data.stringAttributeForKey("uid")
         let vc = PlayerViewController()
         vc.Id = uid

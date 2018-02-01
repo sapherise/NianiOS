@@ -88,7 +88,7 @@ class AddDreamMore: SAViewController, UIActionSheetDelegate {
     }
     
     /* 邀请弹窗 */
-    func invite() {
+    @objc func invite() {
         alert = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         alert?.addButton(withTitle: data[0])
         alert?.addButton(withTitle: data[1])
@@ -99,7 +99,7 @@ class AddDreamMore: SAViewController, UIActionSheetDelegate {
     }
     
     /* 设置私密或公开 */
-    func setPrivate(_ sender: UISwitch) {
+    @objc func setPrivate(_ sender: UISwitch) {
         if sender.isOn {
             delegate?.update("private", value: 1)
         } else {

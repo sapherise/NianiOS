@@ -140,7 +140,7 @@ class LogOrRegViewController: UIViewController {
     
     :param: noti <#noti description#>
     */
-    func emailTextFieldDidChange(_ noti: Notification) {
+    @objc func emailTextFieldDidChange(_ noti: Notification) {
         if self.functionalType != .confirm {
             let _textfield = noti.object as! UITextField
             

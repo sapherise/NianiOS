@@ -106,7 +106,7 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         return d.count
     }
     
-    func exploreTop(_ noti: Notification){
+    @objc func exploreTop(_ noti: Notification){
         if current == -1 {
             switchTab(0)
         }else{
@@ -180,7 +180,7 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         _setupScrolltoTop(current)
     }
     
-    func onTabClick(_ sender: UIGestureRecognizer) {
+    @objc func onTabClick(_ sender: UIGestureRecognizer) {
         globalNumExploreBar = sender.view!.tag - 1100
         let x1 = scrollView.contentOffset.x
         let x2 = globalWidth * CGFloat(globalNumExploreBar)
@@ -217,11 +217,11 @@ class ExploreViewController: VVeboViewController, UITableViewDelegate, UITableVi
         }
     }
     
-    func onFriendClick() {
+    @objc func onFriendClick() {
         self.navigationController?.pushViewController(FindViewController(), animated: true)
     }
     
-    func onSearchClick() {
+    @objc func onSearchClick() {
         self.performSegue(withIdentifier: "toSearch", sender: nil)
     }
     

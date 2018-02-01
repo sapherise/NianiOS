@@ -123,7 +123,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }
     }
     
-    func Letter(_ noti: Notification) {
+    @objc func Letter(_ noti: Notification) {
         if let message = noti.object as? RCMessage {
             if "\(id)" == message.senderUserId {
                 let new = IMClass().messageToDictionay(message)
@@ -188,7 +188,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         self.navigationItem.titleView = titleLabel
     }
     
-    func onPhotoClick(_ sender:UITapGestureRecognizer){
+    @objc func onPhotoClick(_ sender:UITapGestureRecognizer){
         resign()
         self.actionSheetPhoto = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         self.actionSheetPhoto!.addButton(withTitle: "相册")
@@ -363,7 +363,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         return true
     }
     
-    func onCellTap(_ sender:UITapGestureRecognizer) {
+    @objc func onCellTap(_ sender:UITapGestureRecognizer) {
         resign()
     }
     
@@ -381,7 +381,7 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }
     }
     
-    func onBubbleClick(_ sender:UIGestureRecognizer) {
+    @objc func onBubbleClick(_ sender:UIGestureRecognizer) {
 //        if sender.state == UIGestureRecognizerState.Began {
 //        }
         if sender is UITapGestureRecognizer {

@@ -95,7 +95,7 @@ class SingleStepViewController: VVeboViewController,UITableViewDelegate,UITableV
         return c
     }
     
-    func onComment() {
+    @objc func onComment() {
         if dataArray.count > 0 {
             let data = dataArray[0] as! NSDictionary
             let id = data.stringAttributeForKey("dream")

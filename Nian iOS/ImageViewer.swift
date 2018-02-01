@@ -107,7 +107,7 @@ class ImageViewer: UIScrollView, UIScrollViewDelegate {
     }
     
     /* 单击移除 */
-    func onTap(_ sender: UIGestureRecognizer) {
+    @objc func onTap(_ sender: UIGestureRecognizer) {
         if let views = sender.view?.subviews {
             if views.count > current {
                 if let v = views[current] as? UIScrollView {
@@ -139,7 +139,7 @@ class ImageViewer: UIScrollView, UIScrollViewDelegate {
     }
     
     /* 长按图片 */
-    func onLongPress(_ sender: UILongPressGestureRecognizer) {
+    @objc func onLongPress(_ sender: UILongPressGestureRecognizer) {
         if sender.state == UIGestureRecognizerState.began {
             if let data = images[current] as? NSDictionary {
                 let path = data.stringAttributeForKey("path")
@@ -155,7 +155,7 @@ class ImageViewer: UIScrollView, UIScrollViewDelegate {
     }
     
     /* 双击 */
-    func onDoubleTap(_ sender: UIGestureRecognizer) {
+    @objc func onDoubleTap(_ sender: UIGestureRecognizer) {
         if sender.view == self {
             if self.subviews.count > current {
                 if let scrollView = self.subviews[current] as? UIScrollView {

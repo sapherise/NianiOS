@@ -268,7 +268,7 @@ class AddStep: SAViewController, UIActionSheetDelegate, UINavigationControllerDe
         }
     }
     
-    func dismissKeyboard() {
+    @objc func dismissKeyboard() {
         self.field2.resignFirstResponder()
     }
     

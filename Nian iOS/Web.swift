@@ -58,7 +58,7 @@ class WebViewController: UIViewController, UIWebViewDelegate{
         return true
     }
     
-    func setupNavBtn() {
+    @objc func setupNavBtn() {
         self.actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitles: "在 Safari 中打开")
         
         self.actionSheet!.show(in: self.view)

@@ -37,7 +37,7 @@ extension Product {
         }
     }
     
-    func onGif(_ sender: UILongPressGestureRecognizer) {
+    @objc func onGif(_ sender: UILongPressGestureRecognizer) {
         if let view = sender.view {
             let tag = view.tag
             let point = view.convert(view.frame.origin, from: scrollView)

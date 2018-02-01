@@ -262,7 +262,7 @@ extension UIViewController: UIGestureRecognizerDelegate {
         }
     }
     
-    func backNavigation(){
+    @objc func backNavigation(){
         if let v = self.navigationController {
             v.popViewController(animated: true)
         }
@@ -339,7 +339,7 @@ extension UIViewController: UIGestureRecognizerDelegate {
 }
 
 extension UIWindow {
-    func onTip(_ sender: UIGestureRecognizer) {
+    @objc func onTip(_ sender: UIGestureRecognizer) {
         UIView.animate(withDuration: 0.1, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
             sender.view?.setY(-64)
             sender.view?.subviews.first?.alpha = 0
@@ -603,10 +603,10 @@ extension UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillBeHidden(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    func keyboardWasShown(_ notification: Notification) {
+    @objc func keyboardWasShown(_ notification: Notification) {
     }
     
-    func keyboardWillBeHidden(_ notification: Notification) {
+    @objc func keyboardWillBeHidden(_ notification: Notification) {
     }
     
     func keyboardEndObserve() {
@@ -944,7 +944,7 @@ func SAValue(_ json: AnyObject?, _ key: String) -> String {
 
 public extension DispatchQueue {
     private static var _onceTracker = [String]()
-    public class func once(token: String, block:(Void)->Void) {
+    public class func once(token: String, block:()->Void) {
         objc_sync_enter(self); defer { objc_sync_exit(self) }
         if _onceTracker.contains(token) {
             return

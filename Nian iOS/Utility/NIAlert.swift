@@ -176,7 +176,7 @@ class NIAlert: UIView {
         self._containerView!.addSubview(titleLabel!)
     }
     
-    func buttonTouch(_ sender: NIButton) {
+    @objc func buttonTouch(_ sender: NIButton) {
         let _index = sender.index!
         
         delegate?.niAlert?(self, didselectAtIndex: _index)
@@ -221,7 +221,7 @@ class NIAlert: UIView {
         
     }
     
-    func dismissWithAnimation(_ sender: UITapGestureRecognizer) {
+    @objc func dismissWithAnimation(_ sender: UITapGestureRecognizer) {
         self._removeSubView()
         delegate?.niAlert?(self, tapBackground: true)
     }

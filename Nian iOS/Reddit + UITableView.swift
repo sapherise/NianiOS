@@ -273,13 +273,13 @@ extension RedditViewController {
         }
     }
     
-    func onEditor() {
+    @objc func onEditor() {
         let vc = ExploreNext()
         vc.type = 0
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func onNewest() {
+    @objc func onNewest() {
         let vc = ExploreNext()
         vc.type = 1
         self.navigationController?.pushViewController(vc, animated: true)

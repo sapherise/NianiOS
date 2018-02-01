@@ -78,7 +78,7 @@ class EditProfileViewController: SAViewController, UIActionSheetDelegate {
     /**
      
      */
-    func handleChooseGender(_ noti: Notification) {
+    @objc func handleChooseGender(_ noti: Notification) {
         actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         actionSheet.addButton(withTitle: "男")
         actionSheet.addButton(withTitle: "女")
@@ -192,7 +192,7 @@ extension EditProfileViewController {
 
 extension EditProfileViewController {
     
-    func saveProfileSetting(_ sender: UITapGestureRecognizer) {
+    @objc func saveProfileSetting(_ sender: UITapGestureRecognizer) {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         
         var shouldReturn = true

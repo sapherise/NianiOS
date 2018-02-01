@@ -23,7 +23,7 @@ class VVeboCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func onImage() {
+    @objc func onImage() {
         imageView.open(images, index: index, exten: "!200x")
     }
 }

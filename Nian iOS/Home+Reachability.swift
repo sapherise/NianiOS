@@ -18,7 +18,7 @@ extension HomeViewController {
     }
     
     // 获取网络改变的通知时
-    func reachabilityChanged(_ note: Notification) {
+    @objc func reachabilityChanged(_ note: Notification) {
         let reachability = note.object as! Reachability
         let status = reachability.currentReachabilityString
         Cookies.set(status as AnyObject?, forKey: "reachability")

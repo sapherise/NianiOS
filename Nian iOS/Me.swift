@@ -24,7 +24,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         setupRefresh()
     }
     
-    func noticeShare() {
+    @objc func noticeShare() {
         self.tableView.headerBeginRefreshing()
     }
     
@@ -48,7 +48,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         load()
     }
     
-    func Letter(_ noti: Notification) {
+    @objc func Letter(_ noti: Notification) {
         self.load()
     }
     
@@ -148,7 +148,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }
     }
     
-    func onBtnGoClick() {
+    @objc func onBtnGoClick() {
         let LikeVC = LikeViewController()
         LikeVC.Id = SAUid()
         LikeVC.urlIdentify = 1
@@ -208,7 +208,7 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }
     }
     
-    func onTopClick(_ sender: UIGestureRecognizer) {
+    @objc func onTopClick(_ sender: UIGestureRecognizer) {
         let MeNextVC = MeNextViewController()
         
         if let tag = sender.view?.tag {

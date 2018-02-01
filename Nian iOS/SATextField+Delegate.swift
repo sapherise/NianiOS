@@ -107,7 +107,7 @@ extension InputView {
     }
     
     /* 表情长按预览 */
-    func onEmojiLongPress(_ sender: UIGestureRecognizer) {
+    @objc func onEmojiLongPress(_ sender: UIGestureRecognizer) {
         if let view = sender.view {
             let point = view.convert(view.frame.origin, from: self.viewEmoji)
             let x = -point.x
@@ -131,7 +131,7 @@ extension InputView {
     }
     
     /* 表情单击 */
-    func onEmojiTap(_ sender: UIGestureRecognizer) {
+    @objc func onEmojiTap(_ sender: UIGestureRecognizer) {
         if let tag = sender.view?.tag {
             let data = dataArray[current] as! NSDictionary
             let code = data.stringAttributeForKey("code")

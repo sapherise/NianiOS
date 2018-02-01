@@ -45,7 +45,7 @@ class PetViewController: SAViewController, ShareDelegate {
         setupTable()
     }
     
-    func onEgg() {
+    @objc func onEgg() {
         let v = SAEgg()
         v.delegateShare = self
         v.dict = NSMutableDictionary(objects: [UIImage(named: "coin")!, "抽蛋", "要以 3 念币抽一次\n宠物吗？", [" 嗯！", "不要"]],

@@ -39,7 +39,7 @@ class RedditViewController: UIViewController, UIScrollViewDelegate, UITableViewD
         navShow()
     }
     
-    func reddit(_ sender: Notification) {
+    @objc func reddit(_ sender: Notification) {
         if dataArrayHot.count == 0 {
             tableViewHot.headerBeginRefreshing()
         } else {

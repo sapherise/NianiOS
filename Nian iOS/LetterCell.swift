@@ -32,7 +32,7 @@ class LetterCell: UITableViewCell {
         self.imageHead.layer.masksToBounds = true   
     }
     
-    func onUserClick() {
+    @objc func onUserClick() {
         let uid = data.stringAttributeForKey("id")
         let vc = PlayerViewController()
         vc.Id = uid

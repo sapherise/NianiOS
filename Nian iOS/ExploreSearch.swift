@@ -255,7 +255,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         searchText.rightView!.contentMode = .center
         searchText.rightView!.isUserInteractionEnabled = true
         searchText.rightView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ExploreSearch.clearText(_:))))
-        searchText.attributedPlaceholder = NSAttributedString(string: "搜索", attributes: [NSForegroundColorAttributeName: color, NSFontAttributeName: UIFont.systemFont(ofSize: 12.0)])
+        searchText.attributedPlaceholder = NSAttributedString(string: "搜索", attributes: [NSAttributedStringKey.foregroundColor: color, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12.0)])
         searchText.contentVerticalAlignment = .center
         searchText.font = UIFont.systemFont(ofSize: 12.0)
         searchText.textColor = UIColor(red: 0xff/255, green: 0xff/255, blue: 0xff/255, alpha: 1)
@@ -399,7 +399,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         }
     }
     
-    func clearText(_ sender: UITapGestureRecognizer) {
+    @objc func clearText(_ sender: UITapGestureRecognizer) {
         searchText.text = ""
         searchText.rightViewMode = .never
         searchText.becomeFirstResponder()
@@ -668,7 +668,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
     
     // MARK: -
     
-    func toUser(_ sender: UIGestureRecognizer) {
+    @objc func toUser(_ sender: UIGestureRecognizer) {
         if let tag = sender.view?.tag {
             SAUser("\(tag)")
         }
@@ -694,7 +694,7 @@ class ExploreSearch: VVeboViewController, UITableViewDelegate, UITableViewDataSo
         }
     }
     
-    func onFollow(_ sender: UIButton) {
+    @objc func onFollow(_ sender: UIButton) {
         let tag = sender.tag
         let data = self.dataArrayUser[tag] as! NSDictionary
         let uid = data.stringAttributeForKey("uid")

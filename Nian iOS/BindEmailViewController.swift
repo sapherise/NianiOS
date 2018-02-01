@@ -102,7 +102,7 @@ class BindEmailViewController: UIViewController {
                                             object: self.emailTextField)
     }
     
-    func emailTextFieldDidChange(_ noti: Notification) {
+    @objc func emailTextFieldDidChange(_ noti: Notification) {
         if self.bindFuntionType == .finish {
             let _textfield = noti.object as! UITextField
             

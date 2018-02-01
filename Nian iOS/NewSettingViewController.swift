@@ -238,7 +238,7 @@ class NewSettingViewController: SAViewController, UpdateUserDictDelegate, LockDe
         
     }
     
-    func onEgg(_ sender: UILongPressGestureRecognizer) {
+    @objc func onEgg(_ sender: UILongPressGestureRecognizer) {
         if sender.state == UIGestureRecognizerState.began {
             self.showTipText("你是永恒\n09.26.16", delayTime: 5)
         }

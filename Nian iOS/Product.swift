@@ -222,7 +222,7 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
         scrollView.addSubview(viewEmojiHolder)
     }
     
-    func onClick() {
+    @objc func onClick() {
         /* 如果是会员 */
         if type == ProductType.pro {
             niAlert = NIAlert()
@@ -301,7 +301,7 @@ class Product: SAViewController, UIScrollViewDelegate, UICollectionViewDelegate,
     }
     
     /* 微信购买会员回调 */
-    func onWechatResult(_ sender: Notification) {
+    @objc func onWechatResult(_ sender: Notification) {
         if let object = sender.object as? String {
             if object == "0" {
                 payMemberSuccess()

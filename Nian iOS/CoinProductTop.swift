@@ -39,7 +39,7 @@ class CoinProductTop: UITableViewCell {
         }
     }
     
-    func onRecharge() {
+    @objc func onRecharge() {
         let vc = Recharge()
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }

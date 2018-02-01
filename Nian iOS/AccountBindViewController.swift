@@ -448,7 +448,7 @@ extension AccountBindViewController: TencentLoginDelegate, TencentSessionDelegat
 
 extension AccountBindViewController {
 
-    func handleBindWeibo(_ noti: Notification) {
+    @objc func handleBindWeibo(_ noti: Notification) {
         guard let notiObject = noti.object else {
             return
         }
@@ -471,7 +471,7 @@ extension AccountBindViewController {
     }
 
 
-    func handleBindWechat(_ noti: Notification) {
+    @objc func handleBindWechat(_ noti: Notification) {
         if let json = noti.object as? NSDictionary {
             if SAValue(json, "errcode") != "" {
                 self.showTipText("网络有点问题，等一会儿再试")

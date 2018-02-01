@@ -45,8 +45,8 @@ class CommentImage: UITableViewCell {
             labelHolder.setX(globalWidth - labelHolder.width() - 60)
         } else {
             let attrStr = NSMutableAttributedString(string: "\(name)  \(time)")
-            attrStr.addAttribute(NSForegroundColorAttributeName, value: UIColor.HighlightColor(), range: NSMakeRange(0, (name as NSString).length))
-            attrStr.addAttribute(NSForegroundColorAttributeName, value: UIColor.secAuxiliaryColor(), range: NSMakeRange((name as NSString).length + 2, (time as NSString).length))
+            attrStr.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.HighlightColor(), range: NSMakeRange(0, (name as NSString).length))
+            attrStr.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.secAuxiliaryColor(), range: NSMakeRange((name as NSString).length + 2, (time as NSString).length))
             labelName.attributedText = attrStr
             labelName.textAlignment = NSTextAlignment.left
             labelHolder.setX(60)
@@ -70,7 +70,7 @@ class CommentImage: UITableViewCell {
         labelHolder.image = nil
     }
     
-    func onImage() {
+    @objc func onImage() {
         let content = data.stringAttributeForKey("content")
         let wImage = data.stringAttributeForKey("widthImage")
         let hImage = data.stringAttributeForKey("heightImage")
@@ -82,7 +82,7 @@ class CommentImage: UITableViewCell {
         labelHolder.open(images, index: 0, exten: "!a", folder: "circle")
     }
     
-    func onHead(){
+    @objc func onHead(){
         let vc = PlayerViewController()
         vc.Id = data.stringAttributeForKey("uid")
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)

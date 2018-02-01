@@ -38,7 +38,7 @@ class ExploreDynamicDreamCell: UITableViewCell {
         }
     }
     
-    func onUserClick() {
+    @objc func onUserClick() {
         let uid = data.stringAttributeForKey("uidlike")
         let userVC = PlayerViewController()
         userVC.Id = uid

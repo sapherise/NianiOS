@@ -140,7 +140,7 @@ class MeNextViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.navigationController!.pushViewController(dreamVC, animated: true)
     }
     
-    func userclick(_ sender:UITapGestureRecognizer){
+    @objc func userclick(_ sender:UITapGestureRecognizer){
         let UserVC = PlayerViewController()
         UserVC.Id = "\(sender.view!.tag)"
         self.navigationController!.pushViewController(UserVC, animated: true)

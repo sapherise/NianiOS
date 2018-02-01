@@ -79,7 +79,7 @@ class List: SAViewController, UITableViewDataSource, UITableViewDelegate, ListDe
     }
     
     /* 当点击了邀请后 */
-    func onInvite() {
+    @objc func onInvite() {
         let vc = List()
         vc.type = ListType.invite
         vc.id = id

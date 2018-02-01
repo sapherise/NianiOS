@@ -58,8 +58,8 @@ class Comment: UITableViewCell {
             imageBubble.image = UIImage(named: "bubble_me")
         } else {
             let attrStr = NSMutableAttributedString(string: "\(name)  \(time)")
-            attrStr.addAttribute(NSForegroundColorAttributeName, value: UIColor.HighlightColor(), range: NSMakeRange(0, (name as NSString).length))
-            attrStr.addAttribute(NSForegroundColorAttributeName, value: UIColor.secAuxiliaryColor(), range: NSMakeRange((name as NSString).length + 2, (time as NSString).length))
+            attrStr.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.HighlightColor(), range: NSMakeRange(0, (name as NSString).length))
+            attrStr.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.secAuxiliaryColor(), range: NSMakeRange((name as NSString).length + 2, (time as NSString).length))
             labelName.attributedText = attrStr
             labelName.textAlignment = NSTextAlignment.left
             labelContent.textColor = UIColor.BackgroundColor()
@@ -82,7 +82,7 @@ class Comment: UITableViewCell {
         }
     }
     
-    func onHead(){
+    @objc func onHead(){
         let vc = PlayerViewController()
         vc.Id = data.stringAttributeForKey("uid")
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)

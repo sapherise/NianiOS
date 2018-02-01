@@ -85,7 +85,7 @@ class ExploreNewHotCell: UITableViewCell {
         labelFollow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ExploreNewHotCell.onFollow)))
     }
     
-    func onFollow() {
+    @objc func onFollow() {
         labelFollow.isHidden = true
         let id = data.stringAttributeForKey("id")
         Api.getFollowDream(id) { json in }

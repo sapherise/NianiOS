@@ -119,7 +119,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
         self.view.addSubview(self.topCell)
     }
     
-    func userMore(){
+    @objc func userMore(){
         self.userMoreSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         if self.isBan == 0 {
             self.userMoreSheet.addButton(withTitle: "拖进小黑屋")
@@ -462,7 +462,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
         }
     }
     
-    func SASettings() {
+    @objc func SASettings() {
         let vc = NewSettingViewController(nibName: "NewSettingView", bundle: nil)
         vc.coverImage = self.topCell.BGImage.image
         vc.avatarImage = self.topCell.UserHead.image
@@ -470,7 +470,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
         self.navigationController!.pushViewController(vc, animated: true)
     }
     
-    func onUserHeadClick(_ sender:UIGestureRecognizer) {
+    @objc func onUserHeadClick(_ sender:UIGestureRecognizer) {
         if let v = sender.view as? UIImageView {
             let images = NSMutableArray()
             let data = ["path": "\(self.Id).jpg", "width": "500", "height": "500"]
@@ -481,7 +481,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
         }
     }
     
-    func onMenuClick(_ sender:UIGestureRecognizer){
+    @objc func onMenuClick(_ sender:UIGestureRecognizer){
         let tag = sender.view!.tag
         let y1 = self.tableViewDream.contentOffset.y
         let y2 = self.tableViewStep.contentOffset.y
@@ -523,20 +523,20 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
         }
     }
     
-    func onFoClick(){
+    @objc func onFoClick(){
         let LikeVC = LikeViewController()
         LikeVC.Id = "\(self.Id)"
         LikeVC.urlIdentify = 1
         self.navigationController!.pushViewController(LikeVC, animated: true)
     }
-    func onFoedClick(){
+    @objc func onFoedClick(){
         let LikeVC = LikeViewController()
         LikeVC.Id = "\(self.Id)"
         LikeVC.urlIdentify = 2
         self.navigationController!.pushViewController(LikeVC, animated: true)
     }
     
-    func SAfo(_ sender:UIButton){
+    @objc func SAfo(_ sender:UIButton){
         sender.setTitle("已关注", for: UIControlState())
         sender.removeTarget(self, action: #selector(PlayerViewController.SAfo(_:)), for: UIControlEvents.touchUpInside)
         sender.addTarget(self, action: #selector(PlayerViewController.SAunfo(_:)), for: UIControlEvents.touchUpInside)
@@ -548,7 +548,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
         }
     }
     
-    func SAunfo(_ sender:UIButton){
+    @objc func SAunfo(_ sender:UIButton){
         sender.setTitle("关注", for: UIControlState())
         sender.removeTarget(self, action: #selector(PlayerViewController.SAunfo(_:)), for: UIControlEvents.touchUpInside)
         sender.addTarget(self, action: #selector(PlayerViewController.SAfo(_:)), for: UIControlEvents.touchUpInside)
@@ -560,7 +560,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
         }
     }
     
-    func SALetter(_ sender: UIButton) {
+    @objc func SALetter(_ sender: UIButton) {
         let letterVC = CircleController()
         if let id = Int(self.Id) {
             letterVC.id = id
@@ -569,7 +569,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
         }
     }
     
-    func dreamclick(_ sender:UITapGestureRecognizer){
+    @objc func dreamclick(_ sender:UITapGestureRecognizer){
         let DreamVC = DreamViewController()
         DreamVC.Id = "\(sender.view!.tag)"
         self.navigationController!.pushViewController(DreamVC, animated: true)

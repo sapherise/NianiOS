@@ -47,7 +47,7 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource, NIA
         NotificationCenter.default.addObserver(self, selector: #selector(self.wechatNotification(_:)), name: NSNotification.Name(rawValue: "Wechat"), object: nil)
     }
     
-    func wechatNotification(_ notification: Notification) {
+    @objc func wechatNotification(_ notification: Notification) {
         if let data = notification.object as? NSDictionary {
             let openid = data.stringAttributeForKey("openid")
             let accessToken = data.stringAttributeForKey("access_token")
@@ -109,7 +109,7 @@ class Premium: SAViewController, UITableViewDelegate, UITableViewDataSource, NIA
         }
     }
     
-    func withdraw() {
+    @objc func withdraw() {
         alert = NIAlert()
         alert!.delegate = self
         var content = "要将所有余额\n提现到微信账号 \(self.wechatName) 吗？"

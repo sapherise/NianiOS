@@ -178,7 +178,7 @@ extension PetViewController: NIAlertDelegate {
         }
     }
     
-    func toUpgrade() {
+    @objc func toUpgrade() {
         if dataArray.count > 0 {
             let data = dataArray[current] as! NSDictionary
             let id = Int(data.stringAttributeForKey("id"))!

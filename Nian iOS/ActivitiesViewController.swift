@@ -34,25 +34,25 @@ class ActivitiesViewController: SAViewController {
         viewFollowDreams.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ActivitiesViewController.onFollowDreams)))
     }
     
-    func onSteps() {
+    @objc func onSteps() {
         let vc = MySteps()
         vc.type = CollectType.mysteps
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    func onLikeSteps() {
+    @objc func onLikeSteps() {
         let vc = MySteps()
         vc.type = CollectType.likesteps
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    func onLikeDreams() {
+    @objc func onLikeDreams() {
         let vc = ExploreNext()
         vc.type = 3
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func onFollowDreams() {
+    @objc func onFollowDreams() {
         let vc = ExploreNext()
         vc.type = 4
         self.navigationController?.pushViewController(vc, animated: true)

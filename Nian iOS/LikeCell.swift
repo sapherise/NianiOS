@@ -73,13 +73,13 @@ class LikeCell: UITableViewCell {
         }
     }
     
-    func onUserClick() {
+    @objc func onUserClick() {
         let vc = PlayerViewController()
         vc.Id = data.stringAttributeForKey("uid")
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func onLetterClick() {
+    @objc func onLetterClick() {
         if let uid = Int(data.stringAttributeForKey("uid")) {
             let vc = CircleController()
             vc.id = uid
@@ -91,7 +91,7 @@ class LikeCell: UITableViewCell {
     func onInviteClick(_ sender:UIButton){
     }
     
-    func onFollowClick(_ sender:UIButton){
+    @objc func onFollowClick(_ sender:UIButton){
         let tag = sender.tag
         if tag == 100 {     //没有关注
             self.data.setValue("1", forKey: "follow")

@@ -241,7 +241,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     }
     
     /* 微信购买会员回调 */
-    func onWechatResult(_ sender: Notification) {
+    @objc func onWechatResult(_ sender: Notification) {
         if let object = sender.object as? String {
             if object == "0" {
                 payPremiumSuccess()
@@ -347,7 +347,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     }
     
     // 绑定事件
-    func onImage() {
+    @objc func onImage() {
         let img = data.stringAttributeForKey("image")
         let w = data.stringAttributeForKey("width")
         let h = data.stringAttributeForKey("height")
@@ -360,7 +360,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         
     }
     
-    func onHead() {
+    @objc func onHead() {
         let uid = data.stringAttributeForKey("uid")
         let uidlike = data.stringAttributeForKey("uidlike")
         let vc = PlayerViewController()
@@ -368,7 +368,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func onComment() {
+    @objc func onComment() {
         let id = data.stringAttributeForKey("dream")
         let sid = data.stringAttributeForKey("sid")
         let uid = data.stringAttributeForKey("uid")
@@ -379,14 +379,14 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func onLike() {
+    @objc func onLike() {
         let vc = List()
         vc.type = ListType.like
         vc.id = data.stringAttributeForKey("sid")
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func onMoreClick() {
+    @objc func onMoreClick() {
         btnMore.setImage(nil, for: UIControlState())
         let ac = UIActivityIndicatorView()
         ac.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
@@ -497,13 +497,13 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         }
     }
     
-    func onPro() {
+    @objc func onPro() {
         let vc = Product()
         vc.type = Product.ProductType.pro
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func onLikeClick() {
+    @objc func onLikeClick() {
         globalVVeboReload = false
         let isLiked = data.stringAttributeForKey("liked")
         if isLiked == "0" {
@@ -536,7 +536,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     }
     
     /* 添加奖励浮层 */
-    func onPremiumClick() {
+    @objc func onPremiumClick() {
         let wImage: CGFloat = 32
         let padding: CGFloat = 8
         
@@ -614,11 +614,11 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         self.window?.addSubview(viewPremium)
     }
     
-    func nofunction() {
+    @objc func nofunction() {
     }
     
     /* 奖励功能 */
-    func reward(_ sender: UIGestureRecognizer) {
+    @objc func reward(_ sender: UIGestureRecognizer) {
         NotificationCenter.default.addObserver(self, selector: #selector(self.onWechatResult(_:)), name: NSNotification.Name(rawValue: "onWechatResult"), object: nil)
         onViewPremiumClose()
         let tag = sender.view!.tag
@@ -733,7 +733,7 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
     }
     
     /* 关闭奖励浮层 */
-    func onViewPremiumClose() {
+    @objc func onViewPremiumClose() {
         viewPremium.removeFromSuperview()
     }
     

@@ -180,7 +180,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         }
     }
     
-    func setupNavBtn() {
+    @objc func setupNavBtn() {
         let uid = dataArrayTop.stringAttributeForKey("uid")
         let percent = dataArrayTop.stringAttributeForKey("percent")
         let title = dataArrayTop.stringAttributeForKey("title")

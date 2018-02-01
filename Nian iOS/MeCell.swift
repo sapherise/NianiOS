@@ -122,7 +122,7 @@ class MeCell: UITableViewCell {
         }
     }
     
-    func onConfirmClick(_ sender:UIGestureRecognizer) {
+    @objc func onConfirmClick(_ sender:UIGestureRecognizer) {
         let cuid = data.stringAttributeForKey("cuid")
         let dream = data.stringAttributeForKey("dream")
         self.findRootViewController()?.navigationItem.rightBarButtonItems = buttonArray()

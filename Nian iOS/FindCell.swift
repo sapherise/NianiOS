@@ -51,7 +51,7 @@ class FindCell: UITableViewCell {
         }
     }
     
-    func onFollowClick(_ sender:UIButton){
+    @objc func onFollowClick(_ sender:UIButton){
         let tag = sender.tag
         if tag == 100 {     //没有关注
             let mutableItem = NSMutableDictionary(dictionary: data)

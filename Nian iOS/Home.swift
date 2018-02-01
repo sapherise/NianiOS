@@ -117,7 +117,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         }
     }
     
-    func onBtnGameOverClick(_ sender: UIButton) {
+    @objc func onBtnGameOverClick(_ sender: UIButton) {
         let tag = sender.tag
         self.gameoverMode = tag
         if tag == 1 {
@@ -142,7 +142,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         // 当前账户退出，载入其他账户时使用
     }
     
-    func onAppActive() {
+    @objc func onAppActive() {
         onAppEnterForeground()
     }
     
@@ -163,12 +163,12 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     /* App 从后台进入前台，或者在登录状态下启动 */
-    func onAppEnterForeground() {
+    @objc func onAppEnterForeground() {
         launchTimer()
         onLock(lockType.verify)
     }
     
-    func onObserveDeactive() {
+    @objc func onObserveDeactive() {
         stopTimer()
     }
     
@@ -188,7 +188,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
         }
     }
     
-    func noticeDot() {
+    @objc func noticeDot() {
         if dot != nil {
             self.dot?.isHidden = true
             Api.postLetter() { json in
@@ -290,7 +290,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     // 3D Touch 下的更新进展
-    func QuickActions(_ sender: Notification) {
+    @objc func QuickActions(_ sender: Notification) {
         let type = sender.object as! String
         if type == "1" {
             let vc = AddStep(nibName: "AddStep", bundle: nil)
@@ -350,7 +350,7 @@ class HomeViewController: UITabBarController, UIApplicationDelegate, UIActionShe
     }
     
     //底部的按钮按下去
-    func tabBarButtonClicked(_ sender:UIButton){
+    @objc func tabBarButtonClicked(_ sender:UIButton){
         let index = sender.tag
         for i in 0 ..< 5 {
             let button = self.view.viewWithTag(i+100) as? UIButton

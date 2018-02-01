@@ -112,15 +112,15 @@ class SAEgg: NIAlert, NIAlertDelegate {
         }
     }
     
-    func onEggTouchDown(_ sender: UIButton) {
+    @objc func onEggTouchDown(_ sender: UIButton) {
         sender.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1)
     }
     
-    func onEggTouchCancel(_ sender: UIButton) {
+    @objc func onEggTouchCancel(_ sender: UIButton) {
         sender.backgroundColor = UIColor.clear
     }
     
-    func onEggTouchUp(_ sender: UIButton) {
+    @objc func onEggTouchUp(_ sender: UIButton) {
         let tag = sender.tag
         sender.backgroundColor = UIColor.clear
         self.confirmNiAlert.titleLabel?.isHidden = true

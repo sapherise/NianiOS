@@ -24,7 +24,7 @@ class Coin: SAViewController, UITableViewDataSource, UITableViewDelegate {
         tableView.reloadData()
     }
     
-    func toPremium() {
+    @objc func toPremium() {
         let vc = Premium()
         self.navigationController?.pushViewController(vc, animated: true)
     }

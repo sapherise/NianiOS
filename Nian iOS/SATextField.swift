@@ -252,7 +252,7 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
     }
     
     /* 弹起系统自带键盘 */
-    func onTap() {
+    @objc func onTap() {
         inputKeyboard.becomeFirstResponder()
         resignEmoji()
     }
@@ -275,7 +275,7 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
     }
     
     /* 点击表情按钮 */
-    func onEmoji() {
+    @objc func onEmoji() {
         /* 如果不是表情键盘 */
         if !isEmojing {
             self.isEmojing = true
@@ -394,7 +394,7 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
     }
     
     /* 前往购买表情 */
-    func onProduct() {
+    @objc func onProduct() {
         if dataArray.count > current {
             let vc = Product()
             let data = dataArray[current] as! NSDictionary
@@ -405,7 +405,7 @@ class InputView: UIView, UITextViewDelegate, UITableViewDelegate, UITableViewDat
         }
     }
     
-    func onStore() {
+    @objc func onStore() {
         let vc = ProductList()
         vc.name = "表情"
         self.findRootViewController()?.navigationController?.pushViewController(vc, animated: true)

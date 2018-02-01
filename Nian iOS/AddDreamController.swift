@@ -49,7 +49,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     var swipeGesuture: UISwipeGestureRecognizer?
     
-    func uploadClick() {
+    @objc func uploadClick() {
         self.dismissKeyboard()
         
         self.actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
@@ -213,12 +213,12 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         
         self.view.backgroundColor = UIColor.BackgroundColor()
 //        self.field1!.setValue(UIColor(red: 0, green: 0, blue: 0, alpha: 0.3), forKeyPath: "_placeholderLabel.textColor")
-        self.field1.attributedPlaceholder = NSAttributedString(string: "标题", attributes: [NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)])
+        self.field1.attributedPlaceholder = NSAttributedString(string: "标题", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)])
         self.field1.textColor = UIColor(red:0.2, green:0.2, blue:0.2, alpha:1)
         
         self.field2.attributedPlaceholder = NSAttributedString(string: "记本简介（可选）" ,
-                                                            attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 14),
-                                                                NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)])
+                                                            attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14),
+                                                                NSAttributedStringKey.foregroundColor: UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)])
         self.field2.textColor = UIColor(red:0.2, green:0.2, blue:0.2, alpha:1)
         self.field2.delegate = self
         
@@ -269,7 +269,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     /* 添加或修改记本的更多设置 */
-    func setDream(){
+    @objc func setDream(){
         let vc = AddDreamMore()
         vc.permission = permission
         vc.isPrivate = isPrivate
@@ -277,7 +277,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func dismissKeyboard(_ sender: UISwipeGestureRecognizer){
+    @objc func dismissKeyboard(_ sender: UISwipeGestureRecognizer){
         self.dismissKeyboard()
     }
     
@@ -289,7 +289,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     //MARK: 添加 new Dream
     
-    func addDreamOK(){
+    @objc func addDreamOK(){
         let title = (self.field1.text)!
         let content = (self.field2.text)!
         let tags = self.tokenView.tokenTitles
@@ -313,7 +313,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     //MARK: edit dream
     
-    func editDreamOK(){
+    @objc func editDreamOK(){
         let title = self.field1.text!
         let content = self.field2.text!
         let tags = self.tokenView.tokenTitles!
@@ -359,7 +359,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
     
     //MARK: keyboard notification && UITextView Delegate method
    
-    func handleKeyboardWillShowNotification(_ notification: Notification) {
+    @objc func handleKeyboardWillShowNotification(_ notification: Notification) {
         let userInfo = (notification as NSNotification).userInfo!
         
         let animationDuration: TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
@@ -399,7 +399,7 @@ class AddDreamController: UIViewController, UIActionSheetDelegate, UIImagePicker
         keyboardShown = true
     }
 
-    func handleKeyboardWillHideNotification(_ notification: Notification) {
+    @objc func handleKeyboardWillHideNotification(_ notification: Notification) {
         keyboardShown = false
         
         let userInfo = (notification as NSNotification).userInfo!
