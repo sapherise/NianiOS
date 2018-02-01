@@ -124,21 +124,21 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
     }
     
     @objc func Letter(_ noti: Notification) {
-        if let message = noti.object as? RCMessage {
-            if "\(id)" == message.senderUserId {
-                let new = IMClass().messageToDictionay(message)
-                var mutableData = NSMutableDictionary(dictionary: dataDecode(new))
-                mutableData = decodeToEmojiType(mutableData, message: message)
-                self.dataArray.insert(mutableData, at: 0)
-                back {
-                    self.tableView.reloadData()
-                    let offset = self.tableView.contentSize.height - self.tableView.bounds.size.height
-                    if offset > 0 && offset - self.tableView.contentOffset.y < self.tableView.bounds.size.height * 0.5 {
-                        self.tableView.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
-                    }
-                }
-            }
-        }
+//        if let message = noti.object as? RCMessage {
+//            if "\(id)" == message.senderUserId {
+////                let new = IMClass().messageToDictionay(message)
+//                var mutableData = NSMutableDictionary(dictionary: dataDecode(new))
+//                mutableData = decodeToEmojiType(mutableData, message: message)
+//                self.dataArray.insert(mutableData, at: 0)
+//                back {
+//                    self.tableView.reloadData()
+//                    let offset = self.tableView.contentSize.height - self.tableView.bounds.size.height
+//                    if offset > 0 && offset - self.tableView.contentOffset.y < self.tableView.bounds.size.height * 0.5 {
+//                        self.tableView.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
+//                    }
+//                }
+//            }
+//        }
     }
     
     func setupViews() {
@@ -239,15 +239,15 @@ class CircleController: UIViewController,UITableViewDelegate,UITableViewDataSour
         
         self.page += 1
         
-        for _item in arr! {
-            if let item = _item as? RCMessage {
-                let data = IMClass().messageToDictionay(item)
-                var mutableData = NSMutableDictionary(dictionary: dataDecode(data))
-                mutableData = decodeToEmojiType(mutableData, message: item)
-                self.dataArray.add(mutableData)
-                self.dataTotal += 1
-            }
-        }
+//        for _item in arr! {
+//            if let item = _item as? RCMessage {
+////                let data = IMClass().messageToDictionay(item)
+////                var mutableData = NSMutableDictionary(dictionary: dataDecode(data))
+////                mutableData = decodeToEmojiType(mutableData, message: item)
+////                self.dataArray.add(mutableData)
+////                self.dataTotal += 1
+//            }
+//        }
         
         let heightBefore = self.tableView.contentSize.height
         self.tableView.reloadData()

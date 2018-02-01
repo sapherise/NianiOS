@@ -388,7 +388,7 @@ extension UIViewController {
         /* 设置传的参数进入缓存，当为自然启动时，切换到关注页面 */
         Cookies.set(selected as AnyObject?, forKey: "selected")
         
-        IMClass.IMConnect()
+//        IMClass.IMConnect()
         delay(0.2) { () -> () in
             let vc = HomeViewController(nibName:nil,  bundle: nil)
             let nav = UINavigationController(rootViewController: vc)

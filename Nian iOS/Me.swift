@@ -130,21 +130,21 @@ class MeViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
         }
         back {
             self.tableView.reloadData()
-            if self.dataArray.count == 0 {
-                let viewHeader = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: 200))
-                let viewQuestion = viewEmpty(globalWidth, content: "这里是空的\n要去给好友写信吗")
-                viewQuestion.setY(70)
-                let btnGo = UIButton()
-                btnGo.setButtonNice("  嗯！")
-                btnGo.setX(globalWidth/2-50)
-                btnGo.setY(viewQuestion.bottom())
-                btnGo.addTarget(self, action: #selector(MeViewController.onBtnGoClick), for: UIControlEvents.touchUpInside)
-                viewHeader.addSubview(viewQuestion)
-                viewHeader.addSubview(btnGo)
-                self.tableView.tableFooterView = viewHeader
-            }else{
-                self.tableView.tableFooterView = UIView()
-            }
+//            if self.dataArray.count == 0 {
+////                let viewHeader = UIView(frame: CGRect(x: 0, y: 0, width: globalWidth, height: 200))
+////                let viewQuestion = viewEmpty(globalWidth, content: "这里是空的\n要去给好友写信吗")
+////                viewQuestion.setY(70)
+////                let btnGo = UIButton()
+////                btnGo.setButtonNice("  嗯！")
+////                btnGo.setX(globalWidth/2-50)
+////                btnGo.setY(viewQuestion.bottom())
+////                btnGo.addTarget(self, action: #selector(MeViewController.onBtnGoClick), for: UIControlEvents.touchUpInside)
+////                viewHeader.addSubview(viewQuestion)
+////                viewHeader.addSubview(btnGo)
+////                self.tableView.tableFooterView = viewHeader
+//            }else{
+//                self.tableView.tableFooterView = UIView()
+//            }
         }
     }
     

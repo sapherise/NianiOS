@@ -22,8 +22,8 @@ PODS:
     - AFNetworking/NSURLSession
   - Base64 (1.0.1)
   - FLAnimatedImage (1.0.10)
+  - Google-Mobile-Ads-SDK (7.28.0)
   - NSData+MD5Digest (1.0.0)
-  - RongCloudIMLib (2.4.3)
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage-ProgressView (0.4.0):
@@ -35,8 +35,8 @@ DEPENDENCIES:
   - AFNetworking (~> 2.5.4)
   - Base64
   - FLAnimatedImage
+  - Google-Mobile-Ads-SDK
   - NSData+MD5Digest
-  - RongCloudIMLib
   - SDWebImage
   - SDWebImage-ProgressView
   - UMengAnalytics
@@ -45,12 +45,12 @@ SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   Base64: 4924bf3ca6fa559a5161ef717291bd450eb7bd1a
   FLAnimatedImage: e16a1e1cef08e4c509b47e4acbe3923f65c16135
+  Google-Mobile-Ads-SDK: 7f9bc0011df363ae5616449de3682a14c4701612
   NSData+MD5Digest: 0743d53874455e2bdf49f70e7f815b0b963a355f
-  RongCloudIMLib: e9f3923df0936e1f390b70fe72eacf61b7bfb29f
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   SDWebImage-ProgressView: cdc29091ec0d53fd6dab3df65039a4f308e0a5ae
   UMengAnalytics: 4bf831415146b9c57cb10be65fbd43462ef8cf65
 
-PODFILE CHECKSUM: b7677f53c58587f924c07d4e4bc7d0f4fac955c6
+PODFILE CHECKSUM: 30c63caf895e6c3b8196eae7565640db4c283efe
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.4.0

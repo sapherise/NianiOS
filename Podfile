@@ -11,8 +11,8 @@ pod 'Base64'
 pod 'UMengAnalytics'
 pod 'SDWebImage'
 pod 'SDWebImage-ProgressView'
-pod 'RongCloudIMLib'
 pod 'FLAnimatedImage'
+pod 'Google-Mobile-Ads-SDK'
 
 end
 

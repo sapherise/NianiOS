@@ -49,6 +49,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
+## Google-Mobile-Ads-SDK
+
+Copyright 2018 Google
+
 ## NSData+MD5Digest
 
 ## NSData+MD5
@@ -62,10 +66,6 @@ Francis Chong francis@ignition.hk
 ### License
 
 MIT license
-
-## RongCloudIMLib
-
-Copyright 2014 Rong Cloud
 
 ## SDWebImage
 
