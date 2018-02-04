@@ -38,10 +38,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WeiboSDKDelegate, WXApiDe
         application.clearBadge()
         
         // Google 广告接入
-//        GADMobileAds.configure(withApplicationID: "ca-app-pub-4401117476228272~7045340998")
+        GADMobileAds.configure(withApplicationID: "ca-app-pub-4401117476228272~7045340998")
         
         // 下面使用测试广告
-        GADMobileAds.configure(withApplicationID: "ca-app-pub-3940256099942544/2934735716")
+//        GADMobileAds.configure(withApplicationID: "ca-app-pub-3940256099942544/2934735716")
 
         
         // check current shortcut item

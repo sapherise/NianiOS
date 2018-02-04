@@ -69,7 +69,6 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     }
     
     func setupViews(){
-        let frameSquare = CGRect(x: 0, y: 0, width: globalWidth, height: 320)
         self.view.frame = CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight - 49)
         self.scrollView.frame = CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight - 49)
         self.scrollView.contentSize.height = globalHeight - 49 > 640 ? globalHeight - 49 : 640
@@ -78,9 +77,10 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.scrollView.showsHorizontalScrollIndicator = false
         self.scrollView.showsVerticalScrollIndicator = false
         self.scrollView.delegate = self
+        self.scrollView.contentOffset.y = -64
         
-        self.viewHolder.frame = frameSquare
-        self.imageBG.frame = frameSquare
+        self.viewHolder.frame = CGRect(x: 0, y: 0, width: globalWidth, height: 320)
+        self.imageBG.frame = CGRect(x: 0, y: 0, width: globalWidth, height: 320 - 64)
         self.viewMenu.setWidth(globalWidth)
         self.labelTableLeft.setX(globalWidth/2 - 160 + 20)
         self.labelTableRight.setX(globalWidth/2 + 160 - 20 - 80)
@@ -149,6 +149,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         self.UserHead.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(NianViewController.headClick)))
         imageSettings.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(NianViewController.headClick)))
         imageSettings.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(NianViewController.EggShell(_:))))
+        
         self.viewHolderHead.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
         self.imageBadge.setX(globalWidth/2 + 60/2 - 14)
         NotificationCenter.default.addObserver(self, selector: #selector(NianViewController.QuickActionsEgg), name: NSNotification.Name(rawValue: "QuickActionsEgg"), object: nil)
@@ -193,33 +194,37 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
             let height = scrollView.contentOffset.y
             self.heightScroll = height
             if self.viewHolder != nil {
-                if height > 0 {
+                if height > -64 {
                     if height > globalWidth {
                         self.imageBG.isHidden = true
                     }else{
-                        self.imageBG.frame = CGRect(x: 0, y: height, width: globalWidth, height: 320 - height)
+                        self.imageBG.frame = CGRect(x: 0, y: height, width: globalWidth, height: 320 - height - 64 - 64)
                         self.imageBG.isHidden = false
                     }
                 }else{
                     self.viewHolder!.setY(height)
                     self.viewMenu.setY(height + 320)
-                    self.imageBG.frame = CGRect(x: height/10, y: height, width: globalWidth-height/5, height: 320)
+                    self.imageBG.frame = CGRect(x: height/10, y: height, width: globalWidth-height/5, height: 320 - 64)
                 }
-                scrollHidden(self.viewHolderHead, scrollY: 68)
-                scrollHidden(self.imageBadge, scrollY: 68)
-                scrollHidden(self.UserName, scrollY: 138)
-                scrollHidden(self.UserStep, scrollY: 161)
-                scrollHidden(self.coinButton, scrollY: 214)
-                scrollHidden(self.levelButton, scrollY: 214)
-                scrollHidden(self.imageSettings, scrollY: 50)
-                scrollHidden(self.dynamicSummary, scrollY: 50)
-                scrollHidden(self.activity, scrollY: 50)
-                if height >= 320 - 64 {
+                scrollHidden(self.viewHolderHead, scrollY: 68 - 64)
+                scrollHidden(self.imageBadge, scrollY: 68 - 64)
+                scrollHidden(self.UserName, scrollY: 138 - 64)
+                scrollHidden(self.UserStep, scrollY: 161 - 64)
+                scrollHidden(self.coinButton, scrollY: 214 - 64)
+                scrollHidden(self.levelButton, scrollY: 214 - 64)
+                scrollHidden(self.imageSettings, scrollY: 50 - 64)
+                scrollHidden(self.dynamicSummary, scrollY: 50 - 64)
+                scrollHidden(self.activity, scrollY: 50 - 64)
+                if height >= 320 - 64 - 64 {
                     self.navView.isHidden = false
                 }else{
-                    self.navView.isHidden = true
+                    if self.navView != nil {
+                        self.navView.isHidden = true
+                    }
                 }
             }
+            let a = scrollView.contentOffset
+            print(a)
         }
     }
     
@@ -284,10 +289,10 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
                             if willRefreshCover {
                                 if coverURL == "" {
                                     self.imageBG.image = UIImage(named: "bg")
-                                    self.navView.image = UIImage(named: "bg")
+//                                    self.navView.image = UIImage(named: "bg")
                                     self.navView.contentMode = UIViewContentMode.scaleAspectFill
                                 } else {
-                                    self.navView.setCover(AllCoverURL)
+//                                    self.navView.setCover(AllCoverURL)
                                     self.imageBG.setCover(AllCoverURL)
                                 }
                             }
@@ -383,6 +388,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
         if let coin = Cookies.get("coin") as? String {
             coinButton.setTitle("念币 \(coin)", for: UIControlState())
         }
+        self.scrollView.contentOffset.y = -64
     }
     
     /**
@@ -511,7 +517,7 @@ class NianViewController: UIViewController, UIActionSheetDelegate, UIImagePicker
     func reloadFromDataArray() {
         self.collectionView.reloadData()
         let height = ceil(CGFloat(self.dataArray.count) / 3) * 125
-        self.collectionView.frame = CGRect(x: globalWidth/2 - 140, y: 320 + 55, width: 280, height: height)
+        self.collectionView.frame = CGRect(x: globalWidth/2 - 140, y: 320 + 55 - 64, width: 280, height: height)
         let heightContentSize = globalHeight - 49 > 640 ? globalHeight - 49 : 640
         self.scrollView.contentSize.height = heightContentSize > height + 375 + 45 ? heightContentSize : height + 375 + 45
         self.collectionView.contentSize.height = height

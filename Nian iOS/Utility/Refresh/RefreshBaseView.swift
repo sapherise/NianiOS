@@ -160,7 +160,7 @@ class RefreshBaseView: UIView {
     }
     
     // 开始刷新
-    func beginRefreshing(){
+    @objc func beginRefreshing(){
          self.State = RefreshState.refreshing
 //        if (self.window != nil) {
 //            self.State = RefreshState.Refreshing;

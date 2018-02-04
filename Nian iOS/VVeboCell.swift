@@ -290,7 +290,6 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         }
         drawed = true
         let flag = drawColorFlag
-        go {
             let heightCell = self.data["heightCell"] as! CGFloat
             let rect = CGRect(x: 0, y: 0, width: globalWidth, height: heightCell)
             UIGraphicsBeginImageContextWithOptions(rect.size, true, 0)
@@ -329,21 +328,18 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
             
             let temp = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
-            back {
                 if flag == self.drawColorFlag {
                     self.postBGView.frame = rect
                     self.postBGView.image = nil
                     self.postBGView.image = temp
                 }
-            }
-        }
-        drawText()
-        drawThumb()
-        
-        //        cell.layer.shouldRasterize = YES;
-        //        cell.layer.rasterizationScale = [UIScreen mainScreen].scale;
-        contentView.layer.shouldRasterize = true
-        contentView.layer.rasterizationScale = globalScale
+            self.drawText()
+            self.drawThumb()
+            
+            //        cell.layer.shouldRasterize = YES;
+            //        cell.layer.rasterizationScale = [UIScreen mainScreen].scale;
+            self.contentView.layer.shouldRasterize = true
+            self.contentView.layer.rasterizationScale = globalScale
     }
     
     // 绑定事件
@@ -394,7 +390,6 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
         contentView.addSubview(ac)
         ac.center = btnMore.center
         ac.startAnimating()
-        go {
             let sid = self.data!.stringAttributeForKey("sid")
             let content = self.data!.stringAttributeForKey("content").decode()
             let uid = self.data!.stringAttributeForKey("uid")
@@ -478,12 +473,9 @@ class VVeboCell: UITableViewCell, AddstepDelegate, UIActionSheetDelegate, UIColl
             
             // 禁用原来的保存图片
             self.activityViewController.excludedActivityTypes = [UIActivityType.addToReadingList, UIActivityType.airDrop, UIActivityType.assignToContact, UIActivityType.postToFacebook, UIActivityType.postToFlickr, UIActivityType.postToVimeo, UIActivityType.print, UIActivityType.saveToCameraRoll]
-            back {
                 ac.removeFromSuperview()
                 self.btnMore.setImage(UIImage(named: "btnmore"), for: UIControlState())
                 self.findRootViewController()?.present(self.activityViewController, animated: true, completion: nil)
-            }
-        }
     }
     
     func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {

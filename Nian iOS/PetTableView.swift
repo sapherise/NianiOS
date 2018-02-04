@@ -80,10 +80,6 @@ extension PetViewController: UITableViewDelegate, UITableViewDataSource {
             let data = dataArray[(indexPath as NSIndexPath).row] as? NSDictionary
             c.info = data
             c._layoutSubviews()
-            if (indexPath as NSIndexPath).row == current {
-                c.imgView.image = nil
-//                c.imgView.hidden = true 
-            }
             c.contentView.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI/2))
             return c
         }

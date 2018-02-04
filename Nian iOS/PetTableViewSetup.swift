@@ -107,7 +107,7 @@ extension PetViewController: NIAlertDelegate {
             current = max(min(Int(floor((_y+36)/72)), dataArray.count - 1), 0)
             if pre != current {
                 setPetTitle()
-                tableViewPet.reloadData()
+//                tableViewPet.reloadData()
                 pre = current
             }
         }

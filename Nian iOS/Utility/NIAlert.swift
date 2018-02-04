@@ -184,32 +184,33 @@ class NIAlert: UIView {
  
     func showWithAnimation(_ animation: showAnimationStyle) {
         self._commonSetup()
-        
-        if let _windowView = UIApplication.shared.windows.first {
-            switch animation {
-            case .spring:
-                self._containerView!.setX((globalWidth - 272)/2)
-                _windowView.addSubview(self)
-                UIView.animate(withDuration: 0.4,
-                    delay: 0,
-                    usingSpringWithDamping: 0.7,
-                    initialSpringVelocity: 0.5,
-                    options: UIViewAnimationOptions(),
-                    animations: { () -> Void in
-                        self._containerView!.setY((globalHeight - self._containerView!.frame.height)/2)
+        if true {
+            if let _windowView = UIApplication.shared.windows.last {
+                switch animation {
+                case .spring:
+                    self._containerView!.setX((globalWidth - 272)/2)
+                    _windowView.addSubview(self)
+                    UIView.animate(withDuration: 0.4,
+                                   delay: 0,
+                                   usingSpringWithDamping: 0.7,
+                                   initialSpringVelocity: 0.5,
+                                   options: UIViewAnimationOptions(),
+                                   animations: { () -> Void in
+                                    self._containerView!.setY((globalHeight - self._containerView!.frame.height)/2)
                     },
-                    completion: nil)
-                
-            case .flip:
-                self._containerView!.setX((globalWidth - 272)/2)
-                self._containerView!.setY((globalHeight - self._containerView!.frame.height)/2)
-                _windowView.addSubview(self)
-                
-                let rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 0, -1, 0)
-                self._containerView!.layer.transform = CATransform3DPerspect(rotate, center: CGPoint.zero, disZ: 1000)
-                UIView.animate(withDuration: 0.3, animations: { () -> Void in
-                    self._containerView!.layer.transform = CATransform3DMakeRotation(0, 0, 0, 0)
-                })
+                                   completion: nil)
+                    
+                case .flip:
+                    self._containerView!.setX((globalWidth - 272)/2)
+                    self._containerView!.setY((globalHeight - self._containerView!.frame.height)/2)
+                    _windowView.addSubview(self)
+                    
+                    let rotate = CATransform3DMakeRotation(CGFloat(M_PI)/2, 0, -1, 0)
+                    self._containerView!.layer.transform = CATransform3DPerspect(rotate, center: CGPoint.zero, disZ: 1000)
+                    UIView.animate(withDuration: 0.3, animations: { () -> Void in
+                        self._containerView!.layer.transform = CATransform3DMakeRotation(0, 0, 0, 0)
+                    })
+                }
             }
         }
         

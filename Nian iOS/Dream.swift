@@ -88,7 +88,7 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
         
         self.view.backgroundColor = UIColor.BackgroundColor()
         
-        self.SATableView = VVeboTableView(frame:CGRect(x: 0, y: 0, width: globalWidth, height: globalHeight))
+        self.SATableView = VVeboTableView(frame:CGRect(x: 0, y: -64, width: globalWidth, height: globalHeight + 64))
         self.SATableView.delegate = self
         self.SATableView.dataSource = self
         self.SATableView.separatorStyle = .none
@@ -482,10 +482,10 @@ class DreamViewController: VVeboViewController, UITableViewDelegate,UITableViewD
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView == SATableView {
             let y = SATableView.contentOffset.y
-            dreamCellTop?.scroll(y)
-            if y > 32 {
+            dreamCellTop?.scroll(y + 64)
+            if y > 32 - 64 {
                 navView.isHidden = false
-                navView.setY(y)
+                navView.setY(y + 64)
             } else {
                 navView.isHidden = true
             }

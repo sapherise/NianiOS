@@ -967,7 +967,7 @@ func getWrite(_ content: String) {
     let url = NSURL.fileURL(withPath: "/Users/Sa/Desktop/1.txt")
     let data = NSMutableData()
     let b = NSData(contentsOfFile: url.path)
-    let c = NSString(data: b as! Data, encoding: String.Encoding.utf8.rawValue) as! String
+    let c = NSString(data: b! as Data, encoding: String.Encoding.utf8.rawValue)! as String
     data.append((c + "\n" + getContent(content)).data(using: String.Encoding.utf8, allowLossyConversion: true)!)
     data.write(toFile: url.path, atomically: true)
 }

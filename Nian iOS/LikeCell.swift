@@ -54,6 +54,7 @@ class LikeCell: UITableViewCell {
             self.btnFollow.backgroundColor = UIColor.HighlightColor()
             self.btnFollow.setTitle("写信", for: UIControlState())
             self.btnFollow.addTarget(self, action: #selector(LikeCell.onLetterClick), for: UIControlEvents.touchUpInside)
+            self.btnFollow.isHidden = true
         } else {
             if follow == "0" {
                 self.btnFollow.tag = 100

@@ -446,6 +446,7 @@ class PlayerViewController: VVeboViewController, UITableViewDelegate,UITableView
                 if self.Id == safeuid {
 //                    self.topCell.btnLetter.isHidden = true
                     self.topCell.btnMain.setTitle("设置", for: UIControlState())
+                    self.topCell.btnMain.setX(globalWidth/2 - 50)
                     self.topCell.btnMain.removeTarget(self, action: #selector(PlayerViewController.SAunfo(_:)), for: UIControlEvents.touchUpInside)
                     self.topCell.btnMain.removeTarget(self, action: #selector(PlayerViewController.SAfo(_:)), for: UIControlEvents.touchUpInside)
                     self.topCell.btnMain.addTarget(self, action: #selector(PlayerViewController.SASettings), for: UIControlEvents.touchUpInside)

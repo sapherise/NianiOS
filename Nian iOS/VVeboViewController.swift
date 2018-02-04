@@ -60,7 +60,7 @@ class VVeboViewController: UIViewController, delegateSAStepCell, UIScrollViewDel
     
     // 重载表格
     func updateStep() {
-        self.currenTableView?.reloadData()
+            self.currenTableView?.reloadData()
     }
     
     // 删除某个格子
